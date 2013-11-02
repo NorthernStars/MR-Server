@@ -1,0 +1,11 @@
+*.*
+*
+
+!.gitignore
+!.classpath
+!.project
+
+!*.txt
+
+!*.xml
+!*/src/**/*.*
