@@ -1,1 +1,6 @@
+*
 
+!commons-cli-1.2.jar
+!jcip-annotations.jar
+!log4j-api-2.0-beta9.jar
+!log4j-core-2.0-beta9.jar
