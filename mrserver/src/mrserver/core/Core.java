@@ -1,5 +1,6 @@
 package mrserver.core;
 
+import mrserver.core.config.ServerConfig;
 import mrserver.core.config.file.ConfigFileReader;
 
 import org.apache.logging.log4j.Level;
@@ -45,9 +46,16 @@ public class Core {
 
         if( INSTANCE != null ){
 
+            INSTANCE = null;
         }
         
     }
+    
+    /**
+     * Speichert die allgemeinen Daten des Servers
+     * 
+     */
+    private ServerConfig mServerConfig;
     
     /**
      * Initialisiert die Grundfunktionen des Bots. 
@@ -70,15 +78,21 @@ public class Core {
                 
             });
             
-            Core.getLogger().info( ConfigFileReader.readConfigFile( "defaultserver.config" ) ); 
-                        
+            mServerConfig = ConfigFileReader.readConfigFile( "defaultserver.config" );
+            //TODO: cmd-einlesen
+            //TODO: operator starten
+            //TODO: scenario laden
+            //TODO: Vision connect
+            //TODO: Botcontrol connect
+            //TODO: Graphicsport open
+            //TODO: Vision kalibrieren
+            //TODO: Botports oeffnen                 
             
             
         } catch ( Exception vException ) {
 
             Core.getLogger().error( "Fehler beim initialisiern der Grundfunktionen: " + vException.getLocalizedMessage() );
             Core.getLogger().catching( Level.ERROR, vException );
-            vException.printStackTrace();
             
         }
         
