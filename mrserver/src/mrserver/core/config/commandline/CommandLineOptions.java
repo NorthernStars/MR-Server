@@ -23,8 +23,8 @@ import essentials.core.BotInformation.Teams;
  * Klasse zum parsen und weiterverarbeiten der Commandline. Nutzt Apache-Cli. 
  * 
  * @author Eike Petersen
- * @since 0.4
- * @version 0.9
+ * @since 0.1
+ * @version 0.1
  *
  */
 class CommandLineOptions {
