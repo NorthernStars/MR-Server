@@ -1,5 +1,8 @@
 package mrserver.core.config.commandline.options;
 
+import java.util.Arrays;
+
+import mrserver.core.Core;
 import mrserver.core.config.commandline.options.parse.ParseOption;
 
 import org.apache.commons.cli.CommandLine;
@@ -36,8 +39,17 @@ public class GraphicsPort extends Option implements ParseOption  {
 
 	@Override
 	public boolean parse(CommandLine aCommandLine) {
-		// TODO Auto-generated method stub
+
+        Core.getLogger().debug( "Checking commandline for " + mLongOption + "option" );
+		if ( aCommandLine.hasOption( getOpt() ) ) {
+
+	        Core.getLogger().debug( "Setting " + mLongOption + " " + aCommandLine.getOptionValue( getOpt() ) );
+	        Core.getInstance().getServerConfig().setGraphicsPort( Integer.parseInt( aCommandLine.getOptionValue( getOpt() ) ) ); 
+            return true;
+            
+        }
 		return false;
+		
 	}
 	
 }

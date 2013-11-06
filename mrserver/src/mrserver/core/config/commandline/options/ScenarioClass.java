@@ -36,10 +36,10 @@ public class ScenarioClass extends Option implements ParseOption  {
 	@Override
 	public boolean parse(CommandLine aCommandLine) {
 
-        Core.getLogger().debug( "Checking commandline for scenarioclassoption" );
+        Core.getLogger().debug( "Checking commandline for " + mLongOption + "option" );
 		if ( aCommandLine.hasOption( getOpt() ) ) {
 
-	        Core.getLogger().debug( "Setting scenarioclass " + aCommandLine.getOptionValue( getOpt() ) );
+	        Core.getLogger().debug( "Setting " + mLongOption + " " + aCommandLine.getOptionValue( getOpt() ) );
 			Core.getInstance().getServerConfig().setScenarioClass( aCommandLine.getOptionValue( getOpt() ) );;
             return true;
             

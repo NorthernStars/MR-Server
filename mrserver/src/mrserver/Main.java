@@ -1,6 +1,7 @@
 package mrserver;
 
 import java.lang.management.ManagementFactory;
+import java.util.Arrays;
 
 import mrserver.core.Core;
 
@@ -18,20 +19,9 @@ public class Main {
 	 */
     public static void main( String[] aCommandline ) {
         
-        System.setProperty("Server", ManagementFactory.getRuntimeMXBean().getName() + "" );
-        Core.getLogger().info("Starting server (" + ManagementFactory.getRuntimeMXBean().getName() + ")" );
-        
-        {
-            String vParameters = "";
-            
-            for ( String vParameter: aCommandline) {
-                
-                vParameters += vParameter + " ";
-                
-            }
-            
-            Core.getLogger().info("Parameters: " + vParameters);
-        }
+        System.setProperty( "Server", ManagementFactory.getRuntimeMXBean().getName() + "" );
+        Core.getLogger().info( "Starting server (" + ManagementFactory.getRuntimeMXBean().getName() + ")" );
+        Core.getLogger().trace( "Parameters: " + Arrays.toString( aCommandline ) );
         
         Core vServer;
         

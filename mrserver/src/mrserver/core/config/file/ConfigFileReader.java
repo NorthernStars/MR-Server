@@ -45,83 +45,67 @@ public class ConfigFileReader {
             
         }
     	
-    	if( vProperties.getProperty( "servername" ) != null ){
+    	if( vProperties.getProperty( "servername" ) != null && Core.getInstance().getServerConfig().getServerName().isEmpty() ){
     		
     		Core.getInstance().getServerConfig().setServerName( vProperties.getProperty( "servername" ) );
     		
     	}
     	
-    	if( vProperties.getProperty( "scenariolibrary" ) != null ){
+    	if( vProperties.getProperty( "scenariolibrary" ) != null && Core.getInstance().getServerConfig().getScenarioLibrary().isEmpty() ){
     		
     		Core.getInstance().getServerConfig().setScenarioLibrary( vProperties.getProperty( "scenariolibrary" ) );
     		
     	}
     	
-    	if( vProperties.getProperty( "scenarioclass" ) != null ){
+    	if( vProperties.getProperty( "scenarioclass" ) != null && Core.getInstance().getServerConfig().getScenarioClass().isEmpty() ){
     		
     		Core.getInstance().getServerConfig().setScenarioClass( vProperties.getProperty( "scenarioclass" ) );
     		
     	}
     	
-    	if( vProperties.getProperty( "scenarioconfigcmdline" ) != null ){
+    	if( vProperties.getProperty( "scenarioconfigcmdline" ) != null && Core.getInstance().getServerConfig().getScenarioConfigCmdLine().isEmpty() ){
     		
     		Core.getInstance().getServerConfig().setScenarioConfigCmdLine( vProperties.getProperty( "scenarioconfigcmdline" ) );
     		
     	}
     	
-    	if( vProperties.getProperty( "scenarioconfigfile" ) != null ){
+    	if( vProperties.getProperty( "scenarioconfigfile" ) != null && Core.getInstance().getServerConfig().getScenarioConfigFile().isEmpty() ){
     		
     		Core.getInstance().getServerConfig().setScenarioConfigFile( vProperties.getProperty( "scenarioconfigfile" ) );
     		
     	}
     	
-    	if( vProperties.getProperty( "visionipaddress" ) != null ){
-    		
-    		try {
-    			
-    			Core.getInstance().getServerConfig().setVisionIPAdress( InetAddress.getByName( vProperties.getProperty( "visionipaddress" ) ) );
-				
-			} catch ( UnknownHostException vUnknownHostException ) {
+    	if( vProperties.getProperty( "visionipaddress" ) != null && Core.getInstance().getServerConfig().getVisionIPAdress().isLoopbackAddress() ){
 
-	            Core.getLogger().error( "Error reading configfile property visionipaddress " + vUnknownHostException.getLocalizedMessage() );
-	            Core.getLogger().catching( Level.ERROR, vUnknownHostException );
-			}
-    		
+    		Core.getInstance().getServerConfig().setVisionIPAdress( vProperties.getProperty( "visionipaddress" ) );
+			
     	} 
     	
-    	if( vProperties.getProperty( "visionport" ) != null ){
+    	if( vProperties.getProperty( "visionport" ) != null && Core.getInstance().getServerConfig().getVisionPort() == -1 ){
     		
     		Core.getInstance().getServerConfig().setVisionPort( Integer.parseInt( vProperties.getProperty( "visionport" ) ) );
     		
     	}
     	
-    	if( vProperties.getProperty( "botcontrolipaddress" ) != null ){
+    	if( vProperties.getProperty( "botcontrolipaddress" ) != null && Core.getInstance().getServerConfig().getBotControlIPAdress().isLoopbackAddress() ){
 
-    		try {
-    			
-    			Core.getInstance().getServerConfig().setBotControlIPAdress( InetAddress.getByName( vProperties.getProperty( "botcontrolipaddress" ) ) );
-				
-			} catch ( UnknownHostException vUnknownHostException ) {
+    		Core.getInstance().getServerConfig().setBotControlIPAdress( vProperties.getProperty( "botcontrolipaddress" ) );
 
-	            Core.getLogger().error( "Error reading configfile property botcontrolipaddress " + vUnknownHostException.getLocalizedMessage() );
-	            Core.getLogger().catching( Level.ERROR, vUnknownHostException );
-			}
-    		
     	}
     	
-    	if( vProperties.getProperty( "botcontrolport" ) != null ){
+    	if( vProperties.getProperty( "botcontrolport" ) != null && Core.getInstance().getServerConfig().getBotControlPort() == -1  ){
     		
     		Core.getInstance().getServerConfig().setBotControlPort( Integer.parseInt( vProperties.getProperty( "botcontrolport" ) ) );
     		
     	}
     	
-    	if( vProperties.getProperty( "graphicsport" ) != null ){
+    	if( vProperties.getProperty( "graphicsport" ) != null && Core.getInstance().getServerConfig().getGraphicsPort() == -1 ){
 
     		Core.getInstance().getServerConfig().setGraphicsPort( Integer.parseInt( vProperties.getProperty( "botcontrolport" ) ) );
     		
     	}
     	
-    	if( vProperties.getProperty( "botports" ) != null && !Core.getInstance().getServerConfig().getBotPorts().isEmpty() ){
+    	if( vProperties.getProperty( "botports" ) != null && Core.getInstance().getServerConfig().getBotPorts().isEmpty() ){
 		
 			for(String vPort : vProperties.getProperty( "botports" ).split(" ")){
 

@@ -59,9 +59,7 @@ public class CommandLineOptions extends Options{
         
         super();
         
-        OptionGroup vCommandLine = new OptionGroup(), vConfigFile = new OptionGroup();
-        
-        vCommandLine.addOption( new ServerName() );
+        addOption( new ServerName() );
         
         addOption( new BotControl() );
         addOption( new Vision() );
@@ -98,7 +96,7 @@ public class CommandLineOptions extends Options{
     
 	public boolean parseCommandLineArguments( String[] aArguments ) {
 
-        Core.getLogger().debug( "Parsing commandline: " + Arrays.toString( aArguments ) );
+        Core.getLogger().info( "Parsing commandline: " + Arrays.toString( aArguments ) );
 
         try {
 

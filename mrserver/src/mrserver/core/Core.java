@@ -80,7 +80,7 @@ public class Core {
             });
             
             CommandLineOptions.getInstance().parseCommandLineArguments( aCommandline );
-            //TODO: cmd-einlesen
+            
             //TODO: operator starten
             //TODO: scenario laden
             //TODO: Vision connect
@@ -94,6 +94,8 @@ public class Core {
 
             Core.getLogger().error( "Fehler beim initialisiern der Grundfunktionen: " + vException.getLocalizedMessage() );
             Core.getLogger().catching( Level.ERROR, vException );
+            
+            System.exit( 1 );
             
         }
         

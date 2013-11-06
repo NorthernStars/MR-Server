@@ -38,10 +38,10 @@ public class ServerName extends Option implements ParseOption  {
 	@Override
 	public boolean parse(CommandLine aCommandLine) {
 
-        Core.getLogger().debug( "Checking commandline for servernameoption" );
+        Core.getLogger().debug( "Checking commandline for " + mLongOption + "option" );
 		if ( aCommandLine.hasOption( getOpt() ) ) {
 
-	        Core.getLogger().debug( "Setting servername " + aCommandLine.getOptionValue( getOpt() ) );
+	        Core.getLogger().debug( "Setting " + mLongOption + " " + aCommandLine.getOptionValue( getOpt() ) );
 			Core.getInstance().getServerConfig().setServerName( aCommandLine.getOptionValue( getOpt() ) );;
             return true;
             
