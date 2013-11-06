@@ -1,7 +1,6 @@
 package mrserver;
 
 import java.lang.management.ManagementFactory;
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 

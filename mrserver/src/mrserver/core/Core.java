@@ -1,9 +1,10 @@
 package mrserver.core;
 
+import mrserver.core.botcontrol.BotControlManagement;
 import mrserver.core.config.ServerConfig;
 import mrserver.core.config.commandline.CommandLineOptions;
-import mrserver.core.config.file.ConfigFileReader;
 import mrserver.core.scenario.ScenarioManagement;
+import mrserver.core.vision.VisionManagement;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -53,7 +54,10 @@ public class Core {
         if( INSTANCE != null ){
         	
         	ScenarioManagement.getInstance().close();
+        	VisionManagement.getInstance().close();
+        	BotControlManagement.getInstance().close();
             INSTANCE = null;
+            
         }
         
     }
@@ -86,15 +90,18 @@ public class Core {
             });
             
             CommandLineOptions.getInstance().parseCommandLineArguments( aCommandline );
-            
-            //TODO: operator starten
+            //TODO: operatormanagement starten
             ScenarioManagement.getInstance().loadScenario();
-            //TODO: Vision connect
-            //TODO: Botcontrol connect
+            if ( ScenarioManagement.getInstance().needsVision() ) {
+            	//TODO: Vision connect und register
+            }
+            if ( ScenarioManagement.getInstance().needsBotControl() ) {
+            	//TODO: Botcontrol connect und register
+            }
             //TODO: Graphicsport open
             //TODO: Vision kalibrieren
-            //TODO: Botports oeffnen                 
-            
+            //TODO: Botports oeffnen 
+            //TODO: Szenario starten                 
             
         } catch ( Exception vException ) {
 

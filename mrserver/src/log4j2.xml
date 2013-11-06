@@ -27,6 +27,14 @@
       <appender-ref ref="Console"/>
       <appender-ref ref="ERROR" />
     </logger>
+    <logger name="VISIONMANAGEMENT" level="debug">
+      <appender-ref ref="Console"/>
+      <appender-ref ref="ERROR" />
+    </logger>
+    <logger name="BOTCONTROLMANAGEMENT" level="debug">
+      <appender-ref ref="Console"/>
+      <appender-ref ref="ERROR" />
+    </logger>
     <root level="error">
     </root>
   </loggers>
