@@ -6,7 +6,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 
 /**
- * Szenariobibliotheksoption für die Commandline. Nutzt Apache-Cli. 
+ * Szenariokonfigurationskommandozeilenoption für die Commandline. Nutzt Apache-Cli. 
  * 
  * @author Eike Petersen
  * @since 0.1
@@ -14,17 +14,17 @@ import org.apache.commons.cli.Option;
  *
  */
 @SuppressWarnings("serial")
-public class ScenarioLibrary extends Option implements ParseOption  {
+public class ScenarioConfigCmdLine extends Option implements ParseOption  {
 
-	private final static String mOption = "sl";
-	private final static String mLongOption = "scenariolibrary";
-	private final static String mDiscription = "The library with the scenario\n"; //TODO: Beispiel
+	private final static String mOption = "scmd";
+	private final static String mLongOption = "scenariocmdline";
+	private final static String mDiscription = "Commandline options for the scenario\n"; //TODO: Beispiel
 	
 	private final static boolean mHasArgument = true;
-	private final static String mArgumentName = "libraryname";
+	private final static String mArgumentName = "\"commandlineoptions\"";
 	private final static int mNumberOfArguments = 1;
 	
-	public ScenarioLibrary(){
+	public ScenarioConfigCmdLine(){
 		
 		super( mOption, mLongOption, mHasArgument, mDiscription );
 		setArgName( mArgumentName );

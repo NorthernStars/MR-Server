@@ -1,7 +1,48 @@
 package mrserver.core.config.commandline.options;
 
+import mrserver.core.Core;
+import mrserver.core.config.commandline.options.parse.ParseOption;
+
+import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 
-public class Help extends Option {
+import mrserver.core.config.commandline.CommandLineOptions;
+
+/**
+ * Hilfeoption für die Commandline. Nutzt Apache-Cli. 
+ * 
+ * @author Eike Petersen
+ * @since 0.1
+ * @version 0.1
+ *
+ */
+@SuppressWarnings("serial")
+public class Help extends Option implements ParseOption  {
+	
+	private final static String mOption = "h";
+	private final static String mLongOption = "help";
+	private final static String mDiscription = "Displays this help\n";
+	
+	private final static boolean mHasArgument = false;
+	
+	public Help(){
+		
+		super( mOption, mLongOption, mHasArgument, mDiscription );
+		
+	}
+
+	@Override
+	public boolean parse( CommandLine aCommandLine ) {
+
+        Core.getLogger().debug( "Checking commandline for helpoption" );
+        if ( aCommandLine.hasOption( getOpt() ) ) {
+        	
+            Core.getLogger().debug( "Executing helpoption" );
+            CommandLineOptions.getInstance().showCommandlineHelp( "mserver Kommandozeilenhilfe\n", CommandLineOptions.getInstance() );
+            return true;
+            
+        }
+		return false;
+	}
 
 }

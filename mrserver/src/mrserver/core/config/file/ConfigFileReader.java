@@ -12,7 +12,14 @@ import org.apache.logging.log4j.Level;
 
 import mrserver.core.Core;
 import mrserver.core.config.ServerConfig;
-
+//TODO: besser machen
+/**
+ * Parsed eine Konfigurationsdatei
+ * 
+ * @author Eike Petersen
+ * @since 0.1
+ * @version 0.1
+ */
 public class ConfigFileReader {
 	
 	/**
@@ -21,11 +28,9 @@ public class ConfigFileReader {
 	 * @param aConfigFile der Namen der Konfigurationsdatei im Klassenpfad
 	 * @return
 	 */
-	public static ServerConfig readConfigFile( String aConfigFile ){
+	public static void readConfigFile( String aConfigFile ){
 
         Core.getLogger().debug( "Reading configfile " + aConfigFile );
-		
-		ServerConfig vServerConfig = new ServerConfig();
 		
 		Properties vProperties = new Properties();
 		 
@@ -42,51 +47,31 @@ public class ConfigFileReader {
     	
     	if( vProperties.getProperty( "servername" ) != null ){
     		
-    		vServerConfig.setServerName( vProperties.getProperty( "servername" ) );
-    		
-    	} else {
-    		
-    		vServerConfig.setServerName( "Server " + ManagementFactory.getRuntimeMXBean().getName() );
+    		Core.getInstance().getServerConfig().setServerName( vProperties.getProperty( "servername" ) );
     		
     	}
     	
     	if( vProperties.getProperty( "scenariolibrary" ) != null ){
     		
-    		vServerConfig.setScenarioLibrary( vProperties.getProperty( "scenariolibrary" ) );
-    		
-    	} else {
-    		
-    		vServerConfig.setScenarioLibrary( "" );
+    		Core.getInstance().getServerConfig().setScenarioLibrary( vProperties.getProperty( "scenariolibrary" ) );
     		
     	}
     	
     	if( vProperties.getProperty( "scenarioclass" ) != null ){
     		
-    		vServerConfig.setScenarioClass( vProperties.getProperty( "scenarioclass" ) );
-    		
-    	} else {
-    		
-    		vServerConfig.setScenarioClass( "" );
+    		Core.getInstance().getServerConfig().setScenarioClass( vProperties.getProperty( "scenarioclass" ) );
     		
     	}
     	
     	if( vProperties.getProperty( "scenarioconfigcmdline" ) != null ){
     		
-    		vServerConfig.setScenarioConfigCmdLine( vProperties.getProperty( "scenarioconfigcmdline" ) );
-    		
-    	} else {
-    		
-    		vServerConfig.setScenarioConfigCmdLine( "" );
+    		Core.getInstance().getServerConfig().setScenarioConfigCmdLine( vProperties.getProperty( "scenarioconfigcmdline" ) );
     		
     	}
     	
     	if( vProperties.getProperty( "scenarioconfigfile" ) != null ){
     		
-    		vServerConfig.setScenarioConfigFile( vProperties.getProperty( "scenarioconfigfile" ) );
-    		
-    	} else {
-    		
-    		vServerConfig.setScenarioConfigFile( "" );
+    		Core.getInstance().getServerConfig().setScenarioConfigFile( vProperties.getProperty( "scenarioconfigfile" ) );
     		
     	}
     	
@@ -94,7 +79,7 @@ public class ConfigFileReader {
     		
     		try {
     			
-				vServerConfig.setVisionIPAdress( InetAddress.getByName( vProperties.getProperty( "visionipaddress" ) ) );
+    			Core.getInstance().getServerConfig().setVisionIPAdress( InetAddress.getByName( vProperties.getProperty( "visionipaddress" ) ) );
 				
 			} catch ( UnknownHostException vUnknownHostException ) {
 
@@ -106,11 +91,7 @@ public class ConfigFileReader {
     	
     	if( vProperties.getProperty( "visionport" ) != null ){
     		
-    		vServerConfig.setVisionPort( Integer.parseInt( vProperties.getProperty( "visionport" ) ) );
-    		
-    	} else {
-    		
-    		vServerConfig.setVisionPort( -1 );
+    		Core.getInstance().getServerConfig().setVisionPort( Integer.parseInt( vProperties.getProperty( "visionport" ) ) );
     		
     	}
     	
@@ -118,7 +99,7 @@ public class ConfigFileReader {
 
     		try {
     			
-				vServerConfig.setBotControlIPAdress( InetAddress.getByName( vProperties.getProperty( "botcontrolipaddress" ) ) );
+    			Core.getInstance().getServerConfig().setBotControlIPAdress( InetAddress.getByName( vProperties.getProperty( "botcontrolipaddress" ) ) );
 				
 			} catch ( UnknownHostException vUnknownHostException ) {
 
@@ -130,34 +111,24 @@ public class ConfigFileReader {
     	
     	if( vProperties.getProperty( "botcontrolport" ) != null ){
     		
-    		vServerConfig.setBotControlPort( Integer.parseInt( vProperties.getProperty( "botcontrolport" ) ) );
-    		
-    	} else {
-    		
-    		vServerConfig.setBotControlPort( -1 );
+    		Core.getInstance().getServerConfig().setBotControlPort( Integer.parseInt( vProperties.getProperty( "botcontrolport" ) ) );
     		
     	}
     	
     	if( vProperties.getProperty( "graphicsport" ) != null ){
 
-    		vServerConfig.setGraphicsPort( Integer.parseInt( vProperties.getProperty( "botcontrolport" ) ) );
-    		
-    	} else {
-
-    		vServerConfig.setGraphicsPort( -1 );
+    		Core.getInstance().getServerConfig().setGraphicsPort( Integer.parseInt( vProperties.getProperty( "botcontrolport" ) ) );
     		
     	}
     	
-    	if( vProperties.getProperty( "botports" ) != null ){
+    	if( vProperties.getProperty( "botports" ) != null && !Core.getInstance().getServerConfig().getBotPorts().isEmpty() ){
 		
 			for(String vPort : vProperties.getProperty( "botports" ).split(" ")){
 
-				vServerConfig.addBotPort(  Integer.parseInt( vPort )  );
+				Core.getInstance().getServerConfig().addBotPort(  Integer.parseInt( vPort )  );
 				 
 			}
     	}
-    	
-		return vServerConfig;
 		
 	}
 	

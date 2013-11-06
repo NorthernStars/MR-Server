@@ -10,7 +10,7 @@ public class Main {
     
 	
 	/**
-	 * Einstiegspunkt des Servers
+	 * Einstiegspunkt des Servers 
 	 * 
 	 * 
 	 * @param aCommandline die Kommandozeilenargumente des Servers

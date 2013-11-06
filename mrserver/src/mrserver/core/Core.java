@@ -1,6 +1,7 @@
 package mrserver.core;
 
 import mrserver.core.config.ServerConfig;
+import mrserver.core.config.commandline.CommandLineOptions;
 import mrserver.core.config.file.ConfigFileReader;
 
 import org.apache.logging.log4j.Level;
@@ -78,7 +79,7 @@ public class Core {
                 
             });
             
-            mServerConfig = ConfigFileReader.readConfigFile( "defaultserver.config" );
+            CommandLineOptions.getInstance().parseCommandLineArguments( aCommandline );
             //TODO: cmd-einlesen
             //TODO: operator starten
             //TODO: scenario laden
@@ -97,5 +98,23 @@ public class Core {
         }
         
     }
+
+	public ServerConfig getServerConfig() {
+		
+		if ( mServerConfig == null ){
+			
+			Core.getLogger().trace( "Initalizing serverconfig" );
+			mServerConfig = new ServerConfig(); 
+			
+		}
+		
+		Core.getLogger().trace( "Getting serverconfig " + mServerConfig );
+		return mServerConfig;
+		
+	}
+
+	public void setServerConfig( ServerConfig aServerConfig) {
+		mServerConfig = aServerConfig;
+	}
 
 }

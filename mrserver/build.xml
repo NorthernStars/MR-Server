@@ -7,7 +7,7 @@
 	  <property name="build.dir" location="build" />
 	  <property name="dist.dir" location="../everythingbuild" />
 	  <property name="lib.dir" location="../everythingbuild/libraries" />
-	  <property name="libextern.dir" location="../everythingbuild/librariese" />
+	  <property name="libextern.dir" location="../everythingbuild/librariesexternal" />
 	  <property name="docs.dir" location="docs" />
 
 
@@ -32,9 +32,9 @@
 	    <mkdir dir="${docs.dir}" />
 	  </target>
 
-	  <!-- Compiles the java code (including the usage of library for JUnit -->
+	  <!-- Compiles the java code (including the usage of library for JUnit) -->
 	  <target name="compile" depends="clean, makedir">
-	    <javac srcdir="${src.dir}" destdir="${build.dir}"  classpathref="build.classpath">
+	    <javac srcdir="${src.dir}" destdir="${build.dir}" encoding="UTF-8" classpathref="build.classpath">
 	    </javac>
 
 	  </target>
