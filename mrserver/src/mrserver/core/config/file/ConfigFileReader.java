@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Level;
 
 import mrserver.core.Core;
 import mrserver.core.config.ServerConfig;
+import mrserver.core.config.commandline.CommandLineOptions;
 //TODO: besser machen
 /**
  * Parsed eine Konfigurationsdatei
@@ -30,7 +31,7 @@ public class ConfigFileReader {
 	 */
 	public static void readConfigFile( String aConfigFile ){
 
-        Core.getLogger().debug( "Reading configfile " + aConfigFile );
+        CommandLineOptions.getLogger().debug( "Reading configfile " + aConfigFile );
 		
 		Properties vProperties = new Properties();
 		 
@@ -40,8 +41,8 @@ public class ConfigFileReader {
     		 
     	} catch ( IOException vIOException ) {
 
-            Core.getLogger().error( "Error reading configfile " + vIOException.getLocalizedMessage() );
-            Core.getLogger().catching( Level.ERROR, vIOException );
+            CommandLineOptions.getLogger().error( "Error reading configfile " + vIOException.getLocalizedMessage() );
+            CommandLineOptions.getLogger().catching( Level.ERROR, vIOException );
             
         }
     	

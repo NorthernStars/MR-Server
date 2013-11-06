@@ -1,6 +1,7 @@
 package mrserver.core.config.commandline.options;
 
 import mrserver.core.Core;
+import mrserver.core.config.commandline.CommandLineOptions;
 import mrserver.core.config.commandline.options.parse.ParseOption;
 
 import org.apache.commons.cli.CommandLine;
@@ -36,10 +37,10 @@ public class ScenarioConfigFile extends Option implements ParseOption  {
 	@Override
 	public boolean parse(CommandLine aCommandLine) {
 
-        Core.getLogger().debug( "Checking commandline for " + mLongOption + "option" );
+        CommandLineOptions.getLogger().debug( "Checking commandline for " + mLongOption + "option" );
 		if ( aCommandLine.hasOption( getOpt() ) ) {
 
-	        Core.getLogger().debug( "Setting " + mLongOption + " " + aCommandLine.getOptionValue( getOpt() ) );
+	        CommandLineOptions.getLogger().debug( "Setting " + mLongOption + " " + aCommandLine.getOptionValue( getOpt() ) );
 	        Core.getInstance().getServerConfig().setScenarioConfigFile( aCommandLine.getOptionValue( getOpt() ) ); 
             return true;
             

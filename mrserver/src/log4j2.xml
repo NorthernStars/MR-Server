@@ -7,7 +7,7 @@
         <MarkerFilter marker="EXCEPTION" onMatch="DENY" onMismatch="ACCEPT"/>
       </filters>
     </Console>
-    <RandomAccessFile name="ERROR" fileName="logs/error(${sys:Server}).log" >
+    <RandomAccessFile name="ERROR" fileName="logs/error_${sys:Server}.log" >
       <PatternLayout pattern="%d{HH:mm:ss.SSS}(%r) [%t] %-5level %logger{36} %C{1}.%M %m %ex%n"/>
       <filters>
         <MarkerFilter marker="EXCEPTION" onMatch="ACCEPT" onMismatch="DENY"/>
@@ -15,7 +15,15 @@
     </RandomAccessFile>
   </appenders>
   <loggers>
-    <logger name="CORE" level="debug">
+    <logger name="SERVERCORE" level="debug">
+      <appender-ref ref="Console"/>
+      <appender-ref ref="ERROR" />
+    </logger>
+    <logger name="SERVERCONFIG" level="info">
+      <appender-ref ref="Console"/>
+      <appender-ref ref="ERROR" />
+    </logger>
+    <logger name="SCENARIOMANAGEMENT" level="debug">
       <appender-ref ref="Console"/>
       <appender-ref ref="ERROR" />
     </logger>

@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.logging.log4j.Level;
 
 import mrserver.core.Core;
+import mrserver.core.config.commandline.CommandLineOptions;
 
 /**
  * Konfigurationsdaten des Servers
@@ -78,150 +79,150 @@ public class ServerConfig {
 	// Getter und Setters
 	
 	public String getServerName() {
-        Core.getLogger().trace( "Getting servername " + mServerName );
+        CommandLineOptions.getLogger().trace( "Getting servername " + mServerName );
 		return mServerName;
 	}
 
 	public void setServerName(String aServerName) {
-        Core.getLogger().debug( "Setting servername to " + aServerName );
+        CommandLineOptions.getLogger().debug( "Setting servername to " + aServerName );
 		mServerName = aServerName;
 	}
 
 	public String getScenarioLibrary() {
-        Core.getLogger().trace( "Getting scenariolibrary " + mScenarioLibrary );
+        CommandLineOptions.getLogger().trace( "Getting scenariolibrary " + mScenarioLibrary );
 		return mScenarioLibrary;
 	}
 
 	public void setScenarioLibrary(String aScenarioLibrary) {
-        Core.getLogger().debug( "Setting scenariolibrary to " + aScenarioLibrary );
+        CommandLineOptions.getLogger().debug( "Setting scenariolibrary to " + aScenarioLibrary );
 		mScenarioLibrary = aScenarioLibrary;
 	}
 
 	public String getScenarioClass() {
-        Core.getLogger().trace( "Getting scenarioclass " + mScenarioClass );
+        CommandLineOptions.getLogger().trace( "Getting scenarioclass " + mScenarioClass );
 		return mScenarioClass;
 	}
 
 	public void setScenarioClass(String aScenarioClass) {
-        Core.getLogger().debug( "Setting scenarioclass to " + aScenarioClass );
+        CommandLineOptions.getLogger().debug( "Setting scenarioclass to " + aScenarioClass );
 		this.mScenarioClass = aScenarioClass;
 	}
 
 	public String getScenarioConfigCmdLine() {
-        Core.getLogger().trace( "Getting scenarioconfigcmdline " + mScenarioConfigCmdLine );
+        CommandLineOptions.getLogger().trace( "Getting scenarioconfigcmdline " + mScenarioConfigCmdLine );
 		return mScenarioConfigCmdLine;
 	}
 
 	public void setScenarioConfigCmdLine(String aScenarioConfigCmdLine) {
-        Core.getLogger().debug( "Setting scenarioconfigcmdline to " + aScenarioConfigCmdLine );
+        CommandLineOptions.getLogger().debug( "Setting scenarioconfigcmdline to " + aScenarioConfigCmdLine );
 		this.mScenarioConfigCmdLine = aScenarioConfigCmdLine;
 	}
 
 	public String getScenarioConfigFile() {
-        Core.getLogger().trace( "Getting scenarioconfigfile " + mScenarioConfigFile );
+        CommandLineOptions.getLogger().trace( "Getting scenarioconfigfile " + mScenarioConfigFile );
 		return mScenarioConfigFile;
 	}
 
 	public void setScenarioConfigFile(String aScenarioConfigFile) {
-        Core.getLogger().debug( "Setting scenarioconfigfile to " + aScenarioConfigFile );
+        CommandLineOptions.getLogger().debug( "Setting scenarioconfigfile to " + aScenarioConfigFile );
 		this.mScenarioConfigFile = aScenarioConfigFile;
 	}
 
 	public InetAddress getVisionIPAdress() {
-        Core.getLogger().trace( "Getting visionipaddress " + mVisionIPAddress.getHostAddress() );
+        CommandLineOptions.getLogger().trace( "Getting visionipaddress " + mVisionIPAddress.getHostAddress() );
 		return mVisionIPAddress;
 	}
 
 	public void setVisionIPAdress(InetAddress aVisionIPAddress) {
-        Core.getLogger().debug( "Setting visionipaddress to " + aVisionIPAddress.getHostAddress() );
+        CommandLineOptions.getLogger().debug( "Setting visionipaddress to " + aVisionIPAddress.getHostAddress() );
 		this.mVisionIPAddress = aVisionIPAddress;
 	}
 	
 	public void setVisionIPAdress( String aVisionIPAddress ) {
 		
-		Core.getLogger().debug( "Setting visionipaddress to " + aVisionIPAddress );
+		CommandLineOptions.getLogger().debug( "Setting visionipaddress to " + aVisionIPAddress );
 		try {
 			
 			setVisionIPAdress( InetAddress.getByName( aVisionIPAddress ) );
 			
 		} catch ( UnknownHostException vUnknownHostException ) {
 
-            Core.getLogger().error( "Unkown Host: " + vUnknownHostException.getLocalizedMessage() );
-            Core.getLogger().catching( Level.ERROR, vUnknownHostException );
+            CommandLineOptions.getLogger().error( "Unkown Host: " + vUnknownHostException.getLocalizedMessage() );
+            CommandLineOptions.getLogger().catching( Level.ERROR, vUnknownHostException );
             
 		}
 
 	}
 
 	public int getVisionPort() {
-        Core.getLogger().trace( "Getting visionports " + mVisionPort );
+        CommandLineOptions.getLogger().trace( "Getting visionports " + mVisionPort );
 		return mVisionPort;
 	}
 
 	public void setVisionPort(int aVisionPort) {
-        Core.getLogger().debug( "Setting visionports to " + aVisionPort );
+        CommandLineOptions.getLogger().debug( "Setting visionports to " + aVisionPort );
 		this.mVisionPort = aVisionPort;
 	}
 
 	public InetAddress getBotControlIPAdress() {
-        Core.getLogger().trace( "Getting botcontrolipaddress " + mBotControlIPAddress.getHostAddress() );
+        CommandLineOptions.getLogger().trace( "Getting botcontrolipaddress " + mBotControlIPAddress.getHostAddress() );
 		return mBotControlIPAddress;
 	}
 
 	public void setBotControlIPAdress( InetAddress aBotControlIPAddress ) {
-        Core.getLogger().debug( "Setting botcontrolipaddress to " + aBotControlIPAddress.getHostAddress() );
+        CommandLineOptions.getLogger().debug( "Setting botcontrolipaddress to " + aBotControlIPAddress.getHostAddress() );
 		this.mBotControlIPAddress = aBotControlIPAddress;
 	}
 
 	public void setBotControlIPAdress( String aBotControlIPAddress ) {
 		
-		Core.getLogger().debug( "Setting botcontrolipaddress to " + aBotControlIPAddress );
+		CommandLineOptions.getLogger().debug( "Setting botcontrolipaddress to " + aBotControlIPAddress );
 		try {
 			
 			setBotControlIPAdress( InetAddress.getByName( aBotControlIPAddress ) );
 			
 		} catch ( UnknownHostException vUnknownHostException ) {
 
-            Core.getLogger().error( "Unkown Botcontrolhost: " + vUnknownHostException.getLocalizedMessage() );
-            Core.getLogger().catching( Level.ERROR, vUnknownHostException );
+            CommandLineOptions.getLogger().error( "Unkown Botcontrolhost: " + vUnknownHostException.getLocalizedMessage() );
+            CommandLineOptions.getLogger().catching( Level.ERROR, vUnknownHostException );
             
 		}
 
 	}
 
 	public int getBotControlPort() {
-        Core.getLogger().trace( "Getting botcontrolport " + mBotControlPort );
+        CommandLineOptions.getLogger().trace( "Getting botcontrolport " + mBotControlPort );
 		return mBotControlPort;
 	}
 
 	public void setBotControlPort(int aBotControlPort) {
-        Core.getLogger().debug( "Getting botcontrolport to " + aBotControlPort );
+        CommandLineOptions.getLogger().debug( "Getting botcontrolport to " + aBotControlPort );
 		this.mBotControlPort = aBotControlPort;
 	}
 
 	public int getGraphicsPort() {
-        Core.getLogger().trace( "Getting graphicsport " + mGraphicsPort );
+        CommandLineOptions.getLogger().trace( "Getting graphicsport " + mGraphicsPort );
 		return mGraphicsPort;
 	}
 
 	public void setGraphicsPort(int aGraphicsPort) {
-        Core.getLogger().debug( "Setting graphicsport to " + aGraphicsPort );
+        CommandLineOptions.getLogger().debug( "Setting graphicsport to " + aGraphicsPort );
 		this.mGraphicsPort = aGraphicsPort;
 	}
 
 	public List<Integer> getBotPorts() {
 		if( mBotPorts == null ){
 
-	        Core.getLogger().debug( "Initialize botports " );
+	        CommandLineOptions.getLogger().debug( "Initialize botports " );
 			mBotPorts = new ArrayList<Integer>();
 			
 		}
-        Core.getLogger().trace( "Getting botports " + mBotPorts.toString() );
+        CommandLineOptions.getLogger().trace( "Getting botports " + mBotPorts.toString() );
 		return mBotPorts;
 	}
 
 	public void setBotPorts(List<Integer> aBotPorts) {
-        Core.getLogger().debug( "Setting botports to " + aBotPorts );
+        CommandLineOptions.getLogger().debug( "Setting botports to " + aBotPorts );
 		this.mBotPorts = aBotPorts;
 	}
 	
@@ -229,11 +230,11 @@ public class ServerConfig {
 		
 		if( mBotPorts == null ){
 
-	        Core.getLogger().debug( "Initialize botports " );
+	        CommandLineOptions.getLogger().debug( "Initialize botports " );
 			mBotPorts = new ArrayList<Integer>();
 			
 		}
-        Core.getLogger().debug( "Adding botport " + aBotPort );
+        CommandLineOptions.getLogger().debug( "Adding botport " + aBotPort );
 		mBotPorts.add( aBotPort );
 		
 	}

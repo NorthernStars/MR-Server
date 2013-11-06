@@ -3,6 +3,7 @@ package mrserver.core;
 import mrserver.core.config.ServerConfig;
 import mrserver.core.config.commandline.CommandLineOptions;
 import mrserver.core.config.file.ConfigFileReader;
+import mrserver.core.scenario.ScenarioManagement;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -22,11 +23,15 @@ import org.apache.logging.log4j.Logger;
 public class Core {
     
     private static Core INSTANCE;
+    
+    private Core(){
+    	
+    }
 
     public static Core getInstance() {
         
         if( Core.INSTANCE == null){
-            Core.getLogger().trace( "Creating Core-instance." );
+            Core.getLogger().debug( "Creating Core-instance." );
             Core.INSTANCE = new Core();
         }
 
@@ -35,18 +40,19 @@ public class Core {
         
     }
     
-    private static Logger BOTCORELOGGER = LogManager.getLogger("CORE");
+    private static Logger SERVERCORELOGGER = LogManager.getLogger("SERVERCORE");
     
     public static Logger getLogger(){
         
-        return BOTCORELOGGER;
+        return SERVERCORELOGGER;
         
     }
     
     public void close() {
 
         if( INSTANCE != null ){
-
+        	
+        	ScenarioManagement.getInstance().close();
             INSTANCE = null;
         }
         
@@ -82,7 +88,7 @@ public class Core {
             CommandLineOptions.getInstance().parseCommandLineArguments( aCommandline );
             
             //TODO: operator starten
-            //TODO: scenario laden
+            ScenarioManagement.getInstance().loadScenario();
             //TODO: Vision connect
             //TODO: Botcontrol connect
             //TODO: Graphicsport open

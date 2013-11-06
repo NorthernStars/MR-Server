@@ -1,6 +1,8 @@
 package mrserver;
 
 import java.lang.management.ManagementFactory;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import mrserver.core.Core;
@@ -19,7 +21,7 @@ public class Main {
 	 */
     public static void main( String[] aCommandline ) {
         
-        System.setProperty( "Server", ManagementFactory.getRuntimeMXBean().getName() + "" );
+        System.setProperty( "Server", new SimpleDateFormat( "yyyyMMdd-HHmmss" ).format( new java.util.Date() ) + "_(" + ManagementFactory.getRuntimeMXBean().getName() + ")" );
         Core.getLogger().info( "Starting server (" + ManagementFactory.getRuntimeMXBean().getName() + ")" );
         Core.getLogger().trace( "Parameters: " + Arrays.toString( aCommandline ) );
         

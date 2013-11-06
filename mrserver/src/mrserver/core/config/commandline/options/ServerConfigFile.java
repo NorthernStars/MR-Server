@@ -37,10 +37,10 @@ public class ServerConfigFile extends Option implements ParseOption {
 	@Override
 	public boolean parse( CommandLine aCommandLine ) {
 
-        Core.getLogger().debug( "Checking commandline for " + mLongOption + "option" );
+        CommandLineOptions.getLogger().debug( "Checking commandline for " + mLongOption + "option" );
 		if ( aCommandLine.hasOption( getOpt() ) ) {
 
-	        Core.getLogger().debug( "Reading " + mLongOption + " " + aCommandLine.getOptionValue( getOpt() ) );
+	        CommandLineOptions.getLogger().debug( "Reading " + mLongOption + " " + aCommandLine.getOptionValue( getOpt() ) );
 			ConfigFileReader.readConfigFile( aCommandLine.getOptionValue( getOpt() ) );
             return true;
             

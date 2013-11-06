@@ -1,0 +1,11 @@
+<project name="MixedRealityBot" default="main" basedir=".">
+
+      <target name="main">
+        <description>Build the whole bot in one go!</description>
+        <ant antfile="build.xml" dir="../mrservermisc" inheritAll="false"></ant>
+        <ant antfile="build.xml" dir="../mrserver" inheritAll="false"></ant>
+        <ant antfile="build.xml" dir="../mrscenariofootball" inheritAll="false"></ant>
+      </target>
+
+</project>
+

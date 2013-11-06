@@ -3,6 +3,7 @@ package mrserver.core.config.commandline.options;
 import java.util.Arrays;
 
 import mrserver.core.Core;
+import mrserver.core.config.commandline.CommandLineOptions;
 import mrserver.core.config.commandline.options.parse.ParseOption;
 
 import org.apache.commons.cli.CommandLine;
@@ -42,10 +43,10 @@ public class BotPorts extends Option implements ParseOption  {
 	@Override
 	public boolean parse(CommandLine aCommandLine) {
 
-        Core.getLogger().debug( "Checking commandline for " + mLongOption + "option" );
+        CommandLineOptions.getLogger().debug( "Checking commandline for " + mLongOption + "option" );
 		if ( aCommandLine.hasOption( getOpt() ) ) {
 
-	        Core.getLogger().debug( "Setting " + mLongOption + " " + Arrays.toString( aCommandLine.getOptionValues( getOpt() ) ) );
+	        CommandLineOptions.getLogger().debug( "Setting " + mLongOption + " " + Arrays.toString( aCommandLine.getOptionValues( getOpt() ) ) );
 	        for( String vPort : aCommandLine.getOptionValues( getOpt() )){
 	        	
 	        	Core.getInstance().getServerConfig().addBotPort( Integer.parseInt( vPort ) ); 

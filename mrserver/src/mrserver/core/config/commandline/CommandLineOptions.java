@@ -27,6 +27,9 @@ import org.apache.commons.cli.MissingOptionException;
 import org.apache.commons.cli.OptionGroup;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  * Klasse zum Parsen und Weiterverarbeiten der Kommandozeile. Nutzt Apache-Cli. 
@@ -44,12 +47,20 @@ public class CommandLineOptions extends Options{
     public static CommandLineOptions getInstance() {
         
         if( CommandLineOptions.INSTANCE == null){
-            Core.getLogger().trace( "Creating CommandLineOptions-instance." );
+            CommandLineOptions.getLogger().trace( "Creating CommandLineOptions-instance." );
             CommandLineOptions.INSTANCE = new CommandLineOptions();
         }
 
-        Core.getLogger().trace( "Retrieving CommandLineOptions-instance." );
+        CommandLineOptions.getLogger().trace( "Retrieving CommandLineOptions-instance." );
         return CommandLineOptions.INSTANCE;
+        
+    }
+
+    private static Logger SERVERCONFIGLOGGER = LogManager.getLogger("SERVERCONFIG");
+    
+    public static Logger getLogger(){
+        
+        return SERVERCONFIGLOGGER;
         
     }
 	
@@ -79,6 +90,7 @@ public class CommandLineOptions extends Options{
 	
 	public void close(){
 		
+		CommandLineOptions.getLogger().debug( "Closing CommandLineOptions-instance." );
 		INSTANCE = null;
 		
 	}
@@ -96,7 +108,7 @@ public class CommandLineOptions extends Options{
     
 	public boolean parseCommandLineArguments( String[] aArguments ) {
 
-        Core.getLogger().info( "Parsing commandline: " + Arrays.toString( aArguments ) );
+        CommandLineOptions.getLogger().info( "Parsing commandline: " + Arrays.toString( aArguments ) );
 
         try {
 
@@ -105,9 +117,20 @@ public class CommandLineOptions extends Options{
             // alle übergebenen Optionen implementieren das Interface ParseOption
             for( @SuppressWarnings("unchecked") ParseOption aOption : (Collection<ParseOption>) getOptions() ){
             	
-            	aOption.parse( mCommandLine );
+            	try {
+            		
+            		aOption.parse( mCommandLine );
+            		
+            	} catch ( Exception vException ) {
+                        
+                        CommandLineOptions.getLogger().error( "Fehler beim Parsen der Option " + aOption.toString() + " " + vException.getLocalizedMessage() );
+                        Core.getLogger().catching( Level.ERROR, vException );
+                        
+            	}
             	
             }
+            
+            return true;
 
         } catch ( MissingOptionException vMissingOptionExceptions ) {
 
@@ -121,14 +144,15 @@ public class CommandLineOptions extends Options{
 
             showCommandlineHelp( "Folgende benötigte Argumente wurden nicht übergeben:", vMissingCommandLineOptions );
 
-        } catch ( ParseException vParseExceptions ) {
+        } catch ( Exception vException ) {
+
+            CommandLineOptions.getLogger().error( "Fehler beim Parsen der Commandline " + vException.getLocalizedMessage() );
+            Core.getLogger().catching( Level.ERROR, vException );
             
-            Core.getLogger().error( "Fehler beim Parsen der Kommandozeile", vParseExceptions );
-
-        } catch ( Exception vAllExceptions ) {
-
-            Core.getLogger().error( "Unerwarteter Fehler", vAllExceptions );
-
+        } finally {
+        	
+        	close();
+        	
         }
         
         Core.getInstance().close();

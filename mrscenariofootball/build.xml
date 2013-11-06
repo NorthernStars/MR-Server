@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
-<project name="mrserver" default="main" basedir=".">
+<project name="mrscenariofootball" default="main" basedir=".">
     
-	  <property name="jar.name" value="mrserver.jar" />
+	  <property name="jar.name" value="mrscenariofootball.jar" />
 
 	  <property name="src.dir" location="src" />
 	  <property name="build.dir" location="build" />
-	  <property name="dist.dir" location="../everythingbuild" />
+	  <property name="dist.dir" location="../everythingbuild/scenarios" />
 	  <property name="lib.dir" location="../everythingbuild/libraries" />
 	  <property name="libextern.dir" location="../everythingbuild/librariesexternal" />
 	  <property name="docs.dir" location="docs" />
@@ -43,8 +43,8 @@
 	  <target name="docs" depends="compile">
 	    <javadoc packagenames="src" sourcepath="${src.dir}" destdir="${docs.dir}">
 	       <fileset dir="${src.dir}">
-                <include name="**/*.java" />
-	       </fileset>
+            	<include name="**/*.java" />
+           </fileset>
 	    </javadoc>
 	  </target>
 
@@ -54,10 +54,7 @@
 	    	<manifest>
 	    	</manifest>
 	    	<fileset dir="${build.dir}" />
-	    	<fileset dir="${src.dir}">
-	    		<include name="**/*.java"/>
-	    		<include name="log4j2.xml" />
-	    	</fileset>
+	    	<fileset dir="${src.dir}" includes="**/*.java"/>
 	    	<fileset dir="${docs.dir}" />
 	    </jar>
 	  </target>

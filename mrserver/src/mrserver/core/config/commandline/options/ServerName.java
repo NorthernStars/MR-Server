@@ -2,6 +2,7 @@ package mrserver.core.config.commandline.options;
 
 import mrserver.core.Core;
 import mrserver.core.config.ServerConfig;
+import mrserver.core.config.commandline.CommandLineOptions;
 import mrserver.core.config.commandline.options.parse.ParseOption;
 import mrserver.core.config.file.ConfigFileReader;
 
@@ -38,10 +39,10 @@ public class ServerName extends Option implements ParseOption  {
 	@Override
 	public boolean parse(CommandLine aCommandLine) {
 
-        Core.getLogger().debug( "Checking commandline for " + mLongOption + "option" );
+        CommandLineOptions.getLogger().debug( "Checking commandline for " + mLongOption + "option" );
 		if ( aCommandLine.hasOption( getOpt() ) ) {
 
-	        Core.getLogger().debug( "Setting " + mLongOption + " " + aCommandLine.getOptionValue( getOpt() ) );
+	        CommandLineOptions.getLogger().debug( "Setting " + mLongOption + " " + aCommandLine.getOptionValue( getOpt() ) );
 			Core.getInstance().getServerConfig().setServerName( aCommandLine.getOptionValue( getOpt() ) );;
             return true;
             

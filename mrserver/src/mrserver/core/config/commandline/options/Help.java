@@ -34,10 +34,10 @@ public class Help extends Option implements ParseOption  {
 	@Override
 	public boolean parse( CommandLine aCommandLine ) {
 
-        Core.getLogger().debug( "Checking commandline for " + mLongOption + "option" );
+        CommandLineOptions.getLogger().debug( "Checking commandline for " + mLongOption + "option" );
         if ( aCommandLine.hasOption( getOpt() ) ) {
         	
-            Core.getLogger().debug( "Displaying " + mLongOption );
+            CommandLineOptions.getLogger().debug( "Displaying " + mLongOption );
             CommandLineOptions.getInstance().showCommandlineHelp( "mserver Kommandozeilenhilfe\n", CommandLineOptions.getInstance() );
             return true;
             

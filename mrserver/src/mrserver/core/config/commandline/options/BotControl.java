@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import mrserver.core.Core;
 import mrserver.core.config.ServerConfig;
+import mrserver.core.config.commandline.CommandLineOptions;
 import mrserver.core.config.commandline.options.parse.ParseOption;
 import mrserver.core.config.file.ConfigFileReader;
 
@@ -42,10 +43,10 @@ public class BotControl extends Option implements ParseOption {
 	@Override
 	public boolean parse(CommandLine aCommandLine) {
 
-        Core.getLogger().debug( "Checking commandline for " + mLongOption + "option" );
+        CommandLineOptions.getLogger().debug( "Checking commandline for " + mLongOption + "option" );
 		if ( aCommandLine.hasOption( getOpt() ) ) {
 
-	        Core.getLogger().debug( "Setting " + mLongOption + " " + Arrays.toString( aCommandLine.getOptionValues( getOpt() ) ) );
+	        CommandLineOptions.getLogger().debug( "Setting " + mLongOption + " " + Arrays.toString( aCommandLine.getOptionValues( getOpt() ) ) );
 	        Core.getInstance().getServerConfig().setBotControlIPAdress( aCommandLine.getOptionValues( getOpt() )[0] );
 	        Core.getInstance().getServerConfig().setBotControlPort( Integer.parseInt( aCommandLine.getOptionValues( getOpt() )[1] ) ); 
             return true;

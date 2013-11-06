@@ -3,6 +3,7 @@ package mrserver.core.config.commandline.options;
 import java.util.Arrays;
 
 import mrserver.core.Core;
+import mrserver.core.config.commandline.CommandLineOptions;
 import mrserver.core.config.commandline.options.parse.ParseOption;
 
 import org.apache.commons.cli.CommandLine;
@@ -40,10 +41,10 @@ public class Vision extends Option implements ParseOption  {
 	@Override
 	public boolean parse(CommandLine aCommandLine) {
 
-        Core.getLogger().debug( "Checking commandline for " + mLongOption + "option" );
+        CommandLineOptions.getLogger().debug( "Checking commandline for " + mLongOption + "option" );
 		if ( aCommandLine.hasOption( getOpt() ) ) {
 
-	        Core.getLogger().debug( "Setting " + mLongOption + " " + Arrays.toString( aCommandLine.getOptionValues( getOpt() ) ) );
+	        CommandLineOptions.getLogger().debug( "Setting " + mLongOption + " " + Arrays.toString( aCommandLine.getOptionValues( getOpt() ) ) );
 	        Core.getInstance().getServerConfig().setVisionIPAdress( aCommandLine.getOptionValues( getOpt() )[0] );
 	        Core.getInstance().getServerConfig().setVisionPort( Integer.parseInt( aCommandLine.getOptionValues( getOpt() )[1] ) ); 
             return true;
