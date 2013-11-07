@@ -1,8 +1,10 @@
 package mrserver.core.vision.Data;
 
+import java.util.Arrays;
+
 import javax.xml.bind.annotation.XmlElement;
 
-public class VisionObject {
+public abstract class VisionObject {
 
 	@XmlElement(name="objecttype")
 	VisionObjectType mObjectType;
@@ -12,7 +14,7 @@ public class VisionObject {
 	String mName;
 	@XmlElement(name="location")
 	double[] mLocation;
-	@XmlElement(name="location")
+	@XmlElement(name="color")
 	double[] mColor;
 	
 	public VisionObject(){}
@@ -25,6 +27,14 @@ public class VisionObject {
 		mName = aName;
 		mLocation = aLocation;
 		mColor = aColor;
+	}
+
+	@Override
+	public String toString() {
+		return "VisionObject [mObjectType=" + mObjectType + ", mId=" + mId
+				+ ", mName=" + mName + ", mLocation="
+				+ Arrays.toString(mLocation) + ", mColor="
+				+ Arrays.toString(mColor) + "]";
 	}
 	
 }

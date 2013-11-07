@@ -1,7 +1,11 @@
 package mrserver.core.vision.Data;
 
-import javax.xml.bind.annotation.XmlElement;
+import java.util.Arrays;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class VisionObjectRectangle extends VisionObject{
 
 	@XmlElement(name="angle")
@@ -16,6 +20,15 @@ public class VisionObjectRectangle extends VisionObject{
 		super( aObjectType, aId, aName, aLocation, aColor);
 		mAngle = aAngle;
 		mSize = aSize;
+	}
+
+	@Override
+	public String toString() {
+		return "VisionObjectRectangle [mAngle=" + mAngle + ", mSize="
+				+ Arrays.toString(mSize) + ", mObjectType=" + mObjectType
+				+ ", mId=" + mId + ", mName=" + mName + ", mLocation="
+				+ Arrays.toString(mLocation) + ", mColor="
+				+ Arrays.toString(mColor) + "]";
 	}
 	
 }

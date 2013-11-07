@@ -17,6 +17,7 @@ import mrserver.core.vision.Data.VisionObjectType;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.config.plugins.ResolverUtil.Test;
 
 
 /**
@@ -103,6 +104,10 @@ public class Core {
             aTestPackage.mListOfVisionObjects = new ArrayList<VisionObject>();
             aTestPackage.mListOfVisionObjects.add( new VisionObjectBot( VisionObjectType.BOT, 0, "Braten", new double[]{2.2,3.3}, new double[]{2.2,3.3,4.4,5.5}, 0.78 ) );
             aTestPackage.mListOfVisionObjects.add( new VisionObjectRectangle( VisionObjectType.RECTANGLE, 0, "Braten", new double[]{2.2,3.3}, new double[]{2.2,3.3,4.4,5.5}, 0.78, new double[]{100.0, 2222.2} ) );
+
+            Core.getLogger().debug( aTestPackage.toString() );
+            
+            aTestPackage = VisionDataPackage.unmarshallXMLVisionDataPackageString( aTestPackage.toXMLString() );
             
             Core.getLogger().debug( aTestPackage.toString() );
             
@@ -112,13 +117,7 @@ public class Core {
             if ( true || ScenarioManagement.getInstance().needsVision() ) {
             	//TODO: Vision connect und register
             	VisionManagement.getInstance().connectToVision();
-            	
-            	for( VisionMode vMode : VisionMode.values() ){
-            		
-            		VisionManagement.getInstance().changeVisionMode( vMode );
-            		Thread.sleep( 1000 );
-            	}
-            	
+            	            	
             }
             if ( ScenarioManagement.getInstance().needsBotControl() ) {
             	//TODO: Botcontrol connect und register
