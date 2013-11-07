@@ -1,10 +1,18 @@
 package mrserver.core;
 
+import java.util.ArrayList;
+
 import mrserver.core.botcontrol.BotControlManagement;
 import mrserver.core.config.ServerConfig;
 import mrserver.core.config.commandline.CommandLineOptions;
 import mrserver.core.scenario.ScenarioManagement;
 import mrserver.core.vision.VisionManagement;
+import mrserver.core.vision.VisionMode;
+import mrserver.core.vision.Data.VisionDataPackage;
+import mrserver.core.vision.Data.VisionObject;
+import mrserver.core.vision.Data.VisionObjectBot;
+import mrserver.core.vision.Data.VisionObjectRectangle;
+import mrserver.core.vision.Data.VisionObjectType;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -89,11 +97,28 @@ public class Core {
                 
             });
             
+            VisionDataPackage aTestPackage = new VisionDataPackage();
+            
+            aTestPackage.mVisionMode = VisionMode.VISION_MODE_STREAM_ALL;
+            aTestPackage.mListOfVisionObjects = new ArrayList<VisionObject>();
+            aTestPackage.mListOfVisionObjects.add( new VisionObjectBot( VisionObjectType.BOT, 0, "Braten", new double[]{2.2,3.3}, new double[]{2.2,3.3,4.4,5.5}, 0.78 ) );
+            aTestPackage.mListOfVisionObjects.add( new VisionObjectRectangle( VisionObjectType.RECTANGLE, 0, "Braten", new double[]{2.2,3.3}, new double[]{2.2,3.3,4.4,5.5}, 0.78, new double[]{100.0, 2222.2} ) );
+            
+            Core.getLogger().debug( aTestPackage.toString() );
+            
             CommandLineOptions.getInstance().parseCommandLineArguments( aCommandline );
             //TODO: operatormanagement starten
             ScenarioManagement.getInstance().loadScenario();
-            if ( ScenarioManagement.getInstance().needsVision() ) {
+            if ( true || ScenarioManagement.getInstance().needsVision() ) {
             	//TODO: Vision connect und register
+            	VisionManagement.getInstance().connectToVision();
+            	
+            	for( VisionMode vMode : VisionMode.values() ){
+            		
+            		VisionManagement.getInstance().changeVisionMode( vMode );
+            		Thread.sleep( 1000 );
+            	}
+            	
             }
             if ( ScenarioManagement.getInstance().needsBotControl() ) {
             	//TODO: Botcontrol connect und register

@@ -1,9 +1,11 @@
 package mrserver.core.vision;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import mrserver.core.Core;
+import mrserver.core.vision.network.VisionConnection;
 import mrservermisc.vision.data.PositionData;
 import mrservermisc.vision.interfaces.Vision;
 
@@ -35,6 +37,7 @@ public class VisionManagement implements Vision{
     }
     
     private static Logger VISIONMANAGEMENTLOGGER = LogManager.getLogger("VISIONMANAGEMENT");
+	private VisionConnection mVisionConnect;
     
     public static Logger getLogger(){
         
@@ -46,10 +49,52 @@ public class VisionManagement implements Vision{
 
         if( INSTANCE != null ){
         	
+        	if( mVisionConnect != null ){
+
+            	mVisionConnect.closeConnection();
+            	mVisionConnect = null;
+        		
+        	}
+        	
             INSTANCE = null;
             
         }
         
+    }
+    
+    /**
+     * Verbindet den Server zu einem Visionmodul 
+     * 
+     * @return true ob die Verbindung erfolgreich hergestellt werden konnte, fale wenn nicht
+     */
+    public boolean connectToVision(){
+    	
+    	try {
+    		
+    		mVisionConnect = new VisionConnection();
+    		
+    		return mVisionConnect.establishConnection();
+        
+    	} catch ( Exception vException ) {
+
+	        VisionManagement.getLogger().error( "Fehler beim initialisiern der visionconnection: " + vException.getLocalizedMessage() );
+	        VisionManagement.getLogger().catching( Level.ERROR, vException );
+	        
+    	}
+    	
+    	return false;
+    	
+    }
+    
+    /**
+     * Ändert den Modus des verbundenen Visionmodul 
+     * 
+     * @return true ob der Modus erfolgreich geändert werden konnte
+     */
+    public boolean changeVisionMode( VisionMode aVisionMode ){
+    	
+    	return mVisionConnect.setMode( aVisionMode );
+    	
     }
     
 	@Override
