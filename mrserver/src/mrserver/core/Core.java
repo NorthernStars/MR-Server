@@ -17,7 +17,6 @@ import mrserver.core.vision.Data.VisionObjectType;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.config.plugins.ResolverUtil.Test;
 
 
 /**
@@ -117,6 +116,7 @@ public class Core {
             if ( true || ScenarioManagement.getInstance().needsVision() ) {
             	//TODO: Vision connect und register
             	VisionManagement.getInstance().connectToVision();
+            	ScenarioManagement.getInstance().registerVision( VisionManagement.getInstance() );
             	            	
             }
             if ( ScenarioManagement.getInstance().needsBotControl() ) {

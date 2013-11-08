@@ -28,7 +28,7 @@ public class BotControlManagement implements BotControl{
         	BotControlManagement.INSTANCE = new BotControlManagement();
         }
 
-        Core.getLogger().trace( "Retrieving BotControlManagement-instance." );
+        BotControlManagement.getLogger().trace( "Retrieving BotControlManagement-instance." );
         return BotControlManagement.INSTANCE;
         
     }

@@ -15,7 +15,7 @@ import java.net.SocketTimeoutException;
  * @version 0.9
  *
  */
-public class BasicUDPConnection {
+public class BasicUDPServerConnection {
 
     protected boolean mSocketInitialized = false;
     
@@ -43,7 +43,7 @@ public class BasicUDPConnection {
 	 * @throws IOException
 	 * Verbindung konnte nicht eingerichtet werden.
 	 */
-	public BasicUDPConnection( InetAddress aTargetAddress, int aTargetPort ) throws IOException
+	public BasicUDPServerConnection( InetAddress aTargetAddress, int aTargetPort ) throws IOException
 	{		
 
 		initialiseDatagram( aTargetAddress, aTargetPort );
@@ -57,13 +57,13 @@ public class BasicUDPConnection {
 
     private void initialiseDatagram( InetAddress aTargetAddress, int aTargetPort ) {
         
-        mDataPaket = new DatagramPacket( new byte[BasicUDPConnection.MAX_DATAGRAM_LENGTH], BasicUDPConnection.MAX_DATAGRAM_LENGTH );
+        mDataPaket = new DatagramPacket( new byte[BasicUDPServerConnection.MAX_DATAGRAM_LENGTH], BasicUDPServerConnection.MAX_DATAGRAM_LENGTH );
 		mDataPaket.setAddress( aTargetAddress );
 		mDataPaket.setPort( aTargetPort );
 		
     }
 	
-	public BasicUDPConnection( InetAddress aTargetAddress, int aTargetPort, int aHostPort) throws IOException
+	public BasicUDPServerConnection( InetAddress aTargetAddress, int aTargetPort, int aHostPort) throws IOException
     {       
 
 	    initialiseDatagram( aTargetAddress, aTargetPort );
@@ -117,7 +117,7 @@ public class BasicUDPConnection {
 	private DatagramPacket getDatagrammPacket(int aWaitTime) throws SocketException, SocketTimeoutException, IOException 
 	{
 		
-		DatagramPacket vDatagrammPacketFromServer = new DatagramPacket( new byte[BasicUDPConnection.MAX_DATAGRAM_LENGTH], BasicUDPConnection.MAX_DATAGRAM_LENGTH );
+		DatagramPacket vDatagrammPacketFromServer = new DatagramPacket( new byte[BasicUDPServerConnection.MAX_DATAGRAM_LENGTH], BasicUDPServerConnection.MAX_DATAGRAM_LENGTH );
 
 		mToTargetSocket.setSoTimeout( aWaitTime );
 		
@@ -128,7 +128,7 @@ public class BasicUDPConnection {
 	}
 
 	/**
-	 * Beendet die Verbindung zum Server.
+	 * Beendet die Verbindung.
 	 */
 	public void closeConnection()
 	{

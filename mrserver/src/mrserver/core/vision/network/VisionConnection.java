@@ -7,9 +7,9 @@ import org.apache.logging.log4j.Level;
 import mrserver.core.Core;
 import mrserver.core.vision.VisionManagement;
 import mrserver.core.vision.VisionMode;
-import mrservermisc.network.BasicUDPConnection;
+import mrservermisc.network.BasicUDPServerConnection;
 
-public class VisionConnection extends BasicUDPConnection{
+public class VisionConnection extends BasicUDPServerConnection{
 	
 	public VisionConnection() throws IOException{
 		

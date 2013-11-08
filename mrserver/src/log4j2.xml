@@ -35,6 +35,14 @@
       <appender-ref ref="Console"/>
       <appender-ref ref="ERROR" />
     </logger>
+    <logger name="GRAPHICSMANAGEMENT" level="debug">
+      <appender-ref ref="Console"/>
+      <appender-ref ref="ERROR" />
+    </logger>
+    <logger name="BOTAIMANAGEMENT" level="debug">
+      <appender-ref ref="Console"/>
+      <appender-ref ref="ERROR" />
+    </logger>
     <root level="error">
     </root>
   </loggers>

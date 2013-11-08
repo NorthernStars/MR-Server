@@ -34,11 +34,11 @@ public class ScenarioManagement {
     public static ScenarioManagement getInstance() {
         
         if( ScenarioManagement.INSTANCE == null){
-        	ScenarioManagement.getLogger().debug( "Creating ScenarioStarter-instance." );
+        	ScenarioManagement.getLogger().debug( "Creating ScenarioManagement-instance." );
             ScenarioManagement.INSTANCE = new ScenarioManagement();
         }
 
-        ScenarioManagement.getLogger().trace( "Retrieving ScenarioStarter-instance." );
+        ScenarioManagement.getLogger().trace( "Retrieving ScenarioManagement-instance." );
         return ScenarioManagement.INSTANCE;
         
     }
