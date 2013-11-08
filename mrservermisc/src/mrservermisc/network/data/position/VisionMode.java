@@ -1,4 +1,4 @@
-package mrserver.core.vision;
+package mrservermisc.network.data.position;
 
 public enum VisionMode {
 	

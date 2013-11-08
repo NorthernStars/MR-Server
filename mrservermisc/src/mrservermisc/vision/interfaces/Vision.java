@@ -1,6 +1,6 @@
 package mrservermisc.vision.interfaces;
 
-import mrservermisc.vision.data.PositionData;
+import mrservermisc.network.data.position.PositionDataPackage;
 
 public interface Vision {
 	
@@ -9,6 +9,6 @@ public interface Vision {
 	 * 
 	 * @return letzte empfangene Positionsdaten
 	 */
-	public PositionData getPositionData();
+	public PositionDataPackage getPositionData();
 	
 }

@@ -1,23 +1,15 @@
 package mrservermisc.network.handshake;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
 import java.io.StringWriter;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.SchemaOutputResolver;
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.transform.Result;
-import javax.xml.transform.stream.StreamResult;
 
-import mrserver.core.graphics.GraphicsManagement;
-import mrserver.core.vision.VisionManagement;
+import mrservermisc.logging.Loggers;
 
 import org.apache.logging.log4j.Level;
 
@@ -60,36 +52,9 @@ public class ConnectionAcknowlege {
 				+ ", mConnectionAllowed=" + mConnectionAllowed + "]";
 	}
 	
-	public static ConnectionAcknowlege unmarshallXMLConnectionAcknowlegeString( String aXMLConnectionAcknowlege ){
-		
-		GraphicsManagement.getLogger().debug( "Trying to unmarshall xmlstring: " + aXMLConnectionAcknowlege );
-		StringReader vXMLDataStream = new StringReader( aXMLConnectionAcknowlege );
-		JAXBContext vJAXBContext;
-		try {
-			vJAXBContext = JAXBContext.newInstance( mrservermisc.network.handshake.ConnectionRequest.class,
-					mrservermisc.network.handshake.ConnectionAcknowlege.class,
-					mrservermisc.network.handshake.ConnectionEstablished.class );
-
-			Unmarshaller vUnmarshaller = vJAXBContext.createUnmarshaller();
-			ConnectionAcknowlege vConnectionAcknowlege = (ConnectionAcknowlege) vUnmarshaller.unmarshal( vXMLDataStream );
-			VisionManagement.getLogger().debug( "Unmarshalled xmlstring to " + vConnectionAcknowlege != null ? vConnectionAcknowlege.toString() : "null" );
-			
-			return vConnectionAcknowlege;
-			
-		} catch ( JAXBException vJAXBException ) {
-
-	        GraphicsManagement.getLogger().error( "Error unmarshalling xmlstring: " + vJAXBException.getLocalizedMessage() );
-	        GraphicsManagement.getLogger().catching( Level.ERROR, vJAXBException );
-	        
-		}
-		
-		return null;
-		
-	}
-	
 	public String toXMLString(){
 		
-		GraphicsManagement.getLogger().debug( "Trying to marshall object: " + toString() );
+		Loggers.getNetworkLogger().debug( "Trying to marshall object: " + toString() );
 		StringWriter vXMLDataStream = new StringWriter();		
 		JAXBContext vJAXBContext;
 		try {
@@ -97,47 +62,17 @@ public class ConnectionAcknowlege {
 		
 	        Marshaller vMarshaller = vJAXBContext.createMarshaller();
 	        vMarshaller.marshal( this, vXMLDataStream );
-	        GraphicsManagement.getLogger().debug( "Marshalled object to " + vXMLDataStream );
+	        Loggers.getNetworkLogger().debug( "Marshalled object to " + vXMLDataStream );
 			
 		} catch ( JAXBException vJAXBException ) {
 
-			GraphicsManagement.getLogger().error( "Error marshalling object: " + vJAXBException.getLocalizedMessage() );
-			GraphicsManagement.getLogger().catching( Level.ERROR, vJAXBException );
+			Loggers.getNetworkLogger().error( "Error marshalling object: " + vJAXBException.getLocalizedMessage() );
+			Loggers.getNetworkLogger().catching( Level.ERROR, vJAXBException );
 	      
 		}
 		String vXMLDataString = vXMLDataStream.toString();
 		
 		return vXMLDataString;
-		
-	}
-	
-	public static void createGraphicsHandschakeSchema( ){
-		
-		GraphicsManagement.getLogger().debug( "Creating schema for mrserver.core.graphics.network.handshake" );
-
-		JAXBContext vJAXBContext;
-		try {
-			vJAXBContext = JAXBContext.newInstance( mrservermisc.network.handshake.ConnectionAcknowlege.class,
-					mrservermisc.network.handshake.ConnectionRequest.class,
-					mrservermisc.network.handshake.ConnectionEstablished.class );
-
-			vJAXBContext.generateSchema( new SchemaOutputResolver() {
-				
-				@Override
-				public Result createOutput(String namespaceURI, String suggestedFileName) throws IOException {
-			        File file = new File("serverclienthandschakeschema.xsd");
-			        StreamResult result = new StreamResult(file);
-			        result.setSystemId(file.toURI().toURL().toString());
-			        return result;
-			    }
-			});
-			
-		} catch ( JAXBException | IOException vException ) {
-
-	        GraphicsManagement.getLogger().error( "Error gernerating schema: " + vException.getLocalizedMessage() );
-	        GraphicsManagement.getLogger().catching( Level.ERROR, vException );
-	        
-		}
 		
 	}
 	

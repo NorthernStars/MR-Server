@@ -1,21 +1,21 @@
-package mrserver.core.vision.Data;
+package mrservermisc.network.data.position;
 
 import java.util.Arrays;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name="visionobjectrectangle")
-public class VisionObjectRectangle extends VisionObject{
+@XmlRootElement(name="positionobjectrectangle")
+public class PositionObjectRectangle extends PositionObject{
 
 	@XmlElement(name="angle")
 	double mAngle;
 	@XmlElement(name="size")
 	double[] mSize;
 	
-	public VisionObjectRectangle(){}
+	public PositionObjectRectangle(){}
 
-	public VisionObjectRectangle(VisionObjectType aObjectType, int aId, String aName,
+	public PositionObjectRectangle(PositionObjectType aObjectType, int aId, String aName,
 			double[] aLocation, double[] aColor, double aAngle, double[] aSize) {
 		super( aObjectType, aId, aName, aLocation, aColor);
 		mAngle = aAngle;

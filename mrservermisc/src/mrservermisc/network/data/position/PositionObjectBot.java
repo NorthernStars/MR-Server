@@ -1,19 +1,19 @@
-package mrserver.core.vision.Data;
+package mrservermisc.network.data.position;
 
 import java.util.Arrays;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name="visionobjectbot")
-public class VisionObjectBot extends VisionObject {
+@XmlRootElement(name="positionobjectbot")
+public class PositionObjectBot extends PositionObject {
 
 	@XmlElement(name="angle")
 	double mAngle;
 	
-	public VisionObjectBot(){}
+	public PositionObjectBot(){}
 
-	public VisionObjectBot(VisionObjectType aObjectType, int aId, String aName,
+	public PositionObjectBot(PositionObjectType aObjectType, int aId, String aName,
 			double[] aLocation, double[] aColor, double aAngle) {
 		super( aObjectType, aId, aName, aLocation, aColor);
 		mAngle = aAngle;

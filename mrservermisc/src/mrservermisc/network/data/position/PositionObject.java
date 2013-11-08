@@ -1,13 +1,13 @@
-package mrserver.core.vision.Data;
+package mrservermisc.network.data.position;
 
 import java.util.Arrays;
 
 import javax.xml.bind.annotation.XmlElement;
 
-public abstract class VisionObject {
+public abstract class PositionObject {
 
 	@XmlElement(name="objecttype")
-	VisionObjectType mObjectType;
+	PositionObjectType mObjectType;
 	@XmlElement(name="id")
 	int mId;
 	@XmlElement(name="name")
@@ -17,9 +17,9 @@ public abstract class VisionObject {
 	@XmlElement(name="color")
 	double[] mColor;
 	
-	public VisionObject(){}
+	public PositionObject(){}
 	
-	public VisionObject(VisionObjectType aObjectType, int aId, String aName,
+	public PositionObject(PositionObjectType aObjectType, int aId, String aName,
 			double[] aLocation, double[] aColor ) {
 		super();
 		mObjectType = aObjectType;
