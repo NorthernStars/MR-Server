@@ -1,58 +1,49 @@
 package mrserver.core.graphics.network;
 
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.nio.channels.DatagramChannel;
-
-import mrserver.core.Core;
-import mrserver.core.vision.VisionManagement;
-import mrserver.core.vision.VisionMode;
-import mrservermisc.network.BasicUDPHostConnection;
-import mrservermisc.network.BasicUDPServerConnection;
 
 import org.apache.logging.log4j.Level;
 
-public class GraphicsConnection extends BasicUDPHostConnection{
+import mrserver.core.Core;
+import mrserver.core.graphics.GraphicsManagement;
+import mrservermisc.network.BasicUDPHostConnection;
+
+public class GraphicsConnection extends Thread {
 	
-	public GraphicsConnection() throws IOException{
+	private static GraphicsConnection INSTANCE;
+    
+    public static GraphicsConnection getInstance() {
+        
+        if( GraphicsConnection.INSTANCE == null){
+        	GraphicsManagement.getLogger().debug( "Creating GraphicsConnection-instance." );
+        	
+        	try{
+        		
+        		GraphicsConnection.INSTANCE = new GraphicsConnection();
+        		GraphicsManagement.getLogger().debug( "Created GraphicsConnection-instance:" );
+            	
+        	} catch( IOException vIOException ){
+
+                Core.getLogger().error( "Error creating graphicshost: " + vIOException.getLocalizedMessage() );
+                Core.getLogger().catching( Level.ERROR, vIOException );
+        		
+        		
+        		
+        	}
+        	
+        }
+
+        GraphicsManagement.getLogger().trace( "Retrieving GraphicsConnection-instance." );
+        return GraphicsConnection.INSTANCE;
+        
+    }
+    
+	BasicUDPHostConnection vGraphicsHost;
+	
+	private GraphicsConnection() throws IOException{
 		
-		super( Core.getInstance().getServerConfig().getGraphicsPort() );
+		vGraphicsHost = new BasicUDPHostConnection( Core.getInstance().getServerConfig().getGraphicsPort() );
 				
-	}
-	
-	public boolean establishConnection( DatagramPacket aDatagram ){
-		
-		try {
-			
-			String vData = new String( aDatagram.getData(), 0, aDatagram.getLength() );
-		
-			VisionManagement.getLogger().info( "Got connectionrequest from: " + aDatagram.getAddress().getHostAddress() + ":" + aDatagram.getPort() + " - " + vData );
-			
-			VisionManagement.getLogger().debug( "Sending handshake: " + vData +Core.getInstance().getServerConfig().getServerName());
-			DatagramChannel vChannelToClient = aDatagram.
-			sendDatagramm(  );
-			
-			String vVisionAcknowledge = getDatagrammString( 1000 );
-			
-			VisionManagement.getLogger().debug( "Recieving Acknowledge: " + vVisionAcknowledge );
-			
-			if( vVisionAcknowledge.equals( Core.getInstance().getServerConfig().getServerName() + "mrVision" ) ){
-				
-				VisionManagement.getLogger().debug( "Sending Acknowledge: ACK" );
-				sendDatagrammString( "ACK" );
-				return true;
-				
-			}
-	
-		} catch ( Exception vException ) {
-	
-	        VisionManagement.getLogger().error( "Could not establish connection to vision: " + vException.getLocalizedMessage() );
-	        VisionManagement.getLogger().catching( Level.ERROR, vException );
-	        
-		}
-		
-		return false;
-		
 	}
 	
 }

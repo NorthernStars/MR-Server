@@ -5,7 +5,7 @@ import java.util.Arrays;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
+@XmlRootElement(name="visionobjectbot")
 public class VisionObjectBot extends VisionObject {
 
 	@XmlElement(name="angle")

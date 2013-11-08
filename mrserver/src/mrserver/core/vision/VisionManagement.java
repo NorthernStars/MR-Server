@@ -1,5 +1,9 @@
 package mrserver.core.vision;
 
+import java.io.IOException;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
+
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -101,6 +105,23 @@ public class VisionManagement implements Vision{
 	public PositionData getPositionData() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+    
+	public String getPositionDataXMLString() {
+		
+		try {
+			return mVisionConnect.getDatagrammString(0);
+		} catch (SocketTimeoutException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SocketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "";
 	}
 
 }

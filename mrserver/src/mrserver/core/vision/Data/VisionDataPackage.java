@@ -10,9 +10,13 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.apache.logging.log4j.Level;
+
+import mrserver.core.vision.VisionManagement;
 import mrserver.core.vision.VisionMode;
 
-@XmlRootElement(name="VisionDataPackage")
+@XmlRootElement(name="visiondatapackage")
 public class VisionDataPackage {
 	
 	@XmlElement(name="visionmode")
@@ -22,20 +26,26 @@ public class VisionDataPackage {
 	
 	public static VisionDataPackage unmarshallXMLVisionDataPackageString( String aXMLVisionDataPackage ){
 		
+		VisionManagement.getLogger().debug( "Trying to unmarshall xmlstring: " + aXMLVisionDataPackage );
 		StringReader vXMLDataStream = new StringReader( aXMLVisionDataPackage );
-		JAXBContext jc;
+		JAXBContext vJAXBContext;
 		try {
-			jc = JAXBContext.newInstance( mrserver.core.vision.Data.VisionDataPackage.class, 
+			vJAXBContext = JAXBContext.newInstance( mrserver.core.vision.Data.VisionDataPackage.class, 
 					mrserver.core.vision.Data.VisionObject.class,
 					mrserver.core.vision.Data.VisionObjectBot.class, 
 					mrserver.core.vision.Data.VisionObjectRectangle.class );
 
-			Unmarshaller u = jc.createUnmarshaller();
-			return (VisionDataPackage) u.unmarshal( vXMLDataStream );
+			Unmarshaller vUnmarshaller = vJAXBContext.createUnmarshaller();
+			VisionDataPackage vVisionDataPackage = (VisionDataPackage) vUnmarshaller.unmarshal( vXMLDataStream );
+			VisionManagement.getLogger().debug( "Unmarshalled xmlstring to " + vVisionDataPackage != null ? vVisionDataPackage.toString() : "null" );
 			
-		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return vVisionDataPackage;
+			
+		} catch ( JAXBException vJAXBException ) {
+
+	        VisionManagement.getLogger().error( "Error unmarshalling xmlstring: " + vJAXBException.getLocalizedMessage() );
+	        VisionManagement.getLogger().catching( Level.ERROR, vJAXBException );
+	        
 		}
 		
 		return null;
@@ -43,21 +53,25 @@ public class VisionDataPackage {
 	}
 	
 	public String toXMLString(){
-	    
+		
+		VisionManagement.getLogger().debug( "Trying to marshall object: " + toString() );
 		StringWriter vXMLDataStream = new StringWriter();		
-		JAXBContext jc;
+		JAXBContext vJAXBContext;
 		try {
-			jc = JAXBContext.newInstance( mrserver.core.vision.Data.VisionDataPackage.class, 
+			vJAXBContext = JAXBContext.newInstance( mrserver.core.vision.Data.VisionDataPackage.class, 
 					mrserver.core.vision.Data.VisionObject.class,
 					mrserver.core.vision.Data.VisionObjectBot.class, 
 					mrserver.core.vision.Data.VisionObjectRectangle.class );
 		
-	        Marshaller m = jc.createMarshaller();
-	        m.marshal( this, vXMLDataStream );
-	        
-		} catch ( JAXBException e ) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	        Marshaller vMarshaller = vJAXBContext.createMarshaller();
+	        vMarshaller.marshal( this, vXMLDataStream );
+	        VisionManagement.getLogger().debug( "Marshalled object to " + vXMLDataStream );
+			
+		} catch ( JAXBException vJAXBException ) {
+
+	        VisionManagement.getLogger().error( "Error marshalling object: " + vJAXBException.getLocalizedMessage() );
+	        VisionManagement.getLogger().catching( Level.ERROR, vJAXBException );
+	      
 		}
 		String vXMLDataString = vXMLDataStream.toString();
 		

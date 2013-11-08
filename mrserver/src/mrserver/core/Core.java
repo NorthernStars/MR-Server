@@ -13,6 +13,7 @@ import mrserver.core.vision.Data.VisionObject;
 import mrserver.core.vision.Data.VisionObjectBot;
 import mrserver.core.vision.Data.VisionObjectRectangle;
 import mrserver.core.vision.Data.VisionObjectType;
+import mrservermisc.network.handshake.ConnectionAcknowlege;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -123,6 +124,7 @@ public class Core {
             	//TODO: Botcontrol connect und register
             }
             //TODO: Graphicsport open
+            ConnectionAcknowlege.createGraphicsHandschakeSchema();
             //TODO: Vision kalibrieren
             //TODO: Botports oeffnen 
             //TODO: Szenario starten                 
