@@ -6,8 +6,9 @@ import org.apache.logging.log4j.Level;
 
 import mrserver.core.Core;
 import mrserver.core.vision.VisionManagement;
-import mrserver.core.vision.VisionMode;
 import mrservermisc.network.BasicUDPServerConnection;
+import mrservermisc.network.data.position.VisionMode;
+import mrservermisc.network.handshake.ConnectionRequest;
 
 public class VisionConnection extends BasicUDPServerConnection{
 	
@@ -23,8 +24,9 @@ public class VisionConnection extends BasicUDPServerConnection{
 		
 			VisionManagement.getLogger().info( "Establishing connection: " + toString() );
 			
-			VisionManagement.getLogger().debug( "Sending handshake: " + Core.getInstance().getServerConfig().getServerName());
-			sendDatagrammString( Core.getInstance().getServerConfig().getServerName() );
+			ConnectionRequest vRequestToVision = new ConnectionRequest( Core.getInstance().getServerConfig().getServerName() );
+			VisionManagement.getLogger().debug( "Sending handshake: " + vRequestToVision.toString() );
+			sendDatagrammString( vRequestToVision.toXMLString() );
 			
 			String vVisionAcknowledge = getDatagrammString( 1000 );
 			

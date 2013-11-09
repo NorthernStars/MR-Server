@@ -1,15 +1,8 @@
 package mrservermisc.network.handshake;
 
-import java.io.StringWriter;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import mrservermisc.logging.Loggers;
-
-import org.apache.logging.log4j.Level;
+import mrservermisc.network.xml.Helpers;
 
 @XmlRootElement(name="connectionestablished")
 public class ConnectionEstablished {
@@ -18,28 +11,16 @@ public class ConnectionEstablished {
 	public String toString() {
 		return "ConnectionEstablished []";
 	}
-
+	
 	public String toXMLString(){
 		
-		Loggers.getNetworkLogger().debug( "Trying to marshall object: " + toString() );
-		StringWriter vXMLDataStream = new StringWriter();		
-		JAXBContext vJAXBContext;
-		try {
-			vJAXBContext = JAXBContext.newInstance( mrservermisc.network.handshake.ConnectionEstablished.class );
+		return Helpers.marshallXMLString( this, ConnectionEstablished.class );
 		
-	        Marshaller vMarshaller = vJAXBContext.createMarshaller();
-	        vMarshaller.marshal( this, vXMLDataStream );
-	        Loggers.getNetworkLogger().debug( "Marshalled object to " + vXMLDataStream );
+	}
+	
+	public static ConnectionEstablished unmarshallXMLConnectionEstablishedString( String aXMLConnectionEstablishedPackage ){
 			
-		} catch ( JAXBException vJAXBException ) {
-
-			Loggers.getNetworkLogger().error( "Error marshalling object: " + vJAXBException.getLocalizedMessage() );
-			Loggers.getNetworkLogger().catching( Level.ERROR, vJAXBException );
-	      
-		}
-		String vXMLDataString = vXMLDataStream.toString();
-		
-		return vXMLDataString;
+		return Helpers.unmarshallXMLString( aXMLConnectionEstablishedPackage, ConnectionEstablished.class );
 		
 	}
 	

@@ -1,17 +1,10 @@
 package mrservermisc.network.handshake;
 
-import java.io.StringWriter;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 import mrservermisc.logging.Loggers;
-
-import org.apache.logging.log4j.Level;
+import mrservermisc.network.xml.Helpers;
 
 @XmlRootElement(name="connectionacknowlege")
 public class ConnectionAcknowlege {
@@ -22,27 +15,27 @@ public class ConnectionAcknowlege {
 	String mClientGraphicsName;
 	@XmlElement(name="connectionallowed")
 	boolean mConnectionAllowed;
+
+	public ConnectionAcknowlege(){}
+
+	public ConnectionAcknowlege(String aMRServerName, String aClientGraphicsName, boolean aConnectionAllowed) {
+		
+		mMRServerName = aMRServerName;
+		mClientGraphicsName = aClientGraphicsName;
+		mConnectionAllowed = aConnectionAllowed;
+		
+		Loggers.getNetworkLogger().debug( "Created " + toString() );
+		
+	}
 	
 	public String getMRServerName() {
 		return mMRServerName;
 	}
-	@XmlTransient
-	public void setMRServerName( String aMRServerName ) {
-		this.mMRServerName = aMRServerName;
-	}
 	public String getClientGraphicsName() {
 		return mClientGraphicsName;
 	}
-	@XmlTransient
-	public void setClientGraphicsName( String aClientGraphicsName ) {
-		this.mClientGraphicsName = aClientGraphicsName;
-	}
 	public boolean isConnectionAllowed() {
 		return mConnectionAllowed;
-	}
-	@XmlTransient
-	public void setConnectionAllowed( boolean aConnectionAllowed ) {
-		this.mConnectionAllowed = aConnectionAllowed;
 	}
 	
 	@Override
@@ -54,25 +47,13 @@ public class ConnectionAcknowlege {
 	
 	public String toXMLString(){
 		
-		Loggers.getNetworkLogger().debug( "Trying to marshall object: " + toString() );
-		StringWriter vXMLDataStream = new StringWriter();		
-		JAXBContext vJAXBContext;
-		try {
-			vJAXBContext = JAXBContext.newInstance( mrservermisc.network.handshake.ConnectionAcknowlege.class );
+		return Helpers.marshallXMLString( this, ConnectionAcknowlege.class );
 		
-	        Marshaller vMarshaller = vJAXBContext.createMarshaller();
-	        vMarshaller.marshal( this, vXMLDataStream );
-	        Loggers.getNetworkLogger().debug( "Marshalled object to " + vXMLDataStream );
+	}
+	
+	public static ConnectionAcknowlege unmarshallXMLConnectionAcknowlegeString( String aXMLConnectionAcknowlegePackage ){
 			
-		} catch ( JAXBException vJAXBException ) {
-
-			Loggers.getNetworkLogger().error( "Error marshalling object: " + vJAXBException.getLocalizedMessage() );
-			Loggers.getNetworkLogger().catching( Level.ERROR, vJAXBException );
-	      
-		}
-		String vXMLDataString = vXMLDataStream.toString();
-		
-		return vXMLDataString;
+		return Helpers.unmarshallXMLString( aXMLConnectionAcknowlegePackage, ConnectionAcknowlege.class );
 		
 	}
 	

@@ -10,7 +10,8 @@ import org.apache.logging.log4j.Logger;
 
 import mrserver.core.Core;
 import mrserver.core.vision.network.VisionConnection;
-import mrservermisc.vision.data.PositionData;
+import mrservermisc.network.data.position.PositionDataPackage;
+import mrservermisc.network.data.position.VisionMode;
 import mrservermisc.vision.interfaces.Vision;
 
 /**
@@ -102,26 +103,9 @@ public class VisionManagement implements Vision{
     }
     
 	@Override
-	public PositionData getPositionData() {
+	public PositionDataPackage getPositionData() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-    
-	public String getPositionDataXMLString() {
-		
-		try {
-			return mVisionConnect.getDatagrammString(0);
-		} catch (SocketTimeoutException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SocketException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return "";
 	}
 
 }

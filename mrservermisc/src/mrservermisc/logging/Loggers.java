@@ -20,6 +20,13 @@ public class Loggers {
         return NETWORKLOGGER;
         
     }
+
+    private static Logger XMLLOGGER = LogManager.getLogger("XML");
     
+    public static Logger getXMLLogger(){
+        
+        return XMLLOGGER;
+        
+    }
 	
 }

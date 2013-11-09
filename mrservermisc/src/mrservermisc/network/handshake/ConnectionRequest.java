@@ -1,54 +1,45 @@
 package mrservermisc.network.handshake;
 
-import java.io.StringWriter;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import mrservermisc.logging.Loggers;
-
-import org.apache.logging.log4j.Level;
+import mrservermisc.network.xml.Helpers;
 
 @XmlRootElement(name="connectionrequest")
 public class ConnectionRequest {
 	
 	@XmlElement(name="clientname")
-	String mClientGraphicsName;
+	String mClientName;
 
+	public ConnectionRequest(){}
+	
+	public ConnectionRequest( String aClientName ){
+		
+		mClientName = aClientName;
+		
+		Loggers.getNetworkLogger().debug( "Created " + toString() );
+		
+	}
+	
 	public String getClientGraphicsName() {
-		return mClientGraphicsName;
+		return mClientName;
 	}
 
 	@Override
 	public String toString() {
-		return "ConnectionRequest [mClientGraphicsName=" + mClientGraphicsName
+		return "ConnectionRequest [mClientGraphicsName=" + mClientName
 				+ "]";
 	}
-	
 	public String toXMLString(){
 		
-		Loggers.getNetworkLogger().debug( "Trying to marshall object: " + toString() );
-		StringWriter vXMLDataStream = new StringWriter();		
-		JAXBContext vJAXBContext;
-		try {
-			vJAXBContext = JAXBContext.newInstance( mrservermisc.network.handshake.ConnectionRequest.class );
+		return Helpers.marshallXMLString( this, ConnectionRequest.class );
 		
-	        Marshaller vMarshaller = vJAXBContext.createMarshaller();
-	        vMarshaller.marshal( this, vXMLDataStream );
-	        Loggers.getNetworkLogger().debug( "Marshalled object to " + vXMLDataStream );
+	}
+	
+	public static ConnectionRequest unmarshallXMLConnectionRequestString( String aXMLConnectionRequestPackage ){
 			
-		} catch ( JAXBException vJAXBException ) {
-
-			Loggers.getNetworkLogger().error( "Error marshalling object: " + vJAXBException.getLocalizedMessage() );
-			Loggers.getNetworkLogger().catching( Level.ERROR, vJAXBException );
-	      
-		}
-		String vXMLDataString = vXMLDataStream.toString();
-		
-		return vXMLDataString;
+		return Helpers.unmarshallXMLString( aXMLConnectionRequestPackage, ConnectionRequest.class );
 		
 	}
 	

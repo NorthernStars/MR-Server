@@ -43,6 +43,18 @@
       <appender-ref ref="Console"/>
       <appender-ref ref="ERROR" />
     </logger>
+    <logger name="DATA" level="debug">
+      <appender-ref ref="Console"/>
+      <appender-ref ref="ERROR" />
+    </logger>
+    <logger name="NETWORK" level="debug">
+      <appender-ref ref="Console"/>
+      <appender-ref ref="ERROR" />
+    </logger>
+    <logger name="XML" level="debug">
+      <appender-ref ref="Console"/>
+      <appender-ref ref="ERROR" />
+    </logger>
     <root level="error">
     </root>
   </loggers>
