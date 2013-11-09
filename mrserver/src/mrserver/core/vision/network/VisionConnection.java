@@ -8,6 +8,8 @@ import mrserver.core.Core;
 import mrserver.core.vision.VisionManagement;
 import mrservermisc.network.BasicUDPServerConnection;
 import mrservermisc.network.data.position.VisionMode;
+import mrservermisc.network.handshake.ConnectionAcknowlege;
+import mrservermisc.network.handshake.ConnectionEstablished;
 import mrservermisc.network.handshake.ConnectionRequest;
 
 public class VisionConnection extends BasicUDPServerConnection{
@@ -28,14 +30,15 @@ public class VisionConnection extends BasicUDPServerConnection{
 			VisionManagement.getLogger().debug( "Sending handshake: " + vRequestToVision.toString() );
 			sendDatagrammString( vRequestToVision.toXMLString() );
 			
-			String vVisionAcknowledge = getDatagrammString( 1000 );
+			ConnectionAcknowlege vVisionAcknowledge = ConnectionAcknowlege.unmarshallXMLConnectionAcknowlegeString( getDatagrammString( 1000 ) );
 			
 			VisionManagement.getLogger().debug( "Recieving Acknowledge: " + vVisionAcknowledge );
 			
-			if( vVisionAcknowledge.equals( Core.getInstance().getServerConfig().getServerName() + "mrVision" ) ){
+			if( vVisionAcknowledge != null && vVisionAcknowledge.isConnectionAllowed() ){
 				
-				VisionManagement.getLogger().debug( "Sending Acknowledge: ACK" );
-				sendDatagrammString( "ACK" );
+				ConnectionEstablished vVisionConnectionEstablished = new ConnectionEstablished();
+				VisionManagement.getLogger().debug( "Sending Acknowledge: " + vVisionConnectionEstablished );
+				sendDatagrammString( vVisionConnectionEstablished.toXMLString() );
 				return true;
 				
 			}
@@ -46,7 +49,8 @@ public class VisionConnection extends BasicUDPServerConnection{
 	        VisionManagement.getLogger().catching( Level.ERROR, vException );
 	        
 		}
-		
+
+		VisionManagement.getLogger().debug( "Could not establish connection" );
 		return false;
 		
 	}
