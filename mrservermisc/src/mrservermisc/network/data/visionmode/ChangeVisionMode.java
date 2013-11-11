@@ -1,9 +1,8 @@
 package mrservermisc.network.data.visionmode;
 
-import java.beans.Transient;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import mrservermisc.network.data.position.VisionMode;
 import mrservermisc.network.xml.Helpers;
@@ -15,7 +14,7 @@ public class ChangeVisionMode {
 	VisionMode mVisionMode;
 	
 	public ChangeVisionMode(){}
-	
+
 	public ChangeVisionMode( VisionMode aVisionMode ){
 		
 		mVisionMode = aVisionMode;
@@ -40,13 +39,14 @@ public class ChangeVisionMode {
 		
 	}
 
-	@Transient
+	@XmlTransient
 	public VisionMode getVisionMode() {
 		
 		return mVisionMode;
 		
 	}
 
+	@XmlTransient
 	public void setVisionMode(VisionMode aVisionMode) {
 		
 		mVisionMode = aVisionMode;

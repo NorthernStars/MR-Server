@@ -46,6 +46,7 @@ public class BotControlManagement implements BotControl{
         if( INSTANCE != null ){
         	
             INSTANCE = null;
+        	BotControlManagement.getLogger().info( "Botcontrolmanagement closed");
             
         }
         

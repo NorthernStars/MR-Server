@@ -7,7 +7,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 
-@XmlTransient //Prevents the mapping of a JavaBean property/type to XML representation
 @XmlSeeAlso({PositionObjectBot.class, PositionObjectRectangle.class})
 public abstract class PositionObject {
 

@@ -3,23 +3,24 @@ package mrserver.core.graphics;
 
 import java.net.SocketAddress;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import mrserver.core.Core;
+import mrserver.core.graphics.network.GraphicsConnection;
+import mrserver.core.graphics.network.recieve.Creator;
+import mrserver.core.graphics.network.recieve.Receiver;
+import mrservermisc.graphics.interfaces.Graphics;
+import mrservermisc.network.data.position.PositionDataPackage;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class GraphicsManagement {
+public class GraphicsManagement implements Graphics{
 	
     private static GraphicsManagement INSTANCE;
-
-    private GraphicsManagement(){
-    	
-    	GraphicsManagement.getLogger().debug( "Creating MapOfConnectedGraphicModules." );
-    	aMapOfConnectedGraphicModules = new ConcurrentHashMap<SocketAddress, GraphicModul>();
-    	
-    }
     
     public static GraphicsManagement getInstance() {
         
@@ -41,27 +42,67 @@ public class GraphicsManagement {
         
     }
     
-    private ConcurrentHashMap<SocketAddress, GraphicModul> aMapOfConnectedGraphicModules;
+    private ConcurrentHashMap<SocketAddress, GraphicModul> mMapOfConnectedGraphicModules;
+    private GraphicsConnection mGraphicsConnection;
+    private Receiver mGraphicsReceiver;
+    private Creator mGraphicsCreator;
+
+    private GraphicsManagement(){
+    	
+    }
+    
+    public void startGraphicsManagement(){
+    	
+    	GraphicsManagement.getLogger().info( "Starting graphicsmanagement" );
+    	
+    	GraphicsManagement.getLogger().debug( "Creating graphicsconnection." );
+    	mGraphicsConnection = new GraphicsConnection();
+    	
+    	GraphicsManagement.getLogger().debug( "Creating MapOfConnectedGraphicModules." );
+    	mMapOfConnectedGraphicModules = new ConcurrentHashMap<SocketAddress, GraphicModul>();
+
+    	GraphicsManagement.getLogger().debug( "Starting receiver." );
+    	mGraphicsReceiver = new Receiver( mGraphicsConnection );
+    	mGraphicsReceiver.startManagement();
+    	
+    	GraphicsManagement.getLogger().debug( "Starting creator." );
+    	mGraphicsCreator= new Creator( mGraphicsConnection );
+    	mGraphicsCreator.startManagement();
+    	
+    }
+    
+    public void close(){
+    	
+    	if( mGraphicsReceiver != null ){
+    		mGraphicsReceiver.stopManagement();
+    	}
+    	if( mGraphicsCreator != null ) {
+    		mGraphicsCreator.stopManagement();
+    	}
+    	if( mGraphicsConnection != null ) {
+    		mGraphicsConnection.closeConnection();
+    	}
+    	GraphicsManagement.getLogger().info( "Graphicsmanagement closed" );
+    	
+    }
     
     public ConcurrentHashMap<SocketAddress, GraphicModul> getMapOfConnections(){
     	
         GraphicsManagement.getLogger().trace( "Retrieving MapOfConnectedGraphicModules." );
-    	return aMapOfConnectedGraphicModules;
+    	return mMapOfConnectedGraphicModules;
     	
     }
-    
-    private List<GraphicModul> mGraphicModules;
-    
-    public List<GraphicModul> getGraphicModules(){
-    	
-    	if( mGraphicModules == null ){
-    		
-    		mGraphicModules = new ArrayList<GraphicModul>();
-    		
-    	}
-    	
-    	return mGraphicModules;    	
-    	
-    }
+
+	@Override
+	public boolean sendWorldStatus(PositionDataPackage aPositionData) {
+		
+		for( GraphicModul vDing : Collections.list( mMapOfConnectedGraphicModules.elements() ) ){
+			
+			vDing.sendData( aPositionData );
+			
+		}
+		
+		return true;
+	}
 
 }

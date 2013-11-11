@@ -2,9 +2,13 @@ package mrscenariofootball.core;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import mrservermisc.botcontrol.interfaces.BotControl;
 import mrservermisc.bots.interfaces.Bot;
 import mrservermisc.graphics.interfaces.Graphics;
+import mrservermisc.network.data.position.PositionDataPackage;
 import mrservermisc.scenario.interfaces.Scenario;
 import mrservermisc.vision.interfaces.Vision;
 
@@ -18,7 +22,18 @@ import mrservermisc.vision.interfaces.Vision;
  *
  */
 public class Core implements Scenario {
-
+    
+    private static Logger SCENARIOLOGGER = LogManager.getLogger("SCENARIO");
+    
+    public static Logger getLogger(){
+        
+        return SCENARIOLOGGER;
+        
+    }
+    
+	private Vision mTheVision;
+	private Graphics mGraphics;
+	
 	@Override
 	public void close() {
 		// TODO Auto-generated method stub
@@ -27,8 +42,7 @@ public class Core implements Scenario {
 
 	@Override
 	public boolean needVision() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
@@ -40,7 +54,8 @@ public class Core implements Scenario {
 	@Override
 	public boolean registerVision(Vision aVision) {
 		// TODO Auto-generated method stub
-		return false;
+		mTheVision = aVision;
+		return true;
 	}
 
 	@Override
@@ -57,8 +72,25 @@ public class Core implements Scenario {
 
 	@Override
 	public boolean registerGraphics(Graphics aGraphics) {
-		// TODO Auto-generated method stub
-		return false;
+		mGraphics = aGraphics;
+		return true;
+	}
+
+	@Override
+	public void startScenario() {
+		PositionDataPackage vData;
+		while(true){
+			
+			if( mTheVision != null ){
+				vData = mTheVision.getPositionData();
+				if( vData != null ){
+					mGraphics.sendWorldStatus( vData );
+					Core.getLogger().debug( vData.toString() );
+				}
+			}
+			
+		}
+		
 	}
 
 }

@@ -12,8 +12,8 @@ public class PositionDataPackage {
 	
 	@XmlElement(name="visionmode")
 	public VisionMode mVisionMode;
-	@XmlElement(name="visionobjects")
-	public List<PositionObject> mListOfVisionObjects;
+	@XmlElement(name="objects")
+	public List<PositionObject> mListOfObjects;
 	
 	public String toXMLString(){
 		
@@ -24,7 +24,7 @@ public class PositionDataPackage {
 	@Override
 	public String toString() {
 		return "VisionDataPackage [mVisionMode=" + mVisionMode
-				+ ", mListOfVisionObjects=" + mListOfVisionObjects + "]";
+				+ ", mListOfVisionObjects=" + mListOfObjects + "]";
 	}
 	
 	

@@ -78,6 +78,7 @@ public interface Scenario {
 	 */
 	public boolean registerGraphics( Graphics aGraphics );
 	
+	public void startScenario();
 
 
 }

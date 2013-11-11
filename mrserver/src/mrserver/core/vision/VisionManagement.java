@@ -52,7 +52,13 @@ public class VisionManagement implements Vision{
     public void close() {
 
         if( INSTANCE != null ){
-        	
+
+        	if( mIncomingPacketManagement != null ){
+
+        		mIncomingPacketManagement.stopManagement();
+        		mIncomingPacketManagement = null;
+        		
+        	}
         	if( mVisionConnect != null ){
 
             	mVisionConnect.closeConnection();
@@ -61,6 +67,7 @@ public class VisionManagement implements Vision{
         	}
         	
             INSTANCE = null;
+        	VisionManagement.getLogger().info( "Visionmanagement closed" );
             
         }
         
@@ -143,7 +150,10 @@ public class VisionManagement implements Vision{
     
 	@Override
 	public PositionDataPackage getPositionData() {
-		return mIncomingPacketManagement.getLatestPackage();
+		if( mIncomingPacketManagement != null ){
+			return mIncomingPacketManagement.getLatestPackage();
+		}
+		return null;
 	}
 
 }

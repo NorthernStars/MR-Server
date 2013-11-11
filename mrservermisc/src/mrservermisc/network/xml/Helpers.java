@@ -15,13 +15,14 @@ import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamResult;
 
 import mrservermisc.logging.Loggers;
+
 import org.apache.logging.log4j.Level;
 
 public class Helpers {
 
 	public static <T> T unmarshallXMLString( String aXMLConnectionAcknowlege, Class<T> aClass ){
 		
-		Loggers.getXMLLogger().debug( "Trying to unmarshall xmlstring: " + aXMLConnectionAcknowlege + " to " + aClass.toString() );
+		Loggers.getXMLLogger().debug( "Trying to unmarshall xmlstring!: " + aXMLConnectionAcknowlege + " to " + aClass.toString() );
 		StringReader vXMLDataStream = new StringReader( aXMLConnectionAcknowlege );
 		JAXBContext vJAXBContext;
 		try {

@@ -9,11 +9,11 @@ import mrserver.core.graphics.GraphicsManagement;
 
 public class Worker implements Runnable{
 
-	private static final ExecutorService aWorkerPool = Executors.newCachedThreadPool();
+	private static final ExecutorService WORKERPOOL = Executors.newCachedThreadPool();
 	
 	public static void putWorkerInPool( Worker aWorker){
 		
-		aWorkerPool.execute( aWorker );
+		WORKERPOOL.execute( aWorker );
 		
 	}
 
@@ -28,6 +28,8 @@ public class Worker implements Runnable{
 	@Override
 	public void run() {
 
+		GraphicsManagement.getLogger().debug( "Processing packet " + mRecievedDatagrammPacket.toString() );
+		
 		GraphicModul aCorrespondingGraphicsModul = GraphicsManagement.getInstance().getMapOfConnections().get( mRecievedDatagrammPacket.getSocketAddress() );
 		
 		if( aCorrespondingGraphicsModul != null ){
@@ -36,7 +38,7 @@ public class Worker implements Runnable{
 			
 		} else {
 			
-			
+			Creator.putUnkownSenderDatagramInProcessingQueue( mRecievedDatagrammPacket );
 			
 		}
 		

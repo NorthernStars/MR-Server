@@ -60,6 +60,7 @@ public class ScenarioManagement {
     		mScenario.close();
     		mScenario = null;
     	}
+    	ScenarioManagement.getLogger().info( "Closed scenariomangement" );
     	INSTANCE = null;
     	
     }
@@ -181,6 +182,16 @@ public class ScenarioManagement {
 		}
 		
 		return false;
+		
+	}
+
+	public void startScenario() {
+
+		if( mScenario != null ){
+			
+			mScenario.startScenario();
+			
+		}
 		
 	}
 

@@ -2,9 +2,13 @@ package mrservermisc.network;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
+
+import mrservermisc.logging.Loggers;
+
+import org.apache.logging.log4j.Level;
 
 /**
  * Die grundlegende UDPNetzwerkverbindung. Es wird das UDP-
@@ -39,21 +43,39 @@ public class BasicUDPHostConnection {
 	 * @throws IOException
 	 * Verbindung konnte nicht eingerichtet werden.
 	 */
-	public BasicUDPHostConnection() throws IOException
+	public BasicUDPHostConnection()
 	{		
+		try {
+			
+			mToTargetSocket = new DatagramSocket();
 		
-		mToTargetSocket = new DatagramSocket();
+			mSocketInitialized = true;
+	        Loggers.getNetworkLogger().debug( "Created socket: " + ((InetSocketAddress) mToTargetSocket.getLocalSocketAddress()).toString() );
+	        
+		} catch ( IOException vIoException ) {
+
+        	Loggers.getNetworkLogger().error( "Error creating connection: " + vIoException.getLocalizedMessage() );
+        	Loggers.getNetworkLogger().catching( Level.ERROR, vIoException );
 		
-		mSocketInitialized = true;
+		}
 		
 	}
 	
-	public BasicUDPHostConnection( int aHostPort ) throws IOException
+	public BasicUDPHostConnection( int aHostPort )
     {       
 	    
-        mToTargetSocket = new DatagramSocket( aHostPort );
-
-        mSocketInitialized = true;
+		try {
+	        mToTargetSocket = new DatagramSocket( aHostPort );
+	
+	        mSocketInitialized = true;
+	        Loggers.getNetworkLogger().debug( "Created socket: " + ((InetSocketAddress) mToTargetSocket.getLocalSocketAddress()).toString() );
+	        
+		} catch ( IOException vIoException ) {
+	
+	        Loggers.getNetworkLogger().error( "Error creating connection: " + vIoException.getLocalizedMessage(), aHostPort );
+	        Loggers.getNetworkLogger().catching( Level.ERROR, vIoException );
+			
+		}
         
     }
 
@@ -63,10 +85,30 @@ public class BasicUDPHostConnection {
 	 * @param aData
 	 * 		Zu versendende Daten als String.
 	 */
-	public void sendDatagramm( DatagramPacket aData ) throws IOException
+	public void sendDatagramm( DatagramPacket aData )
 	{
 		
-		mToTargetSocket.send( aData );
+		try {
+			
+			mToTargetSocket.send( aData );
+			
+		} catch ( IOException vIoException ) {
+
+            Loggers.getNetworkLogger().error( "Error sending datagram: " + vIoException.getLocalizedMessage(), aData );
+            Loggers.getNetworkLogger().catching( Level.ERROR, vIoException );
+			
+		}
+
+	}
+	
+	public void sendString( String aData, InetSocketAddress aAddress )
+	{
+		
+		DatagramPacket vDatagramPacketToSend = new DatagramPacket( new byte[BasicUDPHostConnection.MAX_DATAGRAM_LENGTH], BasicUDPHostConnection.MAX_DATAGRAM_LENGTH );
+		vDatagramPacketToSend.setAddress( aAddress.getAddress() );
+		vDatagramPacketToSend.setPort( aAddress.getPort() );
+		vDatagramPacketToSend.setData( aData.getBytes() );
+		sendDatagramm( vDatagramPacketToSend );
 
 	}
 

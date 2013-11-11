@@ -102,7 +102,7 @@ public class ConfigFileReader {
     	
     	if( vProperties.getProperty( "graphicsport" ) != null && Core.getInstance().getServerConfig().getGraphicsPort() == -1 ){
 
-    		Core.getInstance().getServerConfig().setGraphicsPort( Integer.parseInt( vProperties.getProperty( "botcontrolport" ) ) );
+    		Core.getInstance().getServerConfig().setGraphicsPort( Integer.parseInt( vProperties.getProperty( "graphicsport" ) ) );
     		
     	}
     	

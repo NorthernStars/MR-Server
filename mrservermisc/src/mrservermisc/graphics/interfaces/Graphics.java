@@ -1,5 +1,7 @@
 package mrservermisc.graphics.interfaces;
 
+import mrservermisc.network.data.position.PositionDataPackage;
+
 /**
  * Interface mit dem ein Szenario Daten an ein Graphicsmodul senden kann
  * 
@@ -15,6 +17,6 @@ public interface Graphics {
 	 * @param aWorldData der zu sendende Weltstatus
 	 * @return true wenn der Weltstatus erfolgreich versendet werden konnte, false wenn nicht
 	 */
-	public boolean sendWorldStatus( String aWorldData );
+	public boolean sendWorldStatus( PositionDataPackage aPositionData );
 
 }

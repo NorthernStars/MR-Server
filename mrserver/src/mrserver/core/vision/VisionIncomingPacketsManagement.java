@@ -29,7 +29,7 @@ public class VisionIncomingPacketsManagement extends Thread{
 		mVisionConnect = aVisionConnect;
 		
 		mLatestPackageFromVision = new PositionDataPackage();
-		mLatestPackageFromVision.mListOfVisionObjects = new ArrayList<PositionObject>();
+		mLatestPackageFromVision.mListOfObjects = new ArrayList<PositionObject>();
 		mLatestPackageFromVision.mVisionMode = VisionMode.VISION_MODE_NONE;
 
 	}
