@@ -116,5 +116,12 @@ public class Helpers {
 				mrservermisc.network.data.position.PositionObjectRectangle.class  );
 
 	}
+	
+	public static void createChangeVisionModeSchema( ){
+
+		createXMLSchema( "changevisionmodeschema.xsd",
+				mrservermisc.network.data.visionmode.ChangeVisionMode.class  );
+
+	}
 
 }

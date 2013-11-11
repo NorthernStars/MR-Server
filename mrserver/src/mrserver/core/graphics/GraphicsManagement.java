@@ -1,8 +1,11 @@
 package mrserver.core.graphics;
 
 
+import java.net.SocketAddress;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,6 +15,9 @@ public class GraphicsManagement {
     private static GraphicsManagement INSTANCE;
 
     private GraphicsManagement(){
+    	
+    	GraphicsManagement.getLogger().debug( "Creating MapOfConnectedGraphicModules." );
+    	aMapOfConnectedGraphicModules = new ConcurrentHashMap<SocketAddress, GraphicModul>();
     	
     }
     
@@ -33,6 +39,15 @@ public class GraphicsManagement {
         
         return GRAPHICSMANAGEMENTLOGGER;
         
+    }
+    
+    private ConcurrentHashMap<SocketAddress, GraphicModul> aMapOfConnectedGraphicModules;
+    
+    public ConcurrentHashMap<SocketAddress, GraphicModul> getMapOfConnections(){
+    	
+        GraphicsManagement.getLogger().trace( "Retrieving MapOfConnectedGraphicModules." );
+    	return aMapOfConnectedGraphicModules;
+    	
     }
     
     private List<GraphicModul> mGraphicModules;

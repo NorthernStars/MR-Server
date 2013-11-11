@@ -93,7 +93,7 @@ public class BasicUDPHostConnection {
 			
 	}
 
-	private DatagramPacket getDatagrammPacket( int aWaitTime ) throws SocketException, SocketTimeoutException, IOException 
+	public DatagramPacket getDatagrammPacket( int aWaitTime ) throws SocketException, SocketTimeoutException, IOException 
 	{
 		
 		DatagramPacket vDatagrammPacketFromServer = new DatagramPacket( new byte[BasicUDPHostConnection.MAX_DATAGRAM_LENGTH], BasicUDPHostConnection.MAX_DATAGRAM_LENGTH );

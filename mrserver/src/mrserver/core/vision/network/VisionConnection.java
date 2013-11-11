@@ -14,6 +14,8 @@ import mrservermisc.network.handshake.ConnectionRequest;
 
 public class VisionConnection extends BasicUDPServerConnection{
 	
+	private boolean mIsConnectionEstablished = false;
+	
 	public VisionConnection() throws IOException{
 		
 		super( Core.getInstance().getServerConfig().getVisionIPAdress(), Core.getInstance().getServerConfig().getVisionPort() );
@@ -39,7 +41,9 @@ public class VisionConnection extends BasicUDPServerConnection{
 				ConnectionEstablished vVisionConnectionEstablished = new ConnectionEstablished();
 				VisionManagement.getLogger().debug( "Sending Acknowledge: " + vVisionConnectionEstablished );
 				sendDatagrammString( vVisionConnectionEstablished.toXMLString() );
-				return true;
+				
+				mIsConnectionEstablished = true;
+				return mIsConnectionEstablished;
 				
 			}
 	
@@ -55,34 +59,10 @@ public class VisionConnection extends BasicUDPServerConnection{
 		
 	}
 	
-	public boolean setMode( VisionMode aVisionMode){
+	@Override
+	public boolean isConnected() {
 		
-		try {
-		
-			VisionManagement.getLogger().info( "Setting visionmode: " + aVisionMode );
-			
-			VisionManagement.getLogger().debug( "Sending visionmode: " + aVisionMode );
-			sendDatagrammString( aVisionMode.toString() );
-			
-			String vSetVisionModeAcknowledge = getDatagrammString( 1000 );
-			
-			//TODO: in ein datapacket ändern
-			VisionManagement.getLogger().debug( "Recieving visionmode acknowlege: " + vSetVisionModeAcknowledge );
-			
-			if( vSetVisionModeAcknowledge.equals( Core.getInstance().getServerConfig().getServerName() + aVisionMode ) ){
-				
-				return true;
-				
-			}
-	
-		} catch ( Exception vException ) {
-	
-	        VisionManagement.getLogger().error( "Could not establish connection to vision: " + vException.getLocalizedMessage() );
-	        VisionManagement.getLogger().catching( Level.ERROR, vException );
-	        
-		}
-		
-		return false;
+		return super.isConnected() && mIsConnectionEstablished;
 		
 	}
 

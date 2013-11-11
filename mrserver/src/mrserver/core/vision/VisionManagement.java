@@ -1,9 +1,5 @@
 package mrserver.core.vision;
 
-import java.io.IOException;
-import java.net.SocketException;
-import java.net.SocketTimeoutException;
-
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,6 +8,7 @@ import mrserver.core.Core;
 import mrserver.core.vision.network.VisionConnection;
 import mrservermisc.network.data.position.PositionDataPackage;
 import mrservermisc.network.data.position.VisionMode;
+import mrservermisc.network.data.visionmode.ChangeVisionMode;
 import mrservermisc.vision.interfaces.Vision;
 
 /**
@@ -42,13 +39,15 @@ public class VisionManagement implements Vision{
     }
     
     private static Logger VISIONMANAGEMENTLOGGER = LogManager.getLogger("VISIONMANAGEMENT");
-	private VisionConnection mVisionConnect;
-    
+
     public static Logger getLogger(){
         
         return VISIONMANAGEMENTLOGGER;
         
     }
+    
+	private VisionConnection mVisionConnect;
+	private VisionIncomingPacketsManagement mIncomingPacketManagement;
     
     public void close() {
 
@@ -78,7 +77,12 @@ public class VisionManagement implements Vision{
     		
     		mVisionConnect = new VisionConnection();
     		
-    		return mVisionConnect.establishConnection();
+    		if( mVisionConnect.establishConnection() ){
+    			
+    			mIncomingPacketManagement = new VisionIncomingPacketsManagement( mVisionConnect );
+    			return mVisionConnect.isConnected();
+    			
+    		}
         
     	} catch ( Exception vException ) {
 
@@ -91,21 +95,55 @@ public class VisionManagement implements Vision{
     	
     }
     
+    public boolean startRecievingPackets(){
+    	
+    	return mIncomingPacketManagement.startManagement();
+    	
+    }
+    
     /**
      * Ändert den Modus des verbundenen Visionmodul 
      * 
      * @return true ob der Modus erfolgreich geändert werden konnte
      */
     public boolean changeVisionMode( VisionMode aVisionMode ){
-    	
-    	return mVisionConnect.setMode( aVisionMode );
+    		
+		try {
+		
+			VisionManagement.getLogger().debug( "Setting visionmode: " + aVisionMode );
+			
+			mIncomingPacketManagement.suspendManagement();
+			mVisionConnect.sendDatagrammString( new ChangeVisionMode( aVisionMode ).toXMLString() );
+			
+			ChangeVisionMode vChangeAcknowlegement = ChangeVisionMode.unmarshallXMLChangeVisionModeString( mVisionConnect.getDatagrammString( 1000 ) );
+			
+			//TODO: in ein datapacket ändern
+			VisionManagement.getLogger().debug( "Recieving visionmode acknowlegement: " + vChangeAcknowlegement );
+			
+			if( vChangeAcknowlegement != null && aVisionMode == vChangeAcknowlegement.getVisionMode() ){
+				
+				mIncomingPacketManagement.resumeManagement();
+				VisionManagement.getLogger().info( "Set visionmode to " + aVisionMode );
+				return true;
+				
+			}
+	
+		} catch ( Exception vException ) {
+	
+	        VisionManagement.getLogger().error( "Could not establish connection to vision: " + vException.getLocalizedMessage() );
+	        VisionManagement.getLogger().catching( Level.ERROR, vException );
+	        
+		}
+
+		mIncomingPacketManagement.resumeManagement();
+		VisionManagement.getLogger().info( "Failed to set visionmode to " + aVisionMode );
+		return false;
     	
     }
     
 	@Override
 	public PositionDataPackage getPositionData() {
-		// TODO Auto-generated method stub
-		return null;
+		return mIncomingPacketManagement.getLatestPackage();
 	}
 
 }
