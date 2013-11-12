@@ -80,7 +80,12 @@ public class Core implements Scenario {
 	public void startScenario() {
 		PositionDataPackage vData;
 		while(true){
-			
+			try {
+				Thread.sleep( 1500 );
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			if( mTheVision != null ){
 				vData = mTheVision.getPositionData();
 				if( vData != null ){

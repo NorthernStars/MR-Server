@@ -4,8 +4,6 @@ import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import javax.xml.bind.ValidationException;
-
 import org.apache.logging.log4j.Level;
 
 import net.jcip.annotations.GuardedBy;
@@ -115,7 +113,7 @@ public class VisionIncomingPacketsManagement extends Thread{
 	
 	@Override
 	public void run(){
-	    
+	    String vReceivedXMLString;
 		PositionDataPackage vPositionDataFromVision;
 		
 		while( mManageMessagesfromVision.get() ){
@@ -128,7 +126,10 @@ public class VisionIncomingPacketsManagement extends Thread{
 				
 				if( mVisionConnect.isConnected() ) {
 					
-					vPositionDataFromVision = PositionDataPackage.unmarshallXMLPositionDataPackageString( mVisionConnect.getDatagrammString( 100 ) );
+					vReceivedXMLString = mVisionConnect.getDatagrammString( 100 );
+					VisionManagement.getLogger().debug( "Received data from vision: " + vReceivedXMLString );
+					
+					vPositionDataFromVision = PositionDataPackage.unmarshallXMLPositionDataPackageString( vReceivedXMLString );
 					if( vPositionDataFromVision != null ){
 						
 						synchronized (this) {
@@ -147,7 +148,7 @@ public class VisionIncomingPacketsManagement extends Thread{
 				
 			} catch ( SocketTimeoutException vSocketTimeoutException ) {
 				
-				VisionManagement.getLogger().debug( "Recived no datagramm from vision in 100ms" );
+				VisionManagement.getLogger().trace( "Recived no datagramm from vision in 100ms" );
                 				
 			} catch ( Exception vException ) {
 				

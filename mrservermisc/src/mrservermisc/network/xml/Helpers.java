@@ -124,5 +124,19 @@ public class Helpers {
 				mrservermisc.network.data.visionmode.ChangeVisionMode.class  );
 
 	}
+	
+	public static void createWorldDataSchema( ){
+
+		createXMLSchema( "worlddataschema.xsd",
+				mrservermisc.network.data.worlddata.WorldData.class,
+				mrservermisc.network.data.worlddata.BallPosition.class,
+				mrservermisc.network.data.worlddata.Player.class,
+				mrservermisc.network.data.worlddata.PlayMode.class,
+				mrservermisc.network.data.worlddata.ReferencePoint.class,
+				mrservermisc.network.data.worlddata.ReferencePointName.class,
+				mrservermisc.network.data.worlddata.Score.class,
+				mrservermisc.network.data.worlddata.Team.class  );
+
+	}
 
 }

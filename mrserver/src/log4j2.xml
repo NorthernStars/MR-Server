@@ -15,43 +15,47 @@
     </RandomAccessFile>
   </appenders>
   <loggers>
-    <logger name="SERVERCORE" level="debug">
+    <logger name="SERVERCORE" level="debug" additivity="false">
       <appender-ref ref="Console"/>
       <appender-ref ref="ERROR" />
     </logger>
-    <logger name="SERVERCONFIG" level="info">
+    <logger name="SERVERCONFIG" level="info" additivity="false">
       <appender-ref ref="Console"/>
       <appender-ref ref="ERROR" />
     </logger>
-    <logger name="SCENARIOMANAGEMENT" level="debug">
+    <logger name="SCENARIOMANAGEMENT" level="info" additivity="false">
       <appender-ref ref="Console"/>
       <appender-ref ref="ERROR" />
     </logger>
-    <logger name="VISIONMANAGEMENT" level="debug">
+    <logger name="VISIONMANAGEMENT" level="debug" additivity="false">
       <appender-ref ref="Console"/>
       <appender-ref ref="ERROR" />
     </logger>
-    <logger name="BOTCONTROLMANAGEMENT" level="debug">
+    <logger name="BOTCONTROLMANAGEMENT" level="info" additivity="false">
       <appender-ref ref="Console"/>
       <appender-ref ref="ERROR" />
     </logger>
-    <logger name="GRAPHICSMANAGEMENT" level="debug">
+    <logger name="GRAPHICSMANAGEMENT" level="debug" additivity="false">
       <appender-ref ref="Console"/>
       <appender-ref ref="ERROR" />
     </logger>
-    <logger name="BOTAIMANAGEMENT" level="debug">
+    <logger name="BOTAIMANAGEMENT" level="info" additivity="false">
       <appender-ref ref="Console"/>
       <appender-ref ref="ERROR" />
     </logger>
-    <logger name="DATA" level="debug">
+    <logger name="DATA" level="info" additivity="false">
       <appender-ref ref="Console"/>
       <appender-ref ref="ERROR" />
     </logger>
-    <logger name="NETWORK" level="debug">
+    <logger name="NETWORK" level="info" additivity="false">
       <appender-ref ref="Console"/>
       <appender-ref ref="ERROR" />
     </logger>
-    <logger name="XML" level="debug">
+    <logger name="XML" level="info" additivity="false">
+      <appender-ref ref="Console"/>
+      <appender-ref ref="ERROR" />
+    </logger>
+    <logger name="SCENARIO" level="debug" additivity="false">
       <appender-ref ref="Console"/>
       <appender-ref ref="ERROR" />
     </logger>

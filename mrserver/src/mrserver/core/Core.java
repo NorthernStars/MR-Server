@@ -104,7 +104,7 @@ public class Core {
                 
             });
             
-            Helpers.createPositionDataPacketSchema();
+            Helpers.createWorldDataSchema();
             
             CommandLineOptions.getInstance().parseCommandLineArguments( aCommandline );
             //TODO: operatormanagement starten
@@ -113,6 +113,7 @@ public class Core {
 
             	VisionManagement.getInstance().connectToVision();
             	ScenarioManagement.getInstance().registerVision( VisionManagement.getInstance() );
+            	VisionManagement.getInstance().startRecievingPackets();
             	          	
             }
             if ( ScenarioManagement.getInstance().needsBotControl() ) {
