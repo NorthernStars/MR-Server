@@ -1,11 +1,11 @@
-package mrserver.core.graphics.network.recieve;
+package mrserver.core.graphics.network.receive;
 
 import java.net.DatagramPacket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import mrserver.core.graphics.GraphicModul;
 import mrserver.core.graphics.GraphicsManagement;
+import mrserver.core.graphics.data.GraphicModul;
 
 public class Worker implements Runnable{
 

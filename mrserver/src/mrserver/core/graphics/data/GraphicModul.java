@@ -1,4 +1,4 @@
-package mrserver.core.graphics;
+package mrserver.core.graphics.data;
 
 import java.net.DatagramPacket;
 import java.net.InetSocketAddress;
@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import mrserver.core.Core;
+import mrserver.core.graphics.GraphicsManagement;
 import mrserver.core.graphics.network.GraphicsConnection;
 import mrservermisc.graphics.interfaces.Graphic;
 import mrservermisc.network.data.position.PositionDataPackage;

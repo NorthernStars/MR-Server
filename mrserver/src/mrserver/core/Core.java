@@ -72,7 +72,6 @@ public class Core {
         	GraphicsManagement.getInstance().close();
         	Core.getLogger().info( "Server closed" );
             INSTANCE = null;
-            System.exit( 0 );
             
         }
         

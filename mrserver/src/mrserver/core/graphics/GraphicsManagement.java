@@ -9,9 +9,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import mrserver.core.Core;
+import mrserver.core.graphics.data.GraphicModul;
 import mrserver.core.graphics.network.GraphicsConnection;
-import mrserver.core.graphics.network.recieve.Creator;
-import mrserver.core.graphics.network.recieve.Receiver;
+import mrserver.core.graphics.network.receive.Creator;
+import mrserver.core.graphics.network.receive.Receiver;
 import mrservermisc.graphics.interfaces.Graphics;
 import mrservermisc.network.data.position.PositionDataPackage;
 

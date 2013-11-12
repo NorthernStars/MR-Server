@@ -1,4 +1,4 @@
-package mrserver.core.graphics.network.recieve;
+package mrserver.core.graphics.network.receive;
 
 import java.net.DatagramPacket;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -6,8 +6,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import mrserver.core.graphics.GraphicModul;
 import mrserver.core.graphics.GraphicsManagement;
+import mrserver.core.graphics.data.GraphicModul;
 import mrserver.core.graphics.network.GraphicsConnection;
 
 import org.apache.logging.log4j.Level;

@@ -1,4 +1,4 @@
-package mrserver.core.graphics.network.recieve;
+package mrserver.core.graphics.network.receive;
 
 import java.net.SocketTimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
