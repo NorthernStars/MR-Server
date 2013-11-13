@@ -7,6 +7,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.apache.logging.log4j.Level;
 
 import net.jcip.annotations.GuardedBy;
+import mrserver.core.scenario.ScenarioManagement;
 import mrserver.core.vision.network.VisionConnection;
 import mrservermisc.network.data.position.PositionDataPackage;
 import mrservermisc.network.data.position.PositionObject;
@@ -19,16 +20,10 @@ public class VisionIncomingPacketsManagement extends Thread{
 	private AtomicBoolean mManageMessagesfromVision = new AtomicBoolean( false );
 	private AtomicBoolean mSuspend = new AtomicBoolean( false );
 	private AtomicBoolean mIsSuspended = new AtomicBoolean( false );
-	
-	@GuardedBy("this") private PositionDataPackage mLatestPackageFromVision;
 
 	public VisionIncomingPacketsManagement( VisionConnection aVisionConnect ) {
 
 		mVisionConnect = aVisionConnect;
-		
-		mLatestPackageFromVision = new PositionDataPackage();
-		mLatestPackageFromVision.mListOfObjects = new ArrayList<PositionObject>();
-		mLatestPackageFromVision.mVisionMode = VisionMode.VISION_MODE_NONE;
 
 	}
 	
@@ -132,17 +127,13 @@ public class VisionIncomingPacketsManagement extends Thread{
 					vPositionDataFromVision = PositionDataPackage.unmarshallXMLPositionDataPackageString( vReceivedXMLString );
 					if( vPositionDataFromVision != null ){
 						
-						synchronized (this) {
-							
-							mLatestPackageFromVision = vPositionDataFromVision;
-							
-						}
+						ScenarioManagement.getInstance().putPositionData( vPositionDataFromVision );
 						
 					}
 					
 				} else {
 				    
-				    VisionManagement.getLogger().debug( "Vision is not Connected" ) ;
+				    VisionManagement.getLogger().trace( "Vision is not Connected" ) ;
 					
 				}
 				
@@ -158,12 +149,6 @@ public class VisionIncomingPacketsManagement extends Thread{
 			}
 			
 		}
-		
-	}
-	
-	public synchronized PositionDataPackage getLatestPackage(){
-		
-		return mLatestPackageFromVision;
 		
 	}
 

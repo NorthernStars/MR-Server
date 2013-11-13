@@ -40,5 +40,25 @@ public abstract class PositionObject {
 				+ Arrays.toString(mLocation) + ", mColor="
 				+ Arrays.toString(mColor) + "]";
 	}
+
+	public PositionObjectType getObjectType() {
+		return mObjectType;
+	}
+
+	public int getId() {
+		return mId;
+	}
+
+	public String getName() {
+		return mName;
+	}
+
+	public double[] getLocation() {
+		return mLocation;
+	}
+
+	public double[] getColor() {
+		return mColor;
+	}
 	
 }

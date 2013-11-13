@@ -7,6 +7,7 @@ import java.util.concurrent.Executors;
 
 import mrserver.core.botai.BotAIManagement;
 import mrserver.core.botai.data.BotAI;
+import mrserver.core.botai.network.BotAiHost;
 import mrserver.core.botai.network.data.UnkownBotAI;
 import mrservermisc.network.BasicUDPHostConnection;
 
@@ -21,9 +22,9 @@ public class Worker implements Runnable{
 	}
 
 	private DatagramPacket mRecievedDatagramPacket;
-	private BasicUDPHostConnection mBotAIConnect;
+	private BotAiHost mBotAIConnect;
 	
-	public Worker( BasicUDPHostConnection aBotAIConnect, DatagramPacket aRecievedDatagram ){
+	public Worker( BotAiHost aBotAIConnect, DatagramPacket aRecievedDatagram ){
 		
 		mRecievedDatagramPacket = aRecievedDatagram;
 		mBotAIConnect = aBotAIConnect;

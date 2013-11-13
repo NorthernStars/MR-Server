@@ -2,14 +2,15 @@ package mrserver.core.botai.network.data;
 
 import java.net.DatagramPacket;
 
+import mrserver.core.botai.network.BotAiHost;
 import mrservermisc.network.BasicUDPHostConnection;
 
 public class UnkownBotAI {
 	
 	private DatagramPacket mRecievedDatagramPacket;
-	private BasicUDPHostConnection mBotAIConnect;
+	private BotAiHost mBotAIConnect;
 	
-	public UnkownBotAI( BasicUDPHostConnection aBotAIConnect, DatagramPacket aRecievedDatagram ){
+	public UnkownBotAI( BotAiHost aBotAIConnect, DatagramPacket aRecievedDatagram ){
 		
 		mRecievedDatagramPacket = aRecievedDatagram;
 		mBotAIConnect = aBotAIConnect;
@@ -20,7 +21,7 @@ public class UnkownBotAI {
 		return mRecievedDatagramPacket;
 	}
 
-	public BasicUDPHostConnection getBotAIConnect() {
+	public BotAiHost getBotAIConnect() {
 		return mBotAIConnect;
 	}
 

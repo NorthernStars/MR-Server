@@ -5,6 +5,7 @@ import java.util.List;
 import mrservermisc.botcontrol.interfaces.BotControl;
 import mrservermisc.bots.interfaces.Bot;
 import mrservermisc.graphics.interfaces.Graphics;
+import mrservermisc.network.data.position.PositionDataPackage;
 import mrservermisc.vision.interfaces.Vision;
 
 
@@ -39,14 +40,14 @@ public interface Scenario {
 	public boolean needBotControl();
 	
 	/**
-	 * Registriert Vision an dem Scenario
+	 * Übergibt dem Scenario Positionsdaten der Vision
 	 * 
-	 * @param aVision die zu registrierende Vision
+	 * @param aVision die von der Vision übermittelten Positionsdaten
 	 * 
-	 * @return true die Vision konnte erfolgreich registriert werden
-	 * 		   false Fehler beim Registrieren von der Vision 
+	 * @return true die Positionsdaten konneten erfolgreich übergeben werden
+	 * 		   false Fehler beim übergeben der Positionsdaten 
 	 */
-	public boolean registerVision( Vision aVision );
+	public boolean putPositionData( PositionDataPackage aPositionDataPackage );
 
 	/**
 	 * Registriert BotControl an dem Scenario

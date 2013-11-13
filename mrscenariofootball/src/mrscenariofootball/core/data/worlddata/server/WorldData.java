@@ -1,6 +1,7 @@
 package mrscenariofootball.core.data.worlddata.server;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -25,11 +26,32 @@ public class WorldData{
 	BallPosition mBallPosition;
 
 	@XmlElement(name="players")
-	ArrayList<Player> mListOfPlayers;
+	List<Player> mListOfPlayers;
 
     @XmlElement(name="flag")
-    ArrayList<ReferencePoint> mReferencePoints;
+    List<ReferencePoint> mReferencePoints;
 	
+    public WorldData(){}
+    
+	public WorldData(
+			double aPlayTime, 
+			PlayMode aPlayMode, 
+			Score aScore,
+			int aMaxNumberOfAgents, 
+			BallPosition aBallPosition,
+			List<Player> aListOfPlayers,
+			List<ReferencePoint> aReferencePoints ) {
+		
+		mPlayTime = aPlayTime;
+		mPlayMode = aPlayMode;
+		mScore = aScore;
+		mMaxNumberOfAgents = aMaxNumberOfAgents;
+		mBallPosition = aBallPosition;
+		mListOfPlayers = aListOfPlayers;
+		mReferencePoints = aReferencePoints;
+		
+	}
+
 	public String toXMLString(){
 		
 		return Helpers.marshallXMLString( this, WorldData.class );
@@ -63,6 +85,62 @@ public class WorldData{
 				Score.class,
 				Team.class  );
 
+	}
+
+	public double getPlayTime() {
+		return mPlayTime;
+	}
+
+	public void setmPlayTime(double aPlayTime) {
+		mPlayTime = aPlayTime;
+	}
+
+	public PlayMode getPlayMode() {
+		return mPlayMode;
+	}
+
+	public void setmPlayMode( PlayMode aPlayMode ) {
+		mPlayMode = aPlayMode;
+	}
+
+	public Score getScore() {
+		return mScore;
+	}
+
+	public void setmScore( Score aScore ) {
+		mScore = aScore;
+	}
+
+	public int getMaxNumberOfAgents() {
+		return mMaxNumberOfAgents;
+	}
+
+	public void setmMaxNumberOfAgents( int aMaxNumberOfAgents ) {
+		mMaxNumberOfAgents = aMaxNumberOfAgents;
+	}
+
+	public BallPosition getBallPosition() {
+		return mBallPosition;
+	}
+
+	public void setmBallPosition( BallPosition aBallPosition ) {
+		mBallPosition = aBallPosition;
+	}
+
+	public List<Player> getListOfPlayers() {
+		return mListOfPlayers;
+	}
+
+	public void setmListOfPlayers( List<Player> aListOfPlayers ) {
+		mListOfPlayers = aListOfPlayers;
+	}
+
+	public List<ReferencePoint> getReferencePoints() {
+		return mReferencePoints;
+	}
+
+	public void setmReferencePoints( List<ReferencePoint> aReferencePoints ) {
+		mReferencePoints = aReferencePoints;
 	}
 	
 }

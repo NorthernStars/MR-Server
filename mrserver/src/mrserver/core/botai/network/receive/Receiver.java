@@ -4,20 +4,20 @@ import java.net.SocketTimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import mrserver.core.botai.BotAIManagement;
-import mrserver.core.botai.network.BotAIConnections;
+import mrserver.core.botai.network.BotAiHost;
 import mrservermisc.network.BasicUDPHostConnection;
 
 import org.apache.logging.log4j.Level;
 
 public class Receiver extends Thread {
 
-	private final BasicUDPHostConnection mBotAIConnect;
+	private final BotAiHost mBotAIConnect;
 	
 	private AtomicBoolean mManageMessagesfromBotAI = new AtomicBoolean( false );
 	private AtomicBoolean mSuspend = new AtomicBoolean( false );
 	private AtomicBoolean mIsSuspended = new AtomicBoolean( false );
 
-	public Receiver( BasicUDPHostConnection aBotAIConnect ) {
+	public Receiver( BotAiHost aBotAIConnect ) {
 
 		mBotAIConnect = aBotAIConnect;
 

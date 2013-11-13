@@ -26,5 +26,9 @@ public class PositionObjectBot extends PositionObject {
 				+ ", mLocation=" + Arrays.toString(mLocation) + ", mColor="
 				+ Arrays.toString(mColor) + "]";
 	}
+
+	public double getAngle() {
+		return mAngle;
+	}
 	
 }

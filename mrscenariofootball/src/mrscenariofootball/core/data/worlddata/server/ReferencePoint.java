@@ -1,20 +1,47 @@
 package mrscenariofootball.core.data.worlddata.server;
 
-import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 
 public class ReferencePoint {
 	
-    @XmlElement(name="id")
+    @XmlElement(name="pointtype")
 	ReferencePointName mPointName;
 	@XmlElement(name="position")
-    Point2D.Double mPosition;
+    ServerPoint mPosition;
+	
+	public ReferencePoint() {}
+
+	public ReferencePoint( ReferencePointName aPointname, ServerPoint aPoint ) {
+		
+		mPointName = aPointname;
+		mPosition = aPoint; 
+		
+	}
 	
 	@Override
 	public String toString() {
 		return "ReferencePoint [mPointName=" + mPointName + ", mPosition="
 				+ mPosition + "]";
+	}
+
+	public static List<ReferencePoint> getDefaultList( double aXMulti, double aYMulti ) {
+		
+		List<ReferencePoint> vListOfReferencePoints = new ArrayList<ReferencePoint>();
+		
+		for( ReferencePointName vRefPoint : ReferencePointName.values() ){
+			
+			if( vRefPoint.getId() >= 0 ){
+				
+				vListOfReferencePoints.add( new ReferencePoint( vRefPoint, new ServerPoint( vRefPoint.getRelativePosition().getX() * aXMulti, vRefPoint.getRelativePosition().getY() * aYMulti ) ));
+			
+			}
+			
+		}
+		
+		return vListOfReferencePoints;
 	}
 	
 }

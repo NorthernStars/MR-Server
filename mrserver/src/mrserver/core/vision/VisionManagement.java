@@ -18,7 +18,7 @@ import mrservermisc.vision.interfaces.Vision;
  * @since 0.1
  * @version 0.1
  */
-public class VisionManagement implements Vision{
+public class VisionManagement{
   
     private static VisionManagement INSTANCE;
     
@@ -149,13 +149,5 @@ public class VisionManagement implements Vision{
 		return false;
     	
     }
-    
-	@Override
-	public PositionDataPackage getPositionData() {
-		if( mIncomingPacketManagement != null ){
-			return mIncomingPacketManagement.getLatestPackage();
-		}
-		return null;
-	}
 
 }

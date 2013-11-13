@@ -13,6 +13,7 @@ import mrserver.core.Core;
 import mrservermisc.botcontrol.interfaces.BotControl;
 import mrservermisc.bots.interfaces.Bot;
 import mrservermisc.graphics.interfaces.Graphics;
+import mrservermisc.network.data.position.PositionDataPackage;
 import mrservermisc.scenario.interfaces.Scenario;
 import mrservermisc.vision.interfaces.Vision;
 
@@ -137,11 +138,11 @@ public class ScenarioManagement {
 		
 	}
     
-	public boolean registerVision( Vision aVision ){
+	public boolean putPositionData( PositionDataPackage aPositionDataPackage ){
 
 		if( mScenario != null ){
 			
-			return mScenario.registerVision( aVision );
+			return mScenario.putPositionData( aPositionDataPackage );
 			
 		}
 		

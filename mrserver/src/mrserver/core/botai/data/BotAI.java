@@ -4,6 +4,7 @@ import java.net.DatagramPacket;
 import java.net.InetSocketAddress;
 
 import mrserver.core.botai.BotAIManagement;
+import mrserver.core.botai.network.BotAiHost;
 import mrserver.core.botai.network.data.UnkownBotAI;
 import mrserver.core.scenario.ScenarioManagement;
 import mrservermisc.bots.interfaces.Bot;
@@ -17,7 +18,7 @@ import mrservermisc.network.handshake.client.oneo.ConnectionServerData;
 
 public class BotAI implements Bot{
 
-	private final BasicUDPHostConnection mBotAIConnection;
+	private final BotAiHost mBotAIConnection;
 	private final InetSocketAddress mSocketAddress;
 	private String mClientName;
 	private int mRcId;
@@ -153,7 +154,7 @@ public class BotAI implements Bot{
 	@Override
 	public int getTeam() {
 		
-		return mBotAIConnection.hashCode();
+		return mBotAIConnection.getTeam();
 		
 	}
 

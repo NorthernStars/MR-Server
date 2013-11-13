@@ -13,5 +13,6 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/everythingbuild/librariesexternal/log4j-core-2.0-beta9-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/everythingbuild/librariesexternal/jcip-annotations.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

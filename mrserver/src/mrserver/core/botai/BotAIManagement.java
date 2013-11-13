@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import mrserver.core.botai.data.BotAI;
 import mrserver.core.botai.network.BotAIConnections;
+import mrserver.core.botai.network.BotAiHost;
 import mrserver.core.botai.network.receive.Creator;
 import mrserver.core.botai.network.receive.Receiver;
 import mrservermisc.network.BasicUDPHostConnection;
@@ -58,7 +59,7 @@ public class BotAIManagement {
     	mMapOfConnectedBotAIs = new ConcurrentHashMap<SocketAddress, BotAI>();
 
     	BotAIManagement.getLogger().debug( "Starting receiver." );
-    	for( BasicUDPHostConnection vBotAIHost : mBotAIsConnections.getListOfHosts() ){
+    	for( BotAiHost vBotAIHost : mBotAIsConnections.getListOfHosts() ){
     		
     		mBotAIReceiver.add( new Receiver( vBotAIHost ));
     		

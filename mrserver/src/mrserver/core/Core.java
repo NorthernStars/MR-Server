@@ -7,7 +7,6 @@ import mrserver.core.config.commandline.CommandLineOptions;
 import mrserver.core.graphics.GraphicsManagement;
 import mrserver.core.scenario.ScenarioManagement;
 import mrserver.core.vision.VisionManagement;
-import mrservermisc.network.handshake.client.oneo.ConnectionAcknowlege;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -101,7 +100,6 @@ public class Core {
             if ( ScenarioManagement.getInstance().needsVision() ) {
 
             	VisionManagement.getInstance().connectToVision();
-            	ScenarioManagement.getInstance().registerVision( VisionManagement.getInstance() );
             	VisionManagement.getInstance().startRecievingPackets();
             	          	
             }
@@ -111,12 +109,10 @@ public class Core {
             
             GraphicsManagement.getInstance().startGraphicsManagement();
             ScenarioManagement.getInstance().registerGraphics( GraphicsManagement.getInstance() );
-
             //TODO: Vision kalibrieren
-            //TODO: Botports oeffnen
             BotAIManagement.getInstance().startBotAIManagement();
-            //TODO: Szenario starten
             ScenarioManagement.getInstance().startScenario();
+            Core.getLogger().info( "Started scenario" );
             
         } catch ( Exception vException ) {
 

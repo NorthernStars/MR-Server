@@ -10,19 +10,20 @@ import mrservermisc.network.BasicUDPHostConnection;
 
 public class BotAIConnections {
 	
-	private List<BasicUDPHostConnection> mListOfHosts = new ArrayList<BasicUDPHostConnection>();
+	private List<BotAiHost> mListOfHosts = new ArrayList<BotAiHost>();
 	
 	public BotAIConnections(){
 		
+		int i = 1;
 		for( int vBotAIPort : Core.getInstance().getServerConfig().getBotPorts() ){
 			
-			mListOfHosts.add( new BasicUDPHostConnection( vBotAIPort ));
+			mListOfHosts.add( new BotAiHost( vBotAIPort, i++ ));
 			
 		}
 				
 	}
 	
-	public List<BasicUDPHostConnection> getListOfHosts(){
+	public List<BotAiHost> getListOfHosts(){
 		
 		return mListOfHosts;
 		
