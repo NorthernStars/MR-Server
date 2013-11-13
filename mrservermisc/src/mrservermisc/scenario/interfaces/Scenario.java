@@ -59,14 +59,14 @@ public interface Scenario {
 	public boolean registerBotControl( BotControl aBotControl );
 	
 	/**
-	 * Registriert eine Liste von Bots an dem Scenario
+	 * Registriert neue Bots an dem Scenario
 	 * 
-	 * @param aBotList die Liste der Bots
+	 * @param aBot der neue Bots
 	 * 
-	 * @return true die Botliste konnte erfolgreich registriert werden
-	 * 		   false Fehler beim Registrieren von der Botliste 
+	 * @return true der Bot konnte erfolgreich registriert werden
+	 * 		   false Fehler beim Registrieren von dem Bot
 	 */
-	public boolean registerBotList( List<Bot> aBotList );
+	public boolean registerNewBot( Bot aBot );
 	
 	/**
 	 * Registriert Graphics an dem Scenario

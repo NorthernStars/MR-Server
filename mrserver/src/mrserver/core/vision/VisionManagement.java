@@ -104,8 +104,10 @@ public class VisionManagement implements Vision{
     
     public boolean startRecievingPackets(){
     	
-    	return mIncomingPacketManagement.startManagement();
-    	
+    	if( mIncomingPacketManagement != null ){
+    		return mIncomingPacketManagement.startManagement();
+    	}
+    	return false;
     }
     
     /**

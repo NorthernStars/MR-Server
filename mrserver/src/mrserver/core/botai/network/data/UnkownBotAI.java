@@ -6,18 +6,18 @@ import mrservermisc.network.BasicUDPHostConnection;
 
 public class UnkownBotAI {
 	
-	private DatagramPacket mRecievedDatagrammPacket;
+	private DatagramPacket mRecievedDatagramPacket;
 	private BasicUDPHostConnection mBotAIConnect;
 	
-	public UnkownBotAI( BasicUDPHostConnection aBotAIConnect, DatagramPacket aRecievedDatagramm ){
+	public UnkownBotAI( BasicUDPHostConnection aBotAIConnect, DatagramPacket aRecievedDatagram ){
 		
-		mRecievedDatagrammPacket = aRecievedDatagramm;
+		mRecievedDatagramPacket = aRecievedDatagram;
 		mBotAIConnect = aBotAIConnect;
 		
 	}
 
-	public DatagramPacket getRecievedDatagrammPacket() {
-		return mRecievedDatagrammPacket;
+	public DatagramPacket getRecievedDatagramPacket() {
+		return mRecievedDatagramPacket;
 	}
 
 	public BasicUDPHostConnection getBotAIConnect() {
@@ -26,8 +26,8 @@ public class UnkownBotAI {
 
 	@Override
 	public String toString() {
-		return "UnkownBotAI [mRecievedDatagrammPacket="
-				+ mRecievedDatagrammPacket + ", mBotAIConnect=" + mBotAIConnect
+		return "UnkownBotAI [mRecievedDatagramPacket="
+				+ mRecievedDatagramPacket + ", mBotAIConnect=" + mBotAIConnect
 				+ "]";
 	}
 	

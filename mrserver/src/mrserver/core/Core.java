@@ -1,22 +1,13 @@
 package mrserver.core;
 
-import java.util.ArrayList;
-
+import mrserver.core.botai.BotAIManagement;
 import mrserver.core.botcontrol.BotControlManagement;
 import mrserver.core.config.ServerConfig;
 import mrserver.core.config.commandline.CommandLineOptions;
 import mrserver.core.graphics.GraphicsManagement;
 import mrserver.core.scenario.ScenarioManagement;
 import mrserver.core.vision.VisionManagement;
-import mrservermisc.network.data.position.PositionDataPackage;
-import mrservermisc.network.data.position.PositionObject;
-import mrservermisc.network.data.position.PositionObjectBot;
-import mrservermisc.network.data.position.PositionObjectRectangle;
-import mrservermisc.network.data.position.PositionObjectType;
-import mrservermisc.network.data.position.VisionMode;
-import mrservermisc.network.handshake.ConnectionAcknowlege;
-import mrservermisc.network.handshake.ConnectionRequest;
-import mrservermisc.network.xml.Helpers;
+import mrservermisc.network.handshake.client.oneo.ConnectionAcknowlege;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -104,8 +95,6 @@ public class Core {
                 
             });
             
-            Helpers.createWorldDataSchema();
-            
             CommandLineOptions.getInstance().parseCommandLineArguments( aCommandline );
             //TODO: operatormanagement starten
             ScenarioManagement.getInstance().loadScenario();
@@ -124,7 +113,8 @@ public class Core {
             ScenarioManagement.getInstance().registerGraphics( GraphicsManagement.getInstance() );
 
             //TODO: Vision kalibrieren
-            //TODO: Botports oeffnen 
+            //TODO: Botports oeffnen
+            BotAIManagement.getInstance().startBotAIManagement();
             //TODO: Szenario starten
             ScenarioManagement.getInstance().startScenario();
             

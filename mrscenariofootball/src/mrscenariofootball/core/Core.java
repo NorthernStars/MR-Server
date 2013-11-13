@@ -1,5 +1,6 @@
 package mrscenariofootball.core;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -33,6 +34,7 @@ public class Core implements Scenario {
     
 	private Vision mTheVision;
 	private Graphics mGraphics;
+	private List<Bot> mBots = new ArrayList<Bot>();
 	
 	@Override
 	public void close() {
@@ -65,9 +67,11 @@ public class Core implements Scenario {
 	}
 
 	@Override
-	public boolean registerBotList(List<Bot> aBotList) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean registerNewBot(Bot aBot) {
+		
+		Core.getLogger().debug( "Register new bot: " + aBot.toString() );
+		return mBots.add( aBot );
+		
 	}
 
 	@Override
@@ -89,7 +93,7 @@ public class Core implements Scenario {
 			if( mTheVision != null ){
 				vData = mTheVision.getPositionData();
 				if( vData != null ){
-					mGraphics.sendWorldStatus( vData );
+					mGraphics.sendWorldStatus( vData.toXMLString() );
 					Core.getLogger().debug( vData.toString() );
 				}
 			}

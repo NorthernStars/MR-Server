@@ -47,7 +47,7 @@ public class BotAIManagement {
     private List<Receiver> mBotAIReceiver = new ArrayList<Receiver>();
     private Creator mBotAICreator;
     
-    public void startGraphicsManagement(){
+    public void startBotAIManagement(){
     	
     	BotAIManagement.getLogger().info( "Starting botaimanagement" );
     	

@@ -1,4 +1,4 @@
-package mrservermisc.network.data.worlddata;
+package mrscenariofootball.core.data.worlddata.server;
 
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;

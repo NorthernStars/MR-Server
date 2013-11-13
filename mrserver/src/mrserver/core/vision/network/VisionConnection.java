@@ -7,10 +7,9 @@ import org.apache.logging.log4j.Level;
 import mrserver.core.Core;
 import mrserver.core.vision.VisionManagement;
 import mrservermisc.network.BasicUDPServerConnection;
-import mrservermisc.network.data.position.VisionMode;
-import mrservermisc.network.handshake.ConnectionAcknowlege;
-import mrservermisc.network.handshake.ConnectionEstablished;
-import mrservermisc.network.handshake.ConnectionRequest;
+import mrservermisc.network.handshake.server.ConnectionAcknowlege;
+import mrservermisc.network.handshake.server.ConnectionEstablished;
+import mrservermisc.network.handshake.server.ConnectionRequest;
 
 public class VisionConnection extends BasicUDPServerConnection{
 	

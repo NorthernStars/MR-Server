@@ -1,4 +1,4 @@
-package mrservermisc.network.handshake;
+package mrservermisc.network.handshake.server;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;

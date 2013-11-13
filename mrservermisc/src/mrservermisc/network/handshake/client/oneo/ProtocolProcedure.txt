@@ -1,0 +1,23 @@
+Protocol version 1.0
+
+client:
+<connect>
+    <type>Client</type>
+    <protocol_version>1.0</protocol_version>
+    <nickname>The Avangers</nickname>
+    <rc_id>0</rc_id>
+    <vt_id>0</vt_id>
+</connect>
+
+server:
+<connect>true</connect>
+
+client:
+<connect>true</connect>
+
+server:
+<connect>
+	<type>Client</type>
+	<protocol_version>1.0</protocol_version>
+	<movement_mode>wheel_velocities</movement_mode>
+</connect>

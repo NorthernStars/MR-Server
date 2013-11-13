@@ -161,11 +161,11 @@ public class ScenarioManagement {
 		
 	}
     
-	public boolean registerBotList( List<Bot> aBotList ){
+	public boolean registerNewBot( Bot aBot ){
 
 		if( mScenario != null ){
 			
-			return mScenario.registerBotList( aBotList );
+			return mScenario.registerNewBot( aBot );
 			
 		}
 		

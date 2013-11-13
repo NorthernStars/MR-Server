@@ -37,7 +37,7 @@ public class Receiver extends Thread {
 			
 			super.start();
 			mManageMessagesfromBotAI.set( true);
-			BotAIManagement.getLogger().info( "Started processing packets from graphics" );
+			BotAIManagement.getLogger().info( "Started processing packets from botais" );
             
 		} else {
 		    
@@ -136,6 +136,11 @@ public class Receiver extends Thread {
 			
 		}
 		
+	}
+
+	@Override
+	public String toString() {
+		return "Receiver [mBotAIConnect=" + mBotAIConnect + "]";
 	}
 	
 }

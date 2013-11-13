@@ -102,9 +102,9 @@ public class Helpers {
 	public static void createNetworkHandschakeSchema( ){
 
 		createXMLSchema( "networkhandshakeschema.xsd",
-				mrservermisc.network.handshake.ConnectionAcknowlege.class,
-				mrservermisc.network.handshake.ConnectionRequest.class,
-				mrservermisc.network.handshake.ConnectionEstablished.class  );
+				mrservermisc.network.handshake.server.ConnectionAcknowlege.class,
+				mrservermisc.network.handshake.server.ConnectionRequest.class,
+				mrservermisc.network.handshake.server.ConnectionEstablished.class  );
 
 	}
 	
@@ -125,18 +125,4 @@ public class Helpers {
 
 	}
 	
-	public static void createWorldDataSchema( ){
-
-		createXMLSchema( "worlddataschema.xsd",
-				mrservermisc.network.data.worlddata.WorldData.class,
-				mrservermisc.network.data.worlddata.BallPosition.class,
-				mrservermisc.network.data.worlddata.Player.class,
-				mrservermisc.network.data.worlddata.PlayMode.class,
-				mrservermisc.network.data.worlddata.ReferencePoint.class,
-				mrservermisc.network.data.worlddata.ReferencePointName.class,
-				mrservermisc.network.data.worlddata.Score.class,
-				mrservermisc.network.data.worlddata.Team.class  );
-
-	}
-
 }

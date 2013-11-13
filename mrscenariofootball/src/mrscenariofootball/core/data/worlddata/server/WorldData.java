@@ -1,4 +1,4 @@
-package mrservermisc.network.data.worlddata;
+package mrscenariofootball.core.data.worlddata.server;
 
 import java.util.ArrayList;
 
@@ -50,5 +50,19 @@ public class WorldData{
 				+ ", mListOfPlayers=" + mListOfPlayers + ", mReferencePoints="
 				+ mReferencePoints + "]";
 	}
-    
+	
+	public static void createWorldDataSchema( ){
+
+		Helpers.createXMLSchema( "worlddataschema.xsd",
+				WorldData.class,
+				BallPosition.class,
+				Player.class,
+				PlayMode.class,
+				ReferencePoint.class,
+				ReferencePointName.class,
+				Score.class,
+				Team.class  );
+
+	}
+	
 }

@@ -95,11 +95,11 @@ public class GraphicsManagement implements Graphics{
     }
 
 	@Override
-	public boolean sendWorldStatus(PositionDataPackage aPositionData) {
+	public boolean sendWorldStatus( String aWorldDataXML ) {
 		
 		for( GraphicModul vDing : Collections.list( mMapOfConnectedGraphicModules.elements() ) ){
 			
-			vDing.sendData( aPositionData );
+			vDing.sendData( aWorldDataXML );
 			
 		}
 		

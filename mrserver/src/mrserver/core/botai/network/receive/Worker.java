@@ -1,6 +1,7 @@
 package mrserver.core.botai.network.receive;
 
 import java.net.DatagramPacket;
+import java.net.InetSocketAddress;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -19,12 +20,12 @@ public class Worker implements Runnable{
 		
 	}
 
-	private DatagramPacket mRecievedDatagrammPacket;
+	private DatagramPacket mRecievedDatagramPacket;
 	private BasicUDPHostConnection mBotAIConnect;
 	
-	public Worker( BasicUDPHostConnection aBotAIConnect, DatagramPacket aRecievedDatagramm ){
+	public Worker( BasicUDPHostConnection aBotAIConnect, DatagramPacket aRecievedDatagram ){
 		
-		mRecievedDatagrammPacket = aRecievedDatagramm;
+		mRecievedDatagramPacket = aRecievedDatagram;
 		mBotAIConnect = aBotAIConnect;
 		
 	}
@@ -32,17 +33,17 @@ public class Worker implements Runnable{
 	@Override
 	public void run() {
 
-		BotAIManagement.getLogger().debug( "Processing packet " + mRecievedDatagrammPacket.toString() );
+		BotAIManagement.getLogger().debug( "Processing packet " + "(" + ( (InetSocketAddress) mRecievedDatagramPacket.getSocketAddress()).toString() + "):" + new String( mRecievedDatagramPacket.getData(), 0, mRecievedDatagramPacket.getLength() ) );
 		
-		BotAI aCorrespondingBotAI = BotAIManagement.getInstance().getMapOfBotAIs().get( mRecievedDatagrammPacket.getSocketAddress() );
+		BotAI aCorrespondingBotAI = BotAIManagement.getInstance().getMapOfBotAIs().get( mRecievedDatagramPacket.getSocketAddress() );
 		
 		if( aCorrespondingBotAI != null ){
 			
-			aCorrespondingBotAI.processDatagrammPacket( mRecievedDatagrammPacket );
+			aCorrespondingBotAI.processDatagrammPacket( mRecievedDatagramPacket );
 			
 		} else {
 			
-			Creator.putUnkownSenderDatagramInProcessingQueue( new UnkownBotAI( mBotAIConnect, mRecievedDatagrammPacket ) );
+			Creator.putUnkownSenderDatagramInProcessingQueue( new UnkownBotAI( mBotAIConnect, mRecievedDatagramPacket ) );
 			
 		}
 		

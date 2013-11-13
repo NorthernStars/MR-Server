@@ -15,7 +15,7 @@
     </RandomAccessFile>
   </appenders>
   <loggers>
-    <logger name="SERVERCORE" level="debug" additivity="false">
+    <logger name="SERVERCORE" level="info" additivity="false">
       <appender-ref ref="Console"/>
       <appender-ref ref="ERROR" />
     </logger>
@@ -27,7 +27,7 @@
       <appender-ref ref="Console"/>
       <appender-ref ref="ERROR" />
     </logger>
-    <logger name="VISIONMANAGEMENT" level="debug" additivity="false">
+    <logger name="VISIONMANAGEMENT" level="info" additivity="false">
       <appender-ref ref="Console"/>
       <appender-ref ref="ERROR" />
     </logger>
@@ -35,7 +35,7 @@
       <appender-ref ref="Console"/>
       <appender-ref ref="ERROR" />
     </logger>
-    <logger name="GRAPHICSMANAGEMENT" level="debug" additivity="false">
+    <logger name="GRAPHICSMANAGEMENT" level="info" additivity="false">
       <appender-ref ref="Console"/>
       <appender-ref ref="ERROR" />
     </logger>

@@ -1,4 +1,4 @@
-package mrservermisc.network.data.worlddata;
+package mrscenariofootball.core.data.worlddata.server;
 
 public class BallPosition extends ReferencePoint{
 

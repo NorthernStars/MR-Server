@@ -1,6 +1,7 @@
 package mrserver.core.botai.network.receive;
 
 import java.net.DatagramPacket;
+import java.net.InetSocketAddress;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -109,19 +110,20 @@ private static final BlockingQueue<UnkownBotAI> UNKOWNSENDERDATAGRAMS = new Arra
 				vUnkownBotAI = UNKOWNSENDERDATAGRAMS.poll( 100, TimeUnit.MILLISECONDS );
 				if( vUnkownBotAI != null ){
 						
-					if( !BotAIManagement.getInstance().getMapOfBotAIs().containsKey( vUnkownBotAI.getRecievedDatagrammPacket().getSocketAddress() ) ){
+					if( !BotAIManagement.getInstance().getMapOfBotAIs().containsKey( vUnkownBotAI.getRecievedDatagramPacket().getSocketAddress() ) ){
 					
 						vBotAI = new BotAI( vUnkownBotAI );
 						
-						if( vBotAI.connectionRequest( vUnkownBotAI.getRecievedDatagrammPacket() ) ){
+						if( vBotAI.connectionRequest( vUnkownBotAI.getRecievedDatagramPacket() ) ){
 							
-							BotAIManagement.getInstance().getMapOfBotAIs().put( vUnkownBotAI.getRecievedDatagrammPacket().getSocketAddress(), vBotAI );
+							BotAIManagement.getInstance().getMapOfBotAIs().put( vUnkownBotAI.getRecievedDatagramPacket().getSocketAddress(), vBotAI );
+							BotAIManagement.getLogger().info( "New botai connected: " + (InetSocketAddress) vUnkownBotAI.getRecievedDatagramPacket().getSocketAddress() );
 							
 						}
 					
 					} else {
 						
-						BotAIManagement.getInstance().getMapOfBotAIs().get( vUnkownBotAI.getRecievedDatagrammPacket().getSocketAddress() ).processDatagrammPacket( vUnkownBotAI.getRecievedDatagrammPacket() );
+						BotAIManagement.getInstance().getMapOfBotAIs().get( vUnkownBotAI.getRecievedDatagramPacket().getSocketAddress() ).processDatagrammPacket( vUnkownBotAI.getRecievedDatagramPacket() );
 						
 					}
 					

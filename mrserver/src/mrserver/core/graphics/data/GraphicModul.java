@@ -3,17 +3,15 @@ package mrserver.core.graphics.data;
 import java.net.DatagramPacket;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import mrserver.core.Core;
 import mrserver.core.graphics.GraphicsManagement;
 import mrserver.core.graphics.network.GraphicsConnection;
-import mrservermisc.graphics.interfaces.Graphic;
 import mrservermisc.network.data.position.PositionDataPackage;
-import mrservermisc.network.handshake.ConnectionAcknowlege;
-import mrservermisc.network.handshake.ConnectionEstablished;
-import mrservermisc.network.handshake.ConnectionRequest;
+import mrservermisc.network.handshake.server.ConnectionAcknowlege;
+import mrservermisc.network.handshake.server.ConnectionEstablished;
+import mrservermisc.network.handshake.server.ConnectionRequest;
 import mrservermisc.network.xml.Helpers;
 
 public class GraphicModul {
@@ -23,7 +21,7 @@ public class GraphicModul {
 	private String mClientName;
 	
 	@SuppressWarnings("rawtypes")
-	private Class mExpectedPacket = mrservermisc.network.handshake.ConnectionEstablished.class;
+	private Class mExpectedPacket = mrservermisc.network.handshake.server.ConnectionEstablished.class;
 	
 	private AtomicBoolean mIsActive = new AtomicBoolean( true );
 	private int mValidityCounter = 0;
@@ -74,12 +72,6 @@ public class GraphicModul {
 		
 	}
 	
-	private void process( Object aIgnore ) {
-		
-		GraphicsManagement.getLogger().error( "Doesnt work that way, Sherlock" );
-		
-	}
-	
 	private void process( ConnectionEstablished aConnectionEstablished ) {
 		
 		mValidityCounter = 0;
@@ -117,12 +109,6 @@ public class GraphicModul {
 	public void sendData( String aData ){
 		
 		mGraphicsConnection.sendString( aData, mSocketAddress );
-		
-	}
-	
-	public void sendData( PositionDataPackage aPositionData ){
-		
-		mGraphicsConnection.sendString( aPositionData.toXMLString(), mSocketAddress );
 		
 	}
 

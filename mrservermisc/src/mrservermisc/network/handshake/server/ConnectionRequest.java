@@ -1,4 +1,4 @@
-package mrservermisc.network.handshake;
+package mrservermisc.network.handshake.server;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -31,6 +31,7 @@ public class ConnectionRequest {
 		return "ConnectionRequest [mClientGraphicsName=" + mClientName
 				+ "]";
 	}
+	
 	public String toXMLString(){
 		
 		return Helpers.marshallXMLString( this, ConnectionRequest.class );

@@ -62,11 +62,6 @@
     <xs:restriction base="xs:string">
       <xs:enumeration value="BOT"/>
       <xs:enumeration value="RECTANGLE"/>
-      <xs:enumeration value="LINE"/>
-      <xs:enumeration value="CIRCLE"/>
-      <xs:enumeration value="DOT"/>
-      <xs:enumeration value="TEXT"/>
-      <xs:enumeration value="IMAGE"/>
     </xs:restriction>
   </xs:simpleType>
 </xs:schema>
