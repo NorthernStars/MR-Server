@@ -5,12 +5,10 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import mrservermisc.network.data.position.PositionDataPackage;
 import mrservermisc.network.xml.Helpers;
 
 @XmlRootElement(name="WorldData")
-public class WorldData{
+public class WorldData {
     
     @XmlElement(name="time")
 	double mPlayTime;
@@ -49,6 +47,29 @@ public class WorldData{
 		mBallPosition = aBallPosition;
 		mListOfPlayers = aListOfPlayers;
 		mReferencePoints = aReferencePoints;
+		
+	}	
+	
+	public WorldData( WorldData aWorldData ) {
+		
+		mPlayTime = aWorldData.getPlayTime();
+		mPlayMode = getPlayMode();
+		mScore = new Score( aWorldData.getScore() );
+		mMaxNumberOfAgents = aWorldData.getMaxNumberOfAgents();
+		mBallPosition = new BallPosition( aWorldData.getBallPosition() );
+		mListOfPlayers = new ArrayList<Player>( aWorldData.getListOfPlayers().size() + 10 );
+		for( Player vPlayer : aWorldData.getListOfPlayers() ){
+			
+			mListOfPlayers.add( new Player( vPlayer ) );
+			
+		}
+		
+		mReferencePoints =  new ArrayList<ReferencePoint>( aWorldData.getReferencePoints().size() );
+		for( ReferencePoint vReferencePoint : aWorldData.getReferencePoints() ){
+			
+			mReferencePoints.add( new ReferencePoint( vReferencePoint ) );
+			
+		}
 		
 	}
 
@@ -141,6 +162,12 @@ public class WorldData{
 
 	public void setmReferencePoints( List<ReferencePoint> aReferencePoints ) {
 		mReferencePoints = aReferencePoints;
+	}
+
+	public WorldData copy() {
+		
+		return  new WorldData( this );
+		
 	}
 	
 }

@@ -11,18 +11,17 @@ import mrscenariofootball.core.data.worlddata.server.WorldData;
 import mrservermisc.network.data.position.PositionDataPackage;
 import mrservermisc.network.data.position.PositionObject;
 import mrservermisc.network.data.position.PositionObjectBot;
-import mrservermisc.vision.interfaces.Vision;
 
 import org.apache.logging.log4j.Level;
 
 public class FromVision extends Thread {
 	
-	private static final BlockingQueue<PositionDataPackage> UNKOWNSENDERDATAGRAMS = new ArrayBlockingQueue<PositionDataPackage>( 5, true );
+	private static final BlockingQueue<PositionDataPackage> NEWPOSITIONDATA = new ArrayBlockingQueue<PositionDataPackage>( 5, true );
 		
 	public static boolean putPositionDatPackageInProcessingQueue( PositionDataPackage aPositionData ){
 	
 		ScenarioCore.getLogger().trace( "Putting positiondata in queue: " + aPositionData.toString() + " " );
-		return UNKOWNSENDERDATAGRAMS.offer( aPositionData );
+		return NEWPOSITIONDATA.offer( aPositionData );
 		
 	}
 	private AtomicBoolean mManagePositionDataFromVision = new AtomicBoolean( false );
@@ -98,17 +97,16 @@ public class FromVision extends Thread {
               
 			try {
 
-				vPositionData = UNKOWNSENDERDATAGRAMS.poll( 100, TimeUnit.MILLISECONDS );
+				vPositionData = NEWPOSITIONDATA.poll( 100, TimeUnit.MILLISECONDS );
 				if( vPositionData != null ){
 						
-					vWorldata = ScenarioCore.getInstance().getScenarioInformation().getWorldData(); //TODO: copy
-					vWorldata.getListOfPlayers().clear();
+					vWorldata = ScenarioCore.getInstance().getScenarioInformation().getWorldData().copy();
 					
 					for( PositionObject vObject : vPositionData.mListOfObjects ){
 						
 						if( vObject instanceof PositionObjectBot ){
 						
-							vWorldata.getListOfPlayers().add( new Player( ( PositionObjectBot ) vObject , ScenarioCore.getInstance().getBots().get( vObject.getId() ) ) );
+							vWorldata.getListOfPlayers().add( new Player( ( PositionObjectBot ) vObject , ScenarioCore.getInstance().getBotAIs().get( vObject.getId() ) ) );
 							
 						}
 						

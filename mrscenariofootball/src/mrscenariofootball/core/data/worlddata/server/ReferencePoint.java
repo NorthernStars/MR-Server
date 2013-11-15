@@ -21,6 +21,13 @@ public class ReferencePoint {
 		
 	}
 	
+	public ReferencePoint( ReferencePoint aReferencePoint ) {
+		
+		mPointName = aReferencePoint.getPointName();
+		mPosition = new ServerPoint( aReferencePoint.getPosition() );
+		
+	}
+
 	@Override
 	public String toString() {
 		return "ReferencePoint [mPointName=" + mPointName + ", mPosition="
@@ -42,6 +49,14 @@ public class ReferencePoint {
 		}
 		
 		return vListOfReferencePoints;
+	}
+
+	public ReferencePointName getPointName() {
+		return mPointName;
+	}
+
+	public ServerPoint getPosition() {
+		return mPosition;
 	}
 	
 }

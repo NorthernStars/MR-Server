@@ -9,7 +9,13 @@ public class BallPosition extends ReferencePoint{
 		super( aPointname, aPoint );
 		
 	}
-	
+
+	public BallPosition( BallPosition aBallPosition ) {
+
+		super( aBallPosition );
+		
+	}
+
 	@Override
 	public String toString() {
 		return "BallPosition [mPointName=" + mPointName + ", mPosition="

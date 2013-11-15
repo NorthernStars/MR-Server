@@ -1,11 +1,8 @@
 package mrscenariofootball.core.data.worlddata.server;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.apache.logging.log4j.core.layout.RFC5424Layout;
-
-import mrservermisc.bots.interfaces.Bot;
+import mrscenariofootball.core.data.BotAI;
 import mrservermisc.network.data.position.PositionObjectBot;
 
 public class Player extends ReferencePoint {
@@ -27,21 +24,34 @@ public class Player extends ReferencePoint {
 
 	public Player() {}
 
-	public Player( PositionObjectBot vFoundBot, Bot vConnectedBot ) {
+	public Player( PositionObjectBot aFoundBot, BotAI aBotAI ) {
 
-		super( ReferencePointName.Player, new ServerPoint( vFoundBot.getLocation()[0], vFoundBot.getLocation()[1] ) );
-		mId = vFoundBot.getId();
-		mOrientationAngle = vFoundBot.getAngle();
-		if( vConnectedBot == null ){
+		super( ReferencePointName.Player, new ServerPoint( aFoundBot.getLocation()[0], aFoundBot.getLocation()[1] ) );
+		mId = aFoundBot.getId();
+		mOrientationAngle = aFoundBot.getAngle();
+		if( aBotAI == null ){
 			
 			mStatus = false;
 			
 		} else {
 		
 			mStatus = true;
-			mTeam = vConnectedBot.getTeam() == 1 ? Team.Yellow : Team.Blue;
+			mTeam = aBotAI.getTeam() == 1 ? Team.Yellow : Team.Blue;
+			mNickname = aBotAI.getName();
 		
 		}
+		
+	}
+
+	public Player( Player aPlayer ) {
+		
+		super(aPlayer);
+		
+		mId = aPlayer.getId();
+		mOrientationAngle = aPlayer.getOrientationAngle();
+		mStatus = aPlayer.getStatus();
+		mTeam = aPlayer.getTeam();
+		mNickname = aPlayer.getNickname();		
 		
 	}
 
@@ -51,6 +61,26 @@ public class Player extends ReferencePoint {
 				+ mStatus + ", mOrientationAngle=" + mOrientationAngle
 				+ ", mTeam=" + mTeam + ", mPointName=" + mPointName
 				+ ", mPosition=" + mPosition + "]";
+	}
+
+	public int getId() {
+		return mId;
+	}
+
+	public String getNickname() {
+		return mNickname;
+	}
+
+	public Boolean getStatus() {
+		return mStatus;
+	}
+
+	public double getOrientationAngle() {
+		return mOrientationAngle;
+	}
+
+	public Team getTeam() {
+		return mTeam;
 	}
 	
 }

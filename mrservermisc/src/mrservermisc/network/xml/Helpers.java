@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Arrays;
+import java.util.concurrent.ConcurrentHashMap;
 
+import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -20,25 +22,29 @@ import org.apache.logging.log4j.Level;
 
 public class Helpers {
 
+	private static ConcurrentHashMap<Class, Marshaller> MARSHALLER = new ConcurrentHashMap<Class, Marshaller>();
+	private static ConcurrentHashMap<Class, Unmarshaller> UNMARSHALLER = new ConcurrentHashMap<Class, Unmarshaller>();
+	
 	public static <T> T unmarshallXMLString( String aXMLConnectionAcknowlege, Class<T> aClass ){
 		
-		Loggers.getXMLLogger().debug( "Trying to unmarshall xmlstring!: " + aXMLConnectionAcknowlege + " to " + aClass.toString() );
+		Loggers.getXMLLogger().debug( "Trying to unmarshall xmlstring!: {} to {}", aXMLConnectionAcknowlege, aClass );
 		StringReader vXMLDataStream = new StringReader( aXMLConnectionAcknowlege );
-		JAXBContext vJAXBContext;
+		
 		try {
-
-			vJAXBContext = JAXBContext.newInstance( aClass );
-
-			Unmarshaller vUnmarshaller = vJAXBContext.createUnmarshaller();
-			@SuppressWarnings("unchecked")
-			T vCreatedObject =  (T) vUnmarshaller.unmarshal( vXMLDataStream );
-			Loggers.getXMLLogger().debug( "Unmarshalled xmlstring to " + vCreatedObject != null ? vCreatedObject.toString() : "null" );
+			if( !UNMARSHALLER.containsKey( aClass ) ){
+				
+				JAXBContext vJAXBContext = JAXBContext.newInstance( aClass );
+				UNMARSHALLER.putIfAbsent( aClass, vJAXBContext.createUnmarshaller() );
+			}
 			
+			@SuppressWarnings("unchecked")
+			T vCreatedObject =  (T) UNMARSHALLER.get( aClass ).unmarshal( vXMLDataStream );
+			Loggers.getXMLLogger().debug( "Unmarshalled xmlstring to {}", vCreatedObject );
 			return vCreatedObject;
 			
 		} catch ( JAXBException vJAXBException ) {
 
-			Loggers.getXMLLogger().error( "Error unmarshalling xmlstring: " + vJAXBException.getLocalizedMessage() );
+			Loggers.getXMLLogger().error( "Error unmarshalling xmlstring: {}", vJAXBException.getLocalizedMessage() );
 			Loggers.getXMLLogger().catching( Level.ERROR, vJAXBException );
 	        
 		}
@@ -50,19 +56,22 @@ public class Helpers {
 	@SuppressWarnings("unchecked")
 	public static <T> String marshallXMLString( Object aXMLObject, Class<T> aClass ){
 		
-		Loggers.getXMLLogger().debug( "Trying to marshall object: " + (T)aXMLObject.toString() );
+		Loggers.getXMLLogger().debug( "Trying to marshall object: {}", (T)aXMLObject );
 		StringWriter vXMLDataStream = new StringWriter();		
-		JAXBContext vJAXBContext;
-		try {
-			vJAXBContext = JAXBContext.newInstance( aClass );
 		
-	        Marshaller vMarshaller = vJAXBContext.createMarshaller();
-	        vMarshaller.marshal( aXMLObject, vXMLDataStream );
-	        Loggers.getXMLLogger().debug( "Marshalled object to " + vXMLDataStream );
+		try {
+			if( !MARSHALLER.containsKey( aClass ) ){
+				
+				JAXBContext vJAXBContext = JAXBContext.newInstance( aClass );
+				MARSHALLER.putIfAbsent( aClass, vJAXBContext.createMarshaller() );
+			}
+		
+			MARSHALLER.get( aClass ).marshal( aXMLObject, vXMLDataStream );
+			Loggers.getXMLLogger().debug( "Marshalled object to {}", vXMLDataStream );
 			
-		} catch ( JAXBException vJAXBException ) {
+		} catch ( Exception vJAXBException ) {
 
-			Loggers.getXMLLogger().error( "Error marshalling object: " + vJAXBException.getLocalizedMessage() );
+			Loggers.getXMLLogger().error( "Error marshalling object: {}", vJAXBException.getLocalizedMessage() );
 			Loggers.getXMLLogger().catching( Level.ERROR, vJAXBException );
 	      
 		}
@@ -73,7 +82,7 @@ public class Helpers {
 	
 	public static void createXMLSchema( final String aSchemaName, @SuppressWarnings("rawtypes") Class... aClasses ){
 		
-		Loggers.getXMLLogger().debug( "Creating schema \"" + aSchemaName + "\" for " + Arrays.toString( aClasses ) );
+		Loggers.getXMLLogger().debug( "Creating schema \"{}\" for {}", aSchemaName, Arrays.toString( aClasses ) );
 
 		JAXBContext vJAXBContext;
 		try {
@@ -92,7 +101,7 @@ public class Helpers {
 			
 		} catch ( JAXBException | IOException vException ) {
 
-			Loggers.getXMLLogger().error( "Error gernerating schema " + aSchemaName + ": " + vException.getLocalizedMessage() );
+			Loggers.getXMLLogger().error( "Error gernerating schema {}: {}", aSchemaName, vException.getLocalizedMessage() );
 			Loggers.getXMLLogger().catching( Level.ERROR, vException );
 	        
 		}

@@ -1,4 +1,4 @@
-package mrscenariofootball.core.data.worlddata.server;
+package mrscenariofootball.core.data.worlddata.client;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 

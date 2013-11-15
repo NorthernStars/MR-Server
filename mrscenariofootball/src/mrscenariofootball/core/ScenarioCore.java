@@ -2,16 +2,24 @@ package mrscenariofootball.core;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+import net.jcip.annotations.GuardedBy;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import mrscenariofootball.core.data.BotAI;
 import mrscenariofootball.core.data.ScenarioInformation;
+import mrscenariofootball.core.data.worlddata.client.ClientWorldData;
+import mrscenariofootball.core.data.worlddata.server.Player;
+import mrscenariofootball.core.data.worlddata.server.WorldData;
 import mrscenariofootball.core.managements.FromVision;
 import mrscenariofootball.core.managements.ToGraphics;
 import mrservermisc.botcontrol.interfaces.BotControl;
 import mrservermisc.bots.interfaces.Bot;
 import mrservermisc.graphics.interfaces.Graphics;
 import mrservermisc.network.data.position.PositionDataPackage;
+import mrservermisc.network.data.position.PositionObjectBot;
+import mrservermisc.network.data.position.PositionObjectType;
 import mrservermisc.scenario.interfaces.Scenario;
 import mrservermisc.vision.interfaces.Vision;
 
@@ -54,9 +62,8 @@ public class ScenarioCore implements Scenario {
         
     }
     
-	private Vision mTheVision;
 	private Graphics mGraphics;
-	private ConcurrentHashMap<Integer, Bot> mBots = new ConcurrentHashMap<Integer, Bot>();
+	@GuardedBy("this") private ConcurrentHashMap<Integer, BotAI> mBotAIs = new ConcurrentHashMap<Integer, BotAI>();
 	private ScenarioInformation mScenarioInformation;
 	private FromVision mFromVisionManagement;
 	private ToGraphics mToGraphicsManagement;
@@ -93,10 +100,17 @@ public class ScenarioCore implements Scenario {
 	}
 
 	@Override
-	public boolean registerNewBot( Bot aBot ) {
-		
-		ScenarioCore.getLogger().debug( "Register new bot: " + aBot.toString() );
-		return mBots.put( aBot.getVtId(), aBot ) != null;
+	public synchronized boolean registerNewBot( Bot aBot ) {
+		if( mBotAIs.putIfAbsent( aBot.getVtId(), new BotAI(aBot) ) != null ){
+			
+			ScenarioCore.getLogger().info( "Registered new bot: {}", aBot.toString() );
+			return true;
+			
+		} else {
+			
+			ScenarioCore.getLogger().info(" BotAI with used id tryed to connect: {}", aBot.toString() );
+			return false;
+		}
 		
 	}
 
@@ -108,28 +122,49 @@ public class ScenarioCore implements Scenario {
 
 	@Override
 	public void startScenario() {
-		
+
 		mScenarioInformation = new ScenarioInformation();
+		/*
+		mFromVisionManagement = new FromVision();
+		mFromVisionManagement.startManagement();
 		
-		if( mTheVision != null ){
-			mFromVisionManagement = new FromVision();
-			mFromVisionManagement.startManagement();
-		}
 		mToGraphicsManagement = new ToGraphics( mGraphics );
 		mToGraphicsManagement.startManagement();
-		
-		PositionDataPackage vData;
+		*/
 		ScenarioCore.getLogger().info( "Scenario started" );
-		ScenarioCore.getLogger().info( mScenarioInformation.getWorldData().toXMLString() );
 		
+		
+		PositionObjectBot vFoundBot = new PositionObjectBot( PositionObjectType.BOT, 1, "Hammer", new double[]{0.5,0.5}, new double[]{}, 0 );
+		Player vPlayer;
+		
+		ClientWorldData vClientWorldData;
+		
+		ScenarioCore.getLogger().info( "Scenario started" );
+		
+
 		while(true){
 			
+			if( !mBotAIs.isEmpty() ){
+			
+				vPlayer = new Player( vFoundBot, mBotAIs.get(1) );
+				vClientWorldData = new ClientWorldData( mScenarioInformation.getWorldData().copy(), vPlayer);
+				System.out.println(vClientWorldData);
+				mBotAIs.get(1).setWorldDataToSend( vClientWorldData );
+			}
+			for( BotAI vBotAI : ScenarioCore.getInstance().getBotAIs().values() ){
+				
+				vBotAI.sendWorldData( mScenarioInformation.getWorldData() );
+				
+			}
+			
 			try {
-				Thread.sleep( 500 );
+				Thread.sleep( 100 );
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+			/*
 			if( mTheVision != null ){
 				vData = mTheVision.getPositionData();
 				if( vData != null ){
@@ -137,19 +172,19 @@ public class ScenarioCore implements Scenario {
 				}
 			}
 			
-			mGraphics.sendWorldStatus( mScenarioInformation.getWorldData().toXMLString() );
-			
+			//mGraphics.sendWorldStatus( mScenarioInformation.getWorldData().toXMLString() );
+			*/
 		}
-		
+
 	}
 
 	public ScenarioInformation getScenarioInformation() {
 		return mScenarioInformation;
 	}
 	
-	public ConcurrentHashMap<Integer, Bot> getBots(){
+	public ConcurrentHashMap<Integer, BotAI> getBotAIs(){
 		
-		return mBots;
+		return mBotAIs;
 		
 	}
 

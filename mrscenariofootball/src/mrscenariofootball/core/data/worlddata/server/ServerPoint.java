@@ -19,7 +19,14 @@ public class ServerPoint extends Point2D {
 		mY = aY;
 
 	}
-	
+
+	public ServerPoint( ServerPoint aServerPoint ) {
+		
+		mX = aServerPoint.getX();
+		mY = aServerPoint.getY();		
+		
+	}
+
 	@Override
 	public double getX() {
 		return mX;
