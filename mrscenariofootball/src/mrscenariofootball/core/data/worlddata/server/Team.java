@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 public enum Team {
 
 	@XmlEnumValue("yellow") Yellow,
-	@XmlEnumValue("blue") Blue;
+	@XmlEnumValue("blue") Blue,
+	@XmlEnumValue("none") None;
 	
 }

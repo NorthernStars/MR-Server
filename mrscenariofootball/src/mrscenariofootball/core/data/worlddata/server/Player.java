@@ -32,6 +32,8 @@ public class Player extends ReferencePoint {
 		if( aBotAI == null ){
 			
 			mStatus = false;
+			mTeam = Team.None;
+			mNickname = "NoFound";
 			
 		} else {
 		

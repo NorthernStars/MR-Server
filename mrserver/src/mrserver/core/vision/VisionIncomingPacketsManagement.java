@@ -98,7 +98,7 @@ public class VisionIncomingPacketsManagement extends Thread{
 
 	private boolean suspendManagement( boolean aSuspend ) {
 		mSuspend.set( aSuspend );
-		while( mIsSuspended.get() != aSuspend ){ try { this.wait( 1 ); } catch ( InterruptedException vInterruptedException ) { VisionManagement.getLogger().error( "Error suspending VisionIncomingPacketManagement: {}", vInterruptedException.getLocalizedMessage() ); VisionManagement.getLogger().catching( Level.ERROR, vInterruptedException ); } }
+		while( mIsSuspended.get() != aSuspend ){ try { Thread.sleep( 1 ); } catch ( InterruptedException vInterruptedException ) { VisionManagement.getLogger().error( "Error suspending VisionIncomingPacketManagement: {}", vInterruptedException.getLocalizedMessage() ); VisionManagement.getLogger().catching( Level.ERROR, vInterruptedException ); } }
 		return mIsSuspended.get();
 	}
 	
@@ -123,7 +123,7 @@ public class VisionIncomingPacketsManagement extends Thread{
 					vPositionDataFromVision = PositionDataPackage.unmarshallXMLPositionDataPackageString( vReceivedXMLString );
 					if( vPositionDataFromVision != null ){
 						
-						ScenarioManagement.getInstance().putPositionData( vPositionDataFromVision );
+						VisionManagement.getLogger().debug( "Put positiondata to scenario({}): {} ", ScenarioManagement.getInstance().putPositionData( vPositionDataFromVision ), vPositionDataFromVision );
 						
 					}
 					

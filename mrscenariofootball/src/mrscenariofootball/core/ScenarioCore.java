@@ -109,6 +109,7 @@ public class ScenarioCore implements Scenario {
 	public boolean putPositionData( PositionDataPackage aPositionDataPackage ) {
 		
 		return FromVision.putPositionDatPackageInProcessingQueue( aPositionDataPackage );
+		
 	}
 
 	@Override
@@ -143,6 +144,8 @@ public class ScenarioCore implements Scenario {
 	@Override
 	public void startScenario() {
 
+		WorldData.createWorldDataSchema();
+		
 		mScenarioInformation = new ScenarioInformation();
 		
 		mFromVisionManagement = new FromVision();
@@ -164,12 +167,22 @@ public class ScenarioCore implements Scenario {
 		
 		while(true){
 			
-			while( mPaused.get() ){ try { Thread.sleep( 10 ); } catch ( InterruptedException vInterruptedException ) { ScenarioCore.getLogger().error( "Error suspending Scenario: {}",vInterruptedException.getLocalizedMessage() ); ScenarioCore.getLogger().catching( Level.ERROR, vInterruptedException ); } }
+			while( mPaused.get() ){ 
+				
+				try { Thread.sleep( 10 ); } catch ( InterruptedException vInterruptedException ) { ScenarioCore.getLogger().error( "Error suspending Scenario: {}",vInterruptedException.getLocalizedMessage() ); ScenarioCore.getLogger().catching( Level.ERROR, vInterruptedException ); }
+
+				for( BotAI vBotAI : mBotAIs.values() ){
+					
+					mBotControl.sendMovement( vBotAI.getRcId(), 0, 0 );
+					
+				}
+			
+			}
 			
 			vTickTime = System.nanoTime();
 			
 			vWorldData = mScenarioInformation.getWorldData().copy();
-			vBall = new BallPosition( ReferencePointName.Ball, new ServerPoint( 0, 0 ) );
+			vBall = new BallPosition( ReferencePointName.Ball, new ServerPoint( vWorldData.getBallPosition().getPosition().getX(), vWorldData.getBallPosition().getPosition().getY() ) );
 			for( BotAI vBotAI : mBotAIs.values() ){
 				
 				vCommand = Command.unmarshallXMLPositionDataPackageString( vBotAI.getLastAction() );

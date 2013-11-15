@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 import mrservermisc.network.xml.Helpers;
 
 @XmlRootElement(name="WorldData")
@@ -108,6 +110,7 @@ public class WorldData {
 
 	}
 
+	@XmlTransient
 	public double getPlayTime() {
 		return mPlayTime;
 	}
@@ -115,7 +118,7 @@ public class WorldData {
 	public void setPlayTime(double aPlayTime) {
 		mPlayTime = aPlayTime;
 	}
-
+	@XmlTransient
 	public PlayMode getPlayMode() {
 		return mPlayMode;
 	}
@@ -123,7 +126,7 @@ public class WorldData {
 	public void setPlayMode( PlayMode aPlayMode ) {
 		mPlayMode = aPlayMode;
 	}
-
+	@XmlTransient
 	public Score getScore() {
 		return mScore;
 	}
@@ -131,7 +134,7 @@ public class WorldData {
 	public void setScore( Score aScore ) {
 		mScore = aScore;
 	}
-
+	@XmlTransient
 	public int getMaxNumberOfAgents() {
 		return mMaxNumberOfAgents;
 	}
@@ -139,7 +142,7 @@ public class WorldData {
 	public void setMaxNumberOfAgents( int aMaxNumberOfAgents ) {
 		mMaxNumberOfAgents = aMaxNumberOfAgents;
 	}
-
+	@XmlTransient
 	public BallPosition getBallPosition() {
 		return mBallPosition;
 	}
@@ -147,7 +150,7 @@ public class WorldData {
 	public void setBallPosition( BallPosition aBallPosition ) {
 		mBallPosition = aBallPosition;
 	}
-
+	@XmlTransient
 	public List<Player> getListOfPlayers() {
 		return mListOfPlayers;
 	}
@@ -155,7 +158,7 @@ public class WorldData {
 	public void setListOfPlayers( List<Player> aListOfPlayers ) {
 		mListOfPlayers = aListOfPlayers;
 	}
-
+	@XmlTransient
 	public List<ReferencePoint> getReferencePoints() {
 		return mReferencePoints;
 	}

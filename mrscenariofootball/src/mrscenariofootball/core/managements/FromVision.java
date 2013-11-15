@@ -91,7 +91,7 @@ public class FromVision extends Thread {
 	public void run(){
 
 		PositionDataPackage vPositionData;
-		WorldData vWorldata;
+		WorldData vWorldData;
 		
 		while( mManagePositionDataFromVision.get() ){
               
@@ -100,22 +100,24 @@ public class FromVision extends Thread {
 				vPositionData = NEWPOSITIONDATA.poll( 100, TimeUnit.MILLISECONDS );
 				if( vPositionData != null ){
 						
-					vWorldata = ScenarioCore.getInstance().getScenarioInformation().getWorldData().copy();
-					vWorldata.getListOfPlayers().clear();
+					vWorldData = ScenarioCore.getInstance().getScenarioInformation().getWorldData().copy();
+					vWorldData.getListOfPlayers().clear();
 					
 					for( PositionObject vObject : vPositionData.mListOfObjects ){
 						
 						if( vObject instanceof PositionObjectBot ){
 						
-							vWorldata.getListOfPlayers().add( new Player( ( PositionObjectBot ) vObject , ScenarioCore.getInstance().getBotAIs().get( vObject.getId() ) ) );
+							vWorldData.getListOfPlayers().add( new Player( ( PositionObjectBot ) vObject , ScenarioCore.getInstance().getBotAIs().get( vObject.getId() ) ) );
 							
 						}
 						
 					}
 					
-					ScenarioCore.getInstance().getScenarioInformation().setPlayers( vWorldata.getListOfPlayers() );
-					ToBotAIs.putWorldDatainSendingQueue( vWorldata );
-					ToGraphics.putWorldDatainSendingQueue( vWorldata );
+					ScenarioCore.getLogger().trace( "Created {}", vWorldData );
+					
+					ScenarioCore.getInstance().getScenarioInformation().setPlayers( vWorldData.getListOfPlayers() );
+					ToBotAIs.putWorldDatainSendingQueue( vWorldData );
+					ToGraphics.putWorldDatainSendingQueue( vWorldData );
 					
 					
 				}

@@ -1,11 +1,12 @@
 package mrserver.tempgui;
 
 import javax.swing.JFrame;
-
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 
 import mrserver.core.scenario.ScenarioManagement;
+import mrserver.core.vision.VisionManagement;
+import mrservermisc.network.data.position.VisionMode;
 
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
@@ -76,6 +77,59 @@ public class Helper {
 		});
 		btnStop.setMaximumSize(new Dimension(11799915, 25));
 		frame.getContentPane().add(btnStop);
+		
+		JButton btnCalibrate = new JButton("Calibrate distance");
+		btnCalibrate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Thread( new Runnable() {
+
+					@Override
+					public void run() {
+
+						VisionManagement.getInstance().changeVisionMode( VisionMode.VISION_MODE_CALIBRATE_DISTANCE );
+						
+					}
+				} ).start();
+			}
+		});
+		btnCalibrate.setMaximumSize(new Dimension(11799915, 25));
+		frame.getContentPane().add(btnCalibrate);
+		
+		JButton btnStreambots = new JButton("Calibrate tranformation");
+		btnStreambots.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new Thread( new Runnable() {
+
+					@Override
+					public void run() {
+
+						VisionManagement.getInstance().changeVisionMode( VisionMode.VISION_MODE_CALIBRATE_TRANSFORMATION );
+						
+					}
+				} ).start();
+			}
+		});
+		btnStreambots.setMaximumSize(new Dimension(11799915, 25));
+		frame.getContentPane().add(btnStreambots);
+		
+		JButton btnStreamAll = new JButton("Stream all");
+		btnStreamAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				new Thread( new Runnable() {
+
+					@Override
+					public void run() {
+
+						VisionManagement.getInstance().changeVisionMode( VisionMode.VISION_MODE_STREAM_ALL );
+						
+					}
+				} ).start();
+				
+			}
+		});
+		btnStreamAll.setMaximumSize(new Dimension(11799915, 25));
+		frame.getContentPane().add(btnStreamAll);
 	}
 
 }

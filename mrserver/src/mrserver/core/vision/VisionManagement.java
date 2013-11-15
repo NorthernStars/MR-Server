@@ -5,6 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import mrserver.core.Core;
+import mrserver.core.scenario.ScenarioManagement;
 import mrserver.core.vision.network.VisionConnection;
 import mrservermisc.network.data.position.PositionDataPackage;
 import mrservermisc.network.data.position.VisionMode;
@@ -86,6 +87,7 @@ public class VisionManagement{
     		
     		if( mVisionConnect.establishConnection() ){
     			
+    			VisionManagement.getLogger().info( "Connection to vision established!" );
     			mIncomingPacketManagement = new VisionIncomingPacketsManagement( mVisionConnect );
     			return mVisionConnect.isConnected();
     			
