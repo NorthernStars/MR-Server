@@ -70,7 +70,7 @@ public class Receiver extends Thread {
                     
                 } catch ( InterruptedException vInterruptedException ) {
                 	
-                	BotAIManagement.getLogger().error( "Error stopping botaireceiver: " + vInterruptedException.getLocalizedMessage() );
+                	BotAIManagement.getLogger().error( "Error stopping botaireceiver: {}", vInterruptedException.getLocalizedMessage() );
                     BotAIManagement.getLogger().catching( Level.ERROR, vInterruptedException );
                     
                 } 
@@ -98,7 +98,7 @@ public class Receiver extends Thread {
 
 	private boolean suspendManagement( boolean aSuspend ) {
 		mSuspend.set( aSuspend );
-		while( mIsSuspended.get() != aSuspend ){ try { this.wait( 1 ); } catch ( InterruptedException vInterruptedException ) { BotAIManagement.getLogger().error( "Error suspending botaireciever: " + vInterruptedException.getLocalizedMessage() ); BotAIManagement.getLogger().catching( Level.ERROR, vInterruptedException ); } }
+		while( mIsSuspended.get() != aSuspend ){ try { this.wait( 1 ); } catch ( InterruptedException vInterruptedException ) { BotAIManagement.getLogger().error( "Error suspending botaireciever: {}", vInterruptedException.getLocalizedMessage() ); BotAIManagement.getLogger().catching( Level.ERROR, vInterruptedException ); } }
 		return mIsSuspended.get();
 	}
 	
@@ -108,7 +108,7 @@ public class Receiver extends Thread {
 		while( mManageMessagesfromBotAI.get() ){
             
 			if( mSuspend.get() ){ synchronized(this){ mIsSuspended.set( true ); } }
-            while( mSuspend.get() ){ try { this.wait( 10 ); } catch ( InterruptedException vInterruptedException ) { BotAIManagement.getLogger().error( "Error suspending botaireceiver: " + vInterruptedException.getLocalizedMessage() ); BotAIManagement.getLogger().catching( Level.ERROR, vInterruptedException ); } }
+            while( mSuspend.get() ){ try { this.wait( 10 ); } catch ( InterruptedException vInterruptedException ) { BotAIManagement.getLogger().error( "Error suspending botaireceiver: {}", vInterruptedException.getLocalizedMessage() ); BotAIManagement.getLogger().catching( Level.ERROR, vInterruptedException ); } }
 			mIsSuspended.compareAndSet(true, false);
             
 			try {
@@ -124,12 +124,12 @@ public class Receiver extends Thread {
 				}
 				
 			} catch ( SocketTimeoutException vSocketTimeoutException ) {
-				
-				BotAIManagement.getLogger().trace( "Received no datagramm from botais in 100ms" );
-                				
+                
+                BotAIManagement.getLogger().trace( "Received no datagramm from botais in 100ms" );
+                                
 			} catch ( Exception vException ) {
 				
-				BotAIManagement.getLogger().error( "Error receiving messages from botais: " + vException.getLocalizedMessage() );
+				BotAIManagement.getLogger().error( "Error receiving messages from botais: {}", vException.getLocalizedMessage() );
 				BotAIManagement.getLogger().catching( Level.ERROR, vException );
                 				
 			}

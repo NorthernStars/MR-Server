@@ -104,7 +104,10 @@ public class Core {
             	          	
             }
             if ( ScenarioManagement.getInstance().needsBotControl() ) {
-            	//TODO: Botcontrol connect und register
+            	
+            	BotControlManagement.getInstance().startManagement();
+            	ScenarioManagement.getInstance().registerBotControl( BotControlManagement.getInstance() );
+            	
             }
             
             GraphicsManagement.getInstance().startGraphicsManagement();
@@ -116,7 +119,7 @@ public class Core {
             
         } catch ( Exception vException ) {
 
-            Core.getLogger().error( "Fehler beim initialisiern der Grundfunktionen: " + vException.getLocalizedMessage() );
+            Core.getLogger().error( "Fehler beim initialisiern der Grundfunktionen: {}", vException.getLocalizedMessage() );
             Core.getLogger().catching( Level.ERROR, vException );
             
             System.exit( 1 );
@@ -134,7 +137,7 @@ public class Core {
 			
 		}
 		
-		Core.getLogger().trace( "Getting serverconfig " + mServerConfig );
+		Core.getLogger().trace( "Getting serverconfig {}", mServerConfig );
 		return mServerConfig;
 		
 	}

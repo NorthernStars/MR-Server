@@ -34,7 +34,7 @@ public class Worker implements Runnable{
 	@Override
 	public void run() {
 
-		BotAIManagement.getLogger().debug( "Processing packet " + "(" + ( (InetSocketAddress) mRecievedDatagramPacket.getSocketAddress()).toString() + "):" + new String( mRecievedDatagramPacket.getData(), 0, mRecievedDatagramPacket.getLength() ) );
+		BotAIManagement.getLogger().debug( "Processing packet " + "({}): {}", (InetSocketAddress) mRecievedDatagramPacket.getSocketAddress(), new String( mRecievedDatagramPacket.getData(), 0, mRecievedDatagramPacket.getLength() ) );
 		
 		BotAI aCorrespondingBotAI = BotAIManagement.getInstance().getMapOfBotAIs().get( mRecievedDatagramPacket.getSocketAddress() );
 		

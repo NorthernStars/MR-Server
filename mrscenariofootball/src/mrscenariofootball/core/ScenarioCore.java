@@ -9,6 +9,9 @@ import org.apache.logging.log4j.Logger;
 
 import mrscenariofootball.core.data.BotAI;
 import mrscenariofootball.core.data.ScenarioInformation;
+import mrscenariofootball.core.data.action.Command;
+import mrscenariofootball.core.data.action.Kick;
+import mrscenariofootball.core.data.action.Movement;
 import mrscenariofootball.core.data.worlddata.client.ClientWorldData;
 import mrscenariofootball.core.data.worlddata.server.Player;
 import mrscenariofootball.core.data.worlddata.server.WorldData;
@@ -141,7 +144,10 @@ public class ScenarioCore implements Scenario {
 		
 		ScenarioCore.getLogger().info( "Scenario started" );
 		
-
+		//System.out.println( Movement.unmarshallXMLPositionDataPackageString( "<command> <kick> <angle> 100.0 </angle> <force> 100.0 </force> </kick> </command>" ) );
+		//System.out.println( Kick.unmarshallXMLPositionDataPackageString( "<command> <kick> <angle> 100.0 </angle> <force> 100.0 </force> </kick> </command>" ) );
+		System.out.println( (Kick) Command.unmarshallXMLPositionDataPackageString( "<command> <kick> <angle> 100.0 </angle> <force> 100.0 </force> </kick> </command>" ) );
+/*
 		while(true){
 			
 			if( !mBotAIs.isEmpty() ){
@@ -173,9 +179,9 @@ public class ScenarioCore implements Scenario {
 			}
 			
 			//mGraphics.sendWorldStatus( mScenarioInformation.getWorldData().toXMLString() );
-			*/
+			/
 		}
-
+*/
 	}
 
 	public ScenarioInformation getScenarioInformation() {

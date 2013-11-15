@@ -12,9 +12,11 @@ public interface BotControl {
 	/**
 	 * Übergibt einen zu sendenden Bewegungsbefehl
 	 * 
-	 * @param aMovement der Bewegungsbefehl //TODO: Befehl nur auf Bot und Motorengeschwindigkeit reduzieren 
+	 * @param aBot der zu bewegenede Bot
+	 * @param aLeftWheelSpeed die Geschwindigkeit des linken Rades in int von -100 zu +100
+	 * @param aRightWheelSpeed die Geschwindigkeit des rechten Rades in int von -100 zu +100
 	 * @return true wenn der Befehl erfolgreich versendet werden konnte, false wenn nicht
 	 */
-	public boolean sendMovement( String aMovement );
+	public boolean sendMovement( int aBot, int aLeftWheelSpeed, int aRightWheelSpeed );
 
 }

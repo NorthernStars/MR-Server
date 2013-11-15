@@ -69,7 +69,7 @@ public class Receiver extends Thread {
                     
                 } catch ( InterruptedException vInterruptedException ) {
                 	
-                    GraphicsManagement.getLogger().error( "Error stopping GraphicsReceiver: " + vInterruptedException.getLocalizedMessage() );
+                    GraphicsManagement.getLogger().error( "Error stopping GraphicsReceiver: {}", vInterruptedException.getLocalizedMessage() );
                     GraphicsManagement.getLogger().catching( Level.ERROR, vInterruptedException );
                     
                 } 
@@ -97,7 +97,7 @@ public class Receiver extends Thread {
 
 	private boolean suspendManagement( boolean aSuspend ) {
 		mSuspend.set( aSuspend );
-		while( mIsSuspended.get() != aSuspend ){ try { this.wait( 1 ); } catch ( InterruptedException vInterruptedException ) { GraphicsManagement.getLogger().error( "Error suspending GraphicsReciever: " + vInterruptedException.getLocalizedMessage() ); GraphicsManagement.getLogger().catching( Level.ERROR, vInterruptedException ); } }
+		while( mIsSuspended.get() != aSuspend ){ try { this.wait( 1 ); } catch ( InterruptedException vInterruptedException ) { GraphicsManagement.getLogger().error( "Error suspending GraphicsReciever: {}", vInterruptedException.getLocalizedMessage() ); GraphicsManagement.getLogger().catching( Level.ERROR, vInterruptedException ); } }
 		return mIsSuspended.get();
 	}
 	
@@ -107,7 +107,7 @@ public class Receiver extends Thread {
 		while( mManageMessagesfromGraphics.get() ){
             
 			if( mSuspend.get() ){ synchronized(this){ mIsSuspended.set( true ); } }
-            while( mSuspend.get() ){ try { this.wait( 10 ); } catch ( InterruptedException vInterruptedException ) { GraphicsManagement.getLogger().error( "Error suspending GraphicsReceiver: " + vInterruptedException.getLocalizedMessage() ); GraphicsManagement.getLogger().catching( Level.ERROR, vInterruptedException ); } }
+            while( mSuspend.get() ){ try { this.wait( 10 ); } catch ( InterruptedException vInterruptedException ) { GraphicsManagement.getLogger().error( "Error suspending GraphicsReceiver: {}", vInterruptedException.getLocalizedMessage() ); GraphicsManagement.getLogger().catching( Level.ERROR, vInterruptedException ); } }
 			mIsSuspended.compareAndSet(true, false);
             
 			try {
@@ -123,12 +123,12 @@ public class Receiver extends Thread {
 				}
 				
 			} catch ( SocketTimeoutException vSocketTimeoutException ) {
-				
-				GraphicsManagement.getLogger().trace( "Received no datagramm from graphics in 100ms" );
-                				
+                
+                GraphicsManagement.getLogger().trace( "Received no datagramm from graphics in 100ms" );
+                                
 			} catch ( Exception vException ) {
 				
-				GraphicsManagement.getLogger().error( "Error receiving messages from graphics: " + vException.getLocalizedMessage() );
+				GraphicsManagement.getLogger().error( "Error receiving messages from graphics: {}", vException.getLocalizedMessage() );
 				GraphicsManagement.getLogger().catching( Level.ERROR, vException );
                 				
 			}

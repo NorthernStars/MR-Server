@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration packages="remotecontrol,core,">
+<Configuration packages="core," monitorInterval="30">
   <appenders>
     <Console name="Console" target="SYSTEM_OUT">
       <PatternLayout pattern="%d{HH:mm:ss.SSS}(%r) [%t] %-5level %logger{36} - %msg%n"/>
@@ -51,7 +51,7 @@
       <appender-ref ref="Console"/>
       <appender-ref ref="ERROR" />
     </logger>
-    <logger name="XML" level="info" additivity="false">
+    <logger name="XML" level="debug" additivity="false">
       <appender-ref ref="Console"/>
       <appender-ref ref="ERROR" />
     </logger>

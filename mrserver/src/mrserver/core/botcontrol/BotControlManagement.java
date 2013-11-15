@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import mrserver.core.Core;
 import mrservermisc.botcontrol.interfaces.BotControl;
+import mrservermisc.network.BasicUDPServerConnection;
 
 /**
  * Managed die Verbindung und den Datenaustausch zum Visionmodul
@@ -41,6 +42,14 @@ public class BotControlManagement implements BotControl{
         
     }
     
+    BasicUDPServerConnection aToBotControl;
+    
+    public void startManagement(){
+    	
+    	aToBotControl = new BasicUDPServerConnection( Core.getInstance().getServerConfig().getBotControlIPAdress(), Core.getInstance().getServerConfig().getBotControlPort() );
+    	BotControlManagement.getLogger().info( "Botcontrolmanagement started");
+    }
+    
     public void close() {
 
         if( INSTANCE != null ){
@@ -53,8 +62,21 @@ public class BotControlManagement implements BotControl{
     }
 
 	@Override
-	public boolean sendMovement(String aMovement) {
-		// TODO Auto-generated method stub
+	public boolean sendMovement(int aBot, int aLeftWheelSpeed, int aRightWheelSpeed) {
+		
+		if( aToBotControl != null && aToBotControl.isConnected() ){
+			
+			BotControlManagement.getLogger().debug( "Sending command {}|{}|{} to botcontrol", aBot, aLeftWheelSpeed, aRightWheelSpeed );
+			aToBotControl.sendDatagrammString( aBot + "|" + aLeftWheelSpeed + "|" + aRightWheelSpeed );
+			
+			return true;
+			
+		} else {
+			
+			BotControlManagement.getLogger().debug( "Trying to send command to unconnected botcontrol" );
+			
+		}
+		
 		return false;
 	}
 

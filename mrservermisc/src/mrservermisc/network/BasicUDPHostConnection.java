@@ -3,7 +3,6 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
-import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
 import mrservermisc.logging.Loggers;
@@ -50,11 +49,11 @@ public class BasicUDPHostConnection {
 			mToTargetSocket = new DatagramSocket();
 		
 			mSocketInitialized = true;
-	        Loggers.getNetworkLogger().debug( "Created socket: " + ((InetSocketAddress) mToTargetSocket.getLocalSocketAddress()).toString() );
+	        Loggers.getNetworkLogger().debug( "Created socket: {}", ((InetSocketAddress) mToTargetSocket.getLocalSocketAddress()) );
 	        
 		} catch ( IOException vIoException ) {
 
-        	Loggers.getNetworkLogger().error( "Error creating connection: " + vIoException.getLocalizedMessage() );
+        	Loggers.getNetworkLogger().error( "Error creating connection: {}", vIoException.getLocalizedMessage() );
         	Loggers.getNetworkLogger().catching( Level.ERROR, vIoException );
 		
 		}
@@ -68,11 +67,11 @@ public class BasicUDPHostConnection {
 	        mToTargetSocket = new DatagramSocket( aHostPort );
 	
 	        mSocketInitialized = true;
-	        Loggers.getNetworkLogger().debug( "Created socket: " + ((InetSocketAddress) mToTargetSocket.getLocalSocketAddress()).toString() );
+	        Loggers.getNetworkLogger().debug( "Created socket: {}", ((InetSocketAddress) mToTargetSocket.getLocalSocketAddress()) );
 	        
 		} catch ( IOException vIoException ) {
 	
-	        Loggers.getNetworkLogger().error( "Error creating connection: " + vIoException.getLocalizedMessage(), aHostPort );
+	        Loggers.getNetworkLogger().error( "Error creating connection: {} HostPort: {}", vIoException.getLocalizedMessage(), aHostPort );
 	        Loggers.getNetworkLogger().catching( Level.ERROR, vIoException );
 			
 		}
@@ -94,7 +93,7 @@ public class BasicUDPHostConnection {
 			
 		} catch ( IOException vIoException ) {
 
-            Loggers.getNetworkLogger().error( "Error sending datagram: " + vIoException.getLocalizedMessage(), aData );
+            Loggers.getNetworkLogger().error( "Error sending datagram: {} with {}", vIoException.getLocalizedMessage(), aData );
             Loggers.getNetworkLogger().catching( Level.ERROR, vIoException );
 			
 		}
@@ -123,7 +122,7 @@ public class BasicUDPHostConnection {
 	 * @throws IOException
 	 * 	Schwerer Ausnahmefehler.
 	 */
-	public String getDatagrammString( int aWaitTime ) throws IOException, SocketTimeoutException, SocketException
+	public String getDatagrammString( int aWaitTime ) throws SocketTimeoutException
 	{
 		String vData = null;
 		
@@ -135,14 +134,29 @@ public class BasicUDPHostConnection {
 			
 	}
 
-	public DatagramPacket getDatagrammPacket( int aWaitTime ) throws SocketException, SocketTimeoutException, IOException 
+	public DatagramPacket getDatagrammPacket( int aWaitTime ) throws SocketTimeoutException
 	{
 		
 		DatagramPacket vDatagrammPacketFromServer = new DatagramPacket( new byte[BasicUDPHostConnection.MAX_DATAGRAM_LENGTH], BasicUDPHostConnection.MAX_DATAGRAM_LENGTH );
 
-		mToTargetSocket.setSoTimeout( aWaitTime );
-		
-		mToTargetSocket.receive( vDatagrammPacketFromServer );
+		try {
+			
+			mToTargetSocket.setSoTimeout( aWaitTime );
+			
+			mToTargetSocket.receive( vDatagrammPacketFromServer );
+			
+		} catch ( IOException vException ) {
+			
+			if( vException instanceof SocketTimeoutException ){
+				
+				throw (SocketTimeoutException)vException;
+				
+			}
+	
+	        Loggers.getNetworkLogger().error( "Error sending datagram: {}", vException.getLocalizedMessage() );
+	        Loggers.getNetworkLogger().catching( Level.ERROR, vException );
+			
+		}
 			
 		return vDatagrammPacketFromServer;
 		

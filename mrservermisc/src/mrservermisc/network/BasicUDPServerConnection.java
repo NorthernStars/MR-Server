@@ -3,8 +3,11 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketException;
 import java.net.SocketTimeoutException;
+
+import mrservermisc.logging.Loggers;
+
+import org.apache.logging.log4j.Level;
 
 /**
  * Die grundlegende UDPNetzwerkverbindung. Es wird das UDP-
@@ -43,15 +46,23 @@ public class BasicUDPServerConnection {
 	 * @throws IOException
 	 * Verbindung konnte nicht eingerichtet werden.
 	 */
-	public BasicUDPServerConnection( InetAddress aTargetAddress, int aTargetPort ) throws IOException
+	public BasicUDPServerConnection( InetAddress aTargetAddress, int aTargetPort )
 	{		
-
-		initialiseDatagram( aTargetAddress, aTargetPort );
+		try {
+			
+			initialiseDatagram( aTargetAddress, aTargetPort );
+			
+			mToTargetSocket = new DatagramSocket();
+			mToTargetSocket.connect( aTargetAddress, aTargetPort );
+			
+			mSocketInitialized = true;
+	        
+		} catch ( IOException vIoException ) {
+	
+	    	Loggers.getNetworkLogger().error( "Error creating connection: {}", vIoException.getLocalizedMessage() );
+	    	Loggers.getNetworkLogger().catching( Level.ERROR, vIoException );
 		
-		mToTargetSocket = new DatagramSocket();
-		mToTargetSocket.connect( aTargetAddress, aTargetPort );
-		
-		mSocketInitialized = true;
+		}
 		
 	}
 
@@ -63,15 +74,23 @@ public class BasicUDPServerConnection {
 		
     }
 	
-	public BasicUDPServerConnection( InetAddress aTargetAddress, int aTargetPort, int aHostPort) throws IOException
+	public BasicUDPServerConnection( InetAddress aTargetAddress, int aTargetPort, int aHostPort)
     {       
-
-	    initialiseDatagram( aTargetAddress, aTargetPort );
-	    
-        mToTargetSocket = new DatagramSocket( aHostPort );
-        mToTargetSocket.connect( aTargetAddress, aTargetPort );
-
-        mSocketInitialized = true;
+		try {
+			
+		    initialiseDatagram( aTargetAddress, aTargetPort );
+		    
+	        mToTargetSocket = new DatagramSocket( aHostPort );
+	        mToTargetSocket.connect( aTargetAddress, aTargetPort );
+	
+	        mSocketInitialized = true;
+	        
+		} catch ( IOException vIoException ) {
+	
+	    	Loggers.getNetworkLogger().error( "Error creating connection: {}", vIoException.getLocalizedMessage() );
+	    	Loggers.getNetworkLogger().catching( Level.ERROR, vIoException );
+		
+		}
         
     }
 
@@ -81,11 +100,19 @@ public class BasicUDPServerConnection {
 	 * @param aData
 	 * 		Zu versendende Daten als String.
 	 */
-	public void sendDatagrammString( String aData ) throws IOException
+	public void sendDatagrammString( String aData )
 	{
-		
-		mDataPaket.setData( aData.getBytes() );
-		mToTargetSocket.send( mDataPaket );
+		try {
+			
+			mDataPaket.setData( aData.getBytes() );
+			mToTargetSocket.send( mDataPaket );
+			
+		} catch ( IOException vIoException ) {
+	
+	        Loggers.getNetworkLogger().error( "Error sending datagram {} with error {}", aData, vIoException.getLocalizedMessage() );
+	        Loggers.getNetworkLogger().catching( Level.ERROR, vIoException );
+			
+		}
 
 	}
 
@@ -97,10 +124,11 @@ public class BasicUDPServerConnection {
 	 * Bei aWaitTime = 0 wartet die Verbindung unentlich lange, bei aWaitTime > 0 entsprechende Millisekunden
 	 * @return != null: Empfangene Daten als String.<br/>
 	 * == null: Es wurden keine Daten empfangen.
+	 * @throws SocketTimeoutException 
 	 * @throws IOException
 	 * 	Schwerer Ausnahmefehler.
 	 */
-	public String getDatagrammString( int aWaitTime ) throws IOException, SocketTimeoutException, SocketException
+	public String getDatagrammString( int aWaitTime ) throws SocketTimeoutException
 	{
 		String vData = null;
 		
@@ -114,14 +142,29 @@ public class BasicUDPServerConnection {
 			
 	}
 
-	private DatagramPacket getDatagrammPacket(int aWaitTime) throws SocketException, SocketTimeoutException, IOException 
+	private DatagramPacket getDatagrammPacket(int aWaitTime) throws SocketTimeoutException 
 	{
 		
 		DatagramPacket vDatagrammPacketFromServer = new DatagramPacket( new byte[BasicUDPServerConnection.MAX_DATAGRAM_LENGTH], BasicUDPServerConnection.MAX_DATAGRAM_LENGTH );
-
-		mToTargetSocket.setSoTimeout( aWaitTime );
 		
-		mToTargetSocket.receive( vDatagrammPacketFromServer );
+		try {
+			
+			mToTargetSocket.setSoTimeout( aWaitTime );
+		
+			mToTargetSocket.receive( vDatagrammPacketFromServer );
+			
+		} catch ( IOException vException ) {
+			
+			if( vException instanceof SocketTimeoutException ){
+				
+				throw (SocketTimeoutException)vException;
+				
+			}
+			
+	        Loggers.getNetworkLogger().error( "Error sending datagram: {}", vException.getLocalizedMessage() );
+	        Loggers.getNetworkLogger().catching( Level.ERROR, vException );
+			
+		}
 			
 		return vDatagrammPacketFromServer;
 		
