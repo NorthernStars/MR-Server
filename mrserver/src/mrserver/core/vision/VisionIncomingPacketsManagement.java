@@ -1,17 +1,13 @@
 package mrserver.core.vision;
 
 import java.net.SocketTimeoutException;
-import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.logging.log4j.Level;
 
-import net.jcip.annotations.GuardedBy;
 import mrserver.core.scenario.ScenarioManagement;
 import mrserver.core.vision.network.VisionConnection;
 import mrservermisc.network.data.position.PositionDataPackage;
-import mrservermisc.network.data.position.PositionObject;
-import mrservermisc.network.data.position.VisionMode;
 
 public class VisionIncomingPacketsManagement extends Thread{
 

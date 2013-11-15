@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import mrservermisc.network.xml.Helpers;
 
 @XmlRootElement(name="kick")
-public class Kick extends Command{
+public class Kick{
 
 	@XmlElement(name="angle")
 	private double mAngle;
@@ -20,10 +20,6 @@ public class Kick extends Command{
 		mAngle = aAngle;
 		mForce = aForce;
 		
-	}
-	
-	public String getXMLString() {
-		return "<command> <kick> <angle>" + mAngle + "</angle> <force>" + mForce + "</force> </kick> </command>";
 	}
 	
 	public String toXMLString(){
@@ -41,6 +37,14 @@ public class Kick extends Command{
 	@Override
 	public String toString() {
 		return "Kick [mAngle=" + mAngle + ", mForce=" + mForce + "]";
+	}
+
+	public double getAngle() {
+		return mAngle;
+	}
+
+	public float getForce() {
+		return mForce;
 	}
 	
 }

@@ -81,5 +81,8 @@ public interface Scenario {
 	
 	public void startScenario();
 
+	public boolean pauseScenario();
+	
+	public boolean unpauseScenario();
 
 }

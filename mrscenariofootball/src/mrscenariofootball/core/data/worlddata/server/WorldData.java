@@ -112,7 +112,7 @@ public class WorldData {
 		return mPlayTime;
 	}
 
-	public void setmPlayTime(double aPlayTime) {
+	public void setPlayTime(double aPlayTime) {
 		mPlayTime = aPlayTime;
 	}
 
@@ -120,7 +120,7 @@ public class WorldData {
 		return mPlayMode;
 	}
 
-	public void setmPlayMode( PlayMode aPlayMode ) {
+	public void setPlayMode( PlayMode aPlayMode ) {
 		mPlayMode = aPlayMode;
 	}
 
@@ -128,7 +128,7 @@ public class WorldData {
 		return mScore;
 	}
 
-	public void setmScore( Score aScore ) {
+	public void setScore( Score aScore ) {
 		mScore = aScore;
 	}
 
@@ -136,7 +136,7 @@ public class WorldData {
 		return mMaxNumberOfAgents;
 	}
 
-	public void setmMaxNumberOfAgents( int aMaxNumberOfAgents ) {
+	public void setMaxNumberOfAgents( int aMaxNumberOfAgents ) {
 		mMaxNumberOfAgents = aMaxNumberOfAgents;
 	}
 
@@ -144,7 +144,7 @@ public class WorldData {
 		return mBallPosition;
 	}
 
-	public void setmBallPosition( BallPosition aBallPosition ) {
+	public void setBallPosition( BallPosition aBallPosition ) {
 		mBallPosition = aBallPosition;
 	}
 
@@ -152,7 +152,7 @@ public class WorldData {
 		return mListOfPlayers;
 	}
 
-	public void setmListOfPlayers( List<Player> aListOfPlayers ) {
+	public void setListOfPlayers( List<Player> aListOfPlayers ) {
 		mListOfPlayers = aListOfPlayers;
 	}
 
@@ -160,7 +160,7 @@ public class WorldData {
 		return mReferencePoints;
 	}
 
-	public void setmReferencePoints( List<ReferencePoint> aReferencePoints ) {
+	public void setReferencePoints( List<ReferencePoint> aReferencePoints ) {
 		mReferencePoints = aReferencePoints;
 	}
 

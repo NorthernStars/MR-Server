@@ -1,5 +1,7 @@
 package mrserver.core;
 
+import java.awt.EventQueue;
+
 import mrserver.core.botai.BotAIManagement;
 import mrserver.core.botcontrol.BotControlManagement;
 import mrserver.core.config.ServerConfig;
@@ -7,6 +9,7 @@ import mrserver.core.config.commandline.CommandLineOptions;
 import mrserver.core.graphics.GraphicsManagement;
 import mrserver.core.scenario.ScenarioManagement;
 import mrserver.core.vision.VisionManagement;
+import mrserver.tempgui.Helper;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -114,8 +117,17 @@ public class Core {
             ScenarioManagement.getInstance().registerGraphics( GraphicsManagement.getInstance() );
             //TODO: Vision kalibrieren
             BotAIManagement.getInstance().startBotAIManagement();
-            ScenarioManagement.getInstance().startScenario();
-            Core.getLogger().info( "Started scenario" );
+
+            EventQueue.invokeLater(new Runnable() {
+    			public void run() {
+    				try {
+    					Helper window = new Helper();
+    					window.frame.setVisible(true);
+    				} catch (Exception e) {
+    					e.printStackTrace();
+    				}
+    			}
+    		});
             
         } catch ( Exception vException ) {
 

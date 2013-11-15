@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import mrservermisc.network.xml.Helpers;
 
 @XmlRootElement(name="wheel_velocities")
-public class Movement extends Command{
+public class Movement{
 
 	public static final Movement NO_MOVEMENT = new Movement( 0, 0);
 
@@ -21,10 +21,6 @@ public class Movement extends Command{
 		mLeftWheelVelocity = aLeftWheelVelocity;
 		mRightWheelVelocity = aRightWheelVelocity;
 
-	}
-	
-	public String getXMLString() {
-		return "<command> <wheel_velocities> <right>" + mRightWheelVelocity + "</right> <left>" + mLeftWheelVelocity + "</left> </wheel_velocities> </command>";
 	}
 	
 	public String toXMLString(){
@@ -44,4 +40,13 @@ public class Movement extends Command{
 		return "Movement [mRightWheelVelocity=" + mRightWheelVelocity
 				+ ", mLeftWheelVelocity=" + mLeftWheelVelocity + "]";
 	}
+
+	public int getRightWheelVelocity() {
+		return mRightWheelVelocity;
+	}
+
+	public int getLeftWheelVelocity() {
+		return mLeftWheelVelocity;
+	}
+	
 }

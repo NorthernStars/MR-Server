@@ -196,4 +196,24 @@ public class ScenarioManagement {
 		
 	}
 
+	public void pauseScenario() {
+
+		if( mScenario != null ){
+			
+			mScenario.pauseScenario();
+			
+		}
+		
+	}
+
+	public void unpauseScenario() {
+
+		if( mScenario != null ){
+			
+			mScenario.unpauseScenario();
+			
+		}
+		
+	}
+
 }

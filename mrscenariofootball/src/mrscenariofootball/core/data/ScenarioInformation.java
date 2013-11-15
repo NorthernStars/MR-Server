@@ -1,6 +1,7 @@
 package mrscenariofootball.core.data;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
 
@@ -51,6 +52,24 @@ public class ScenarioInformation {
 		
 		return mMaxValue;
 	
+	}
+
+	public synchronized void setPlayers(List<Player> aListOfPlayers) {
+		
+		mWorldData.setListOfPlayers( aListOfPlayers );
+		
+	}
+
+	public synchronized void setBall(BallPosition vBall) {
+		
+		mWorldData.setBallPosition( vBall );
+		
+	}
+
+	public synchronized void addTimePlayed( double aTimeToAdd ) {
+		
+		mWorldData.setPlayTime( mWorldData.getPlayTime() + aTimeToAdd );
+		
 	}
 
 }

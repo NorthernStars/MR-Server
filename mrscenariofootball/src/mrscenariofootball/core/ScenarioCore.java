@@ -1,30 +1,30 @@
 package mrscenariofootball.core;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import net.jcip.annotations.GuardedBy;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import mrscenariofootball.core.data.BotAI;
 import mrscenariofootball.core.data.ScenarioInformation;
 import mrscenariofootball.core.data.action.Command;
-import mrscenariofootball.core.data.action.Kick;
-import mrscenariofootball.core.data.action.Movement;
-import mrscenariofootball.core.data.worlddata.client.ClientWorldData;
+import mrscenariofootball.core.data.worlddata.server.BallPosition;
 import mrscenariofootball.core.data.worlddata.server.Player;
+import mrscenariofootball.core.data.worlddata.server.ReferencePointName;
+import mrscenariofootball.core.data.worlddata.server.ServerPoint;
 import mrscenariofootball.core.data.worlddata.server.WorldData;
 import mrscenariofootball.core.managements.FromVision;
+import mrscenariofootball.core.managements.ToBotAIs;
 import mrscenariofootball.core.managements.ToGraphics;
 import mrservermisc.botcontrol.interfaces.BotControl;
 import mrservermisc.bots.interfaces.Bot;
 import mrservermisc.graphics.interfaces.Graphics;
 import mrservermisc.network.data.position.PositionDataPackage;
-import mrservermisc.network.data.position.PositionObjectBot;
-import mrservermisc.network.data.position.PositionObjectType;
 import mrservermisc.scenario.interfaces.Scenario;
-import mrservermisc.vision.interfaces.Vision;
 
 /**
  * Bildet das Herzstück des MRFussballszenarios. Hier werden alle Metaprozesse und Threads verwaltet
@@ -70,12 +70,28 @@ public class ScenarioCore implements Scenario {
 	private ScenarioInformation mScenarioInformation;
 	private FromVision mFromVisionManagement;
 	private ToGraphics mToGraphicsManagement;
+	private BotControl mBotControl;
+	private ToBotAIs mToBotAIs;
+	private AtomicBoolean mPaused = new AtomicBoolean( true );
 	
 	@Override
 	public void close() {
 
-		mFromVisionManagement.close();
-		mToGraphicsManagement.close();
+		if( mFromVisionManagement != null ){
+					
+			mFromVisionManagement.close();
+			
+		}
+		if( mToGraphicsManagement != null ){
+			
+			mToGraphicsManagement.close();
+			
+		}
+		if( mToBotAIs != null ){
+			
+			mToBotAIs.close();
+			
+		}
 		
 	}
 
@@ -86,8 +102,7 @@ public class ScenarioCore implements Scenario {
 
 	@Override
 	public boolean needBotControl() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
@@ -98,13 +113,15 @@ public class ScenarioCore implements Scenario {
 
 	@Override
 	public boolean registerBotControl(BotControl aBotControl) {
-		// TODO Auto-generated method stub
+
+		mBotControl = aBotControl;
+		
 		return false;
 	}
 
 	@Override
 	public synchronized boolean registerNewBot( Bot aBot ) {
-		if( mBotAIs.putIfAbsent( aBot.getVtId(), new BotAI(aBot) ) != null ){
+		if( mBotAIs.putIfAbsent( aBot.getVtId(), new BotAI(aBot) ) == null ){
 			
 			ScenarioCore.getLogger().info( "Registered new bot: {}", aBot.toString() );
 			return true;
@@ -127,61 +144,84 @@ public class ScenarioCore implements Scenario {
 	public void startScenario() {
 
 		mScenarioInformation = new ScenarioInformation();
-		/*
+		
 		mFromVisionManagement = new FromVision();
 		mFromVisionManagement.startManagement();
 		
 		mToGraphicsManagement = new ToGraphics( mGraphics );
 		mToGraphicsManagement.startManagement();
-		*/
-		ScenarioCore.getLogger().info( "Scenario started" );
 		
+		mToBotAIs = new ToBotAIs();
+		mToBotAIs.startManagement();
 		
-		PositionObjectBot vFoundBot = new PositionObjectBot( PositionObjectType.BOT, 1, "Hammer", new double[]{0.5,0.5}, new double[]{}, 0 );
-		Player vPlayer;
+		ScenarioCore.getLogger().info( "Scenario started. Game paused" );
 		
-		ClientWorldData vClientWorldData;
+		Command vCommand;
+		WorldData vWorldData;
+		double vXForce, vYForce;
+		BallPosition vBall;
+		long vTickTime;
 		
-		ScenarioCore.getLogger().info( "Scenario started" );
-		
-		//System.out.println( Movement.unmarshallXMLPositionDataPackageString( "<command> <kick> <angle> 100.0 </angle> <force> 100.0 </force> </kick> </command>" ) );
-		//System.out.println( Kick.unmarshallXMLPositionDataPackageString( "<command> <kick> <angle> 100.0 </angle> <force> 100.0 </force> </kick> </command>" ) );
-		System.out.println( (Kick) Command.unmarshallXMLPositionDataPackageString( "<command> <kick> <angle> 100.0 </angle> <force> 100.0 </force> </kick> </command>" ) );
-/*
 		while(true){
 			
-			if( !mBotAIs.isEmpty() ){
+			while( mPaused.get() ){ try { Thread.sleep( 10 ); } catch ( InterruptedException vInterruptedException ) { ScenarioCore.getLogger().error( "Error suspending Scenario: {}",vInterruptedException.getLocalizedMessage() ); ScenarioCore.getLogger().catching( Level.ERROR, vInterruptedException ); } }
 			
-				vPlayer = new Player( vFoundBot, mBotAIs.get(1) );
-				vClientWorldData = new ClientWorldData( mScenarioInformation.getWorldData().copy(), vPlayer);
-				System.out.println(vClientWorldData);
-				mBotAIs.get(1).setWorldDataToSend( vClientWorldData );
-			}
-			for( BotAI vBotAI : ScenarioCore.getInstance().getBotAIs().values() ){
+			vTickTime = System.nanoTime();
+			
+			vWorldData = mScenarioInformation.getWorldData().copy();
+			vBall = new BallPosition( ReferencePointName.Ball, new ServerPoint( 0, 0 ) );
+			for( BotAI vBotAI : mBotAIs.values() ){
 				
-				vBotAI.sendWorldData( mScenarioInformation.getWorldData() );
+				vCommand = Command.unmarshallXMLPositionDataPackageString( vBotAI.getLastAction() );
 				
-			}
-			
-			try {
-				Thread.sleep( 100 );
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			/*
-			if( mTheVision != null ){
-				vData = mTheVision.getPositionData();
-				if( vData != null ){
-					ScenarioCore.getLogger().debug( vData.toString() );
+				if( vCommand != null ){
+					if( vCommand.isMovement() ){
+						mBotControl.sendMovement( vBotAI.getRcId(), vCommand.getMovement().getLeftWheelVelocity(), vCommand.getMovement().getRightWheelVelocity() );
+					} else if( vCommand.isKick() ){
+
+						for( Player vPlayer : vWorldData.getListOfPlayers() ){
+							
+							
+							if( vPlayer.getId() == vBotAI.getVtId() && vPlayer.getPosition().distance( vWorldData.getBallPosition().getPosition() ) >= 0.01 ){
+								
+								ScenarioCore.getLogger().debug(" Player {} tries to kick {} with distance {}", vPlayer, vWorldData.getBallPosition(), vPlayer.getPosition().distance( vWorldData.getBallPosition().getPosition() ));
+																
+								vXForce = vCommand.getKick().getForce() * Math.cos( vCommand.getKick().getAngle() );
+								vYForce = vCommand.getKick().getForce() * Math.sin( vCommand.getKick().getAngle() );
+								
+								//TODO: Kick ball in reality
+								vBall = new BallPosition( ReferencePointName.Ball, new ServerPoint( vBall.getPosition().getX() + vXForce, vBall.getPosition().getY() + vYForce ) );
+								
+								break;
+								
+							}
+							
+						}
+						
+					}
 				}
+				
 			}
 			
-			//mGraphics.sendWorldStatus( mScenarioInformation.getWorldData().toXMLString() );
-			/
+			//TODO real tick
+			mScenarioInformation.setBall( vBall );
+			// TODO check for goal
+			mScenarioInformation.addTimePlayed( 0.05 );
+			
+			ScenarioCore.getLogger().debug( "Scenario ticked {}", mScenarioInformation.getWorldData().copy() );
+			
+			while( System.nanoTime() - vTickTime <= 50000000 ){
+			
+				try {
+					Thread.sleep( 5 );
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			
+			}
 		}
-*/
+		
 	}
 
 	public ScenarioInformation getScenarioInformation() {
@@ -193,5 +233,22 @@ public class ScenarioCore implements Scenario {
 		return mBotAIs;
 		
 	}
+
+	@Override
+	public boolean pauseScenario() {
+
+		ScenarioCore.getLogger().info( "Game paused" );
+		return mPaused.compareAndSet( false, true );
+		
+	}
+
+	@Override
+	public boolean unpauseScenario() {
+
+		ScenarioCore.getLogger().info( "Game unpaused" );
+		return mPaused.compareAndSet( true, false );
+		
+	}
+	
 
 }

@@ -101,6 +101,7 @@ public class FromVision extends Thread {
 				if( vPositionData != null ){
 						
 					vWorldata = ScenarioCore.getInstance().getScenarioInformation().getWorldData().copy();
+					vWorldata.getListOfPlayers().clear();
 					
 					for( PositionObject vObject : vPositionData.mListOfObjects ){
 						
@@ -111,6 +112,11 @@ public class FromVision extends Thread {
 						}
 						
 					}
+					
+					ScenarioCore.getInstance().getScenarioInformation().setPlayers( vWorldata.getListOfPlayers() );
+					ToBotAIs.putWorldDatainSendingQueue( vWorldata );
+					ToGraphics.putWorldDatainSendingQueue( vWorldata );
+					
 					
 				}
 								
