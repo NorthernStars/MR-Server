@@ -13,6 +13,7 @@ import mrscenariofootball.core.data.worlddata.server.Player;
 import mrscenariofootball.core.data.worlddata.server.ReferencePoint;
 import mrscenariofootball.core.data.worlddata.server.ReferencePointName;
 import mrscenariofootball.core.data.worlddata.server.Score;
+import mrscenariofootball.core.data.worlddata.server.ServerPoint;
 import mrscenariofootball.core.data.worlddata.server.WorldData;
 
 public class ScenarioInformation {
@@ -28,7 +29,10 @@ public class ScenarioInformation {
 				PlayMode.KickOff,
 				new Score(),
 				22,
-				new BallPosition( ReferencePointName.Ball, ReferencePointName.FieldCenter.getRelativePosition() ), //TODO: also relative
+				new BallPosition( ReferencePointName.Ball, 
+								new ServerPoint( 
+								ReferencePointName.FieldCenter.getRelativePosition().getX() * mXFactor, 
+								ReferencePointName.FieldCenter.getRelativePosition().getY() * mYFactor) ), //TODO: also relative
 				new ArrayList<Player>(),
 				ReferencePoint.getDefaultList( mXFactor, mYFactor ) );
 		

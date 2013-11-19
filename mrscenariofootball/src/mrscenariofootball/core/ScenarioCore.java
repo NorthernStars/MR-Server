@@ -192,6 +192,7 @@ public class ScenarioCore implements Scenario {
 						mBotControl.sendMovement( vBotAI.getRcId(), vCommand.getMovement().getLeftWheelVelocity(), vCommand.getMovement().getRightWheelVelocity() );
 					} else if( vCommand.isKick() ){
 
+						ScenarioCore.getLogger().debug(vCommand.getKick());
 						for( Player vPlayer : vWorldData.getListOfPlayers() ){
 							
 							
@@ -203,7 +204,7 @@ public class ScenarioCore implements Scenario {
 								vYForce = vCommand.getKick().getForce() * Math.sin( vCommand.getKick().getAngle() );
 								
 								//TODO: Kick ball in reality
-								vBall = new BallPosition( ReferencePointName.Ball, new ServerPoint( vBall.getPosition().getX() + vXForce, vBall.getPosition().getY() + vYForce ) );
+								vBall = new BallPosition( ReferencePointName.Ball, new ServerPoint( vBall.getPosition().getX() + vXForce/10.0, vBall.getPosition().getY() + vYForce/10.0 ) );
 								
 								break;
 								
@@ -221,7 +222,7 @@ public class ScenarioCore implements Scenario {
 			// TODO check for goal
 			mScenarioInformation.addTimePlayed( 0.05 );
 			
-			ScenarioCore.getLogger().debug( "Scenario ticked {}", mScenarioInformation.getWorldData().copy() );
+			ScenarioCore.getLogger().trace( "Scenario ticked {}", mScenarioInformation.getWorldData().copy() );
 			
 			while( System.nanoTime() - vTickTime <= 50000000 ){
 			
