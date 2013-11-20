@@ -20,12 +20,12 @@ private static final BlockingQueue<UnkownBotAI> UNKOWNSENDERDATAGRAMS = new Arra
 	public static void putUnkownSenderDatagramInProcessingQueue( UnkownBotAI aUnkownBotAI ){
 		
 		try {
-			BotAIManagement.getLogger().trace( "Putting datagram in unkown sender queue: " + aUnkownBotAI.toString() + " " );
+			BotAIManagement.getLogger().trace( "Putting datagram in unkown sender queue: {}", aUnkownBotAI.toString() + " " );
 			UNKOWNSENDERDATAGRAMS.put( aUnkownBotAI );
 			
 		} catch ( InterruptedException vInterruptedException ) {
 
-			BotAIManagement.getLogger().error( "Error processing unkownbotai: " + vInterruptedException.getLocalizedMessage() );
+			BotAIManagement.getLogger().error( "Error processing unkownbotai: {}", vInterruptedException.getLocalizedMessage() );
 			BotAIManagement.getLogger().catching( Level.ERROR, vInterruptedException );
             
 		} 
@@ -83,7 +83,7 @@ private static final BlockingQueue<UnkownBotAI> UNKOWNSENDERDATAGRAMS = new Arra
                     
                 } catch ( InterruptedException vInterruptedException ) {
                 	
-                	BotAIManagement.getLogger().error( "Error stopping botai-creator: " + vInterruptedException.getLocalizedMessage() );
+                	BotAIManagement.getLogger().error( "Error stopping botai-creator: {}", vInterruptedException.getLocalizedMessage() );
                 	BotAIManagement.getLogger().catching( Level.ERROR, vInterruptedException );
                     
                 } 
@@ -116,8 +116,8 @@ private static final BlockingQueue<UnkownBotAI> UNKOWNSENDERDATAGRAMS = new Arra
 						
 						if( vBotAI.connectionRequest( vUnkownBotAI.getRecievedDatagramPacket() ) ){
 							
-							BotAIManagement.getInstance().getMapOfBotAIs().put( vUnkownBotAI.getRecievedDatagramPacket().getSocketAddress(), vBotAI );
-							BotAIManagement.getLogger().info( "New botai connected: " + (InetSocketAddress) vUnkownBotAI.getRecievedDatagramPacket().getSocketAddress() );
+							BotAIManagement.getInstance().putNewAI( vBotAI );
+							BotAIManagement.getLogger().info( "New botai connected: {}", (InetSocketAddress) vUnkownBotAI.getRecievedDatagramPacket().getSocketAddress() );
 							
 						}
 					
@@ -131,7 +131,7 @@ private static final BlockingQueue<UnkownBotAI> UNKOWNSENDERDATAGRAMS = new Arra
 				
 			} catch ( Exception vException ) {
 				
-				BotAIManagement.getLogger().error( "Error processing unkown botais: " + vException.getLocalizedMessage() );
+				BotAIManagement.getLogger().error( "Error processing unkown botais: {}", vException.getLocalizedMessage() );
 				BotAIManagement.getLogger().catching( Level.ERROR, vException );
                 				
 			}

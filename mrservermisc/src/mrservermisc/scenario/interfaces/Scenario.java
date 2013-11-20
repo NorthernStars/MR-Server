@@ -2,6 +2,8 @@ package mrservermisc.scenario.interfaces;
 
 import java.util.List;
 
+import javax.swing.JPanel;
+
 import mrservermisc.botcontrol.interfaces.BotControl;
 import mrservermisc.bots.interfaces.Bot;
 import mrservermisc.graphics.interfaces.Graphics;
@@ -69,6 +71,8 @@ public interface Scenario {
 	 */
 	public boolean registerNewBot( Bot aBot );
 	
+	public boolean unregisterBot( Bot aBot );
+	
 	/**
 	 * Registriert Graphics an dem Scenario
 	 * 
@@ -84,5 +88,7 @@ public interface Scenario {
 	public boolean pauseScenario();
 	
 	public boolean unpauseScenario();
+	
+	public JPanel getScenarioGUI();
 
 }

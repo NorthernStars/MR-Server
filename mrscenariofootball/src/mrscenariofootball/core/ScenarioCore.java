@@ -3,6 +3,8 @@ package mrscenariofootball.core;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import javax.swing.JPanel;
+
 import net.jcip.annotations.GuardedBy;
 
 import org.apache.logging.log4j.Level;
@@ -17,6 +19,7 @@ import mrscenariofootball.core.data.worlddata.server.Player;
 import mrscenariofootball.core.data.worlddata.server.ReferencePointName;
 import mrscenariofootball.core.data.worlddata.server.ServerPoint;
 import mrscenariofootball.core.data.worlddata.server.WorldData;
+import mrscenariofootball.core.gui.ScenarioGUI;
 import mrscenariofootball.core.managements.FromVision;
 import mrscenariofootball.core.managements.ToBotAIs;
 import mrscenariofootball.core.managements.ToGraphics;
@@ -73,6 +76,7 @@ public class ScenarioCore implements Scenario {
 	private BotControl mBotControl;
 	private ToBotAIs mToBotAIs;
 	private AtomicBoolean mPaused = new AtomicBoolean( true );
+	private ScenarioGUI aGUI = new ScenarioGUI();
 	
 	@Override
 	public void close() {
@@ -134,11 +138,28 @@ public class ScenarioCore implements Scenario {
 		}
 		
 	}
+	
+	@Override
+	public synchronized boolean unregisterBot( Bot aBot ) {
+		if( mBotAIs.remove( aBot.getVtId() ) != null ){
+			
+			ScenarioCore.getLogger().info( "Unegistered new bot: {}", aBot.toString() );
+			return true;
+			
+		} else {
+			
+			ScenarioCore.getLogger().info(" No AI to unregister: {}", aBot.toString() );
+			return false;
+		}
+		
+	}
 
 	@Override
 	public boolean registerGraphics(Graphics aGraphics) {
+		
 		mGraphics = aGraphics;
 		return true;
+		
 	}
 
 	@Override
@@ -263,6 +284,12 @@ public class ScenarioCore implements Scenario {
 		return mPaused.compareAndSet( true, false );
 		
 	}
-	
+
+	@Override
+	public JPanel getScenarioGUI() {
+		
+		return aGUI;
+		
+	}
 
 }

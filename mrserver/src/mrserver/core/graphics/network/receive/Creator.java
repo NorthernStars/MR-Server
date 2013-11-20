@@ -122,6 +122,7 @@ private static final BlockingQueue<DatagramPacket> UNKOWNSENDERDATAGRAMS = new A
 						if( vGraphicModul.connectionRequest( vUnkownSenderDatagramPacket ) ){
 							
 							GraphicsManagement.getInstance().getMapOfConnections().put( vUnkownSenderDatagramPacket.getSocketAddress(), vGraphicModul );
+							GraphicsManagement.getInstance().getListener().newConnection( vUnkownSenderDatagramPacket.getSocketAddress() );
 							
 						}
 					

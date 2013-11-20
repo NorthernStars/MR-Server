@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import mrserver.core.Core;
 import mrserver.core.botai.data.BotAI;
 import mrserver.core.botai.network.BotAIConnections;
 import mrserver.core.botai.network.BotAiHost;
 import mrserver.core.botai.network.receive.Creator;
 import mrserver.core.botai.network.receive.Receiver;
+import mrserver.core.scenario.ScenarioManagement;
+import mrserver.tempgui.options.interfaces.AIListener;
 import mrservermisc.network.BasicUDPHostConnection;
 
 import org.apache.logging.log4j.LogManager;
@@ -43,25 +46,43 @@ public class BotAIManagement {
         
     }
 
-    private ConcurrentHashMap<SocketAddress, BotAI> mMapOfConnectedBotAIs;
-    private BotAIConnections mBotAIsConnections;
+    private ConcurrentHashMap<SocketAddress, BotAI> mMapOfConnectedBotAIs = new ConcurrentHashMap<SocketAddress, BotAI>();;
+    private BotAIConnections mBotAIsConnections = new BotAIConnections();
     private List<Receiver> mBotAIReceiver = new ArrayList<Receiver>();
     private Creator mBotAICreator;
+	private AIListener mAIListener;
     
     public void startBotAIManagement(){
     	
     	BotAIManagement.getLogger().info( "Starting botaimanagement" );
     	
-    	BotAIManagement.getLogger().debug( "Creating botaiconnections." );
-    	mBotAIsConnections = new BotAIConnections();
+    	readBotsFromFile();
     	
-    	BotAIManagement.getLogger().debug( "Creating mapofconnectedbotais." );
-    	mMapOfConnectedBotAIs = new ConcurrentHashMap<SocketAddress, BotAI>();
+    	startCreator();
+    	
+    }
+
+	private void startCreator() {
+		
+		if( mBotAICreator == null || !mBotAICreator.isAlive() ){
+		
+			BotAIManagement.getLogger().debug( "Starting creator." );
+	    	mBotAICreator= new Creator();
+	    	mBotAICreator.startManagement();
+		
+		}
+		
+	}
+
+	private void readBotsFromFile() {
+		
+		BotAIManagement.getLogger().debug( "Creating botaiconnections." );
+    	mBotAIsConnections = new BotAIConnections( Core.getInstance().getServerConfig().getBotPorts() );
 
     	BotAIManagement.getLogger().debug( "Starting receiver." );
     	for( BotAiHost vBotAIHost : mBotAIsConnections.getListOfHosts() ){
     		
-    		mBotAIReceiver.add( new Receiver( vBotAIHost ));
+    		mBotAIReceiver.add( new Receiver( vBotAIHost ) );
     		
     	}
     	for( Receiver vBotAIReceiver : mBotAIReceiver ){
@@ -71,9 +92,21 @@ public class BotAIManagement {
     		
     	}
     	
-    	BotAIManagement.getLogger().debug( "Starting creator." );
-    	mBotAICreator= new Creator();
-    	mBotAICreator.startManagement();
+	}
+    
+    public Receiver addBotAIPort( int aPort ){
+    	
+    	BotAiHost aHost = mBotAIsConnections.addBotAIPort( aPort );
+    	if( aHost != null ) {
+	    	Receiver vReceiver = new Receiver( aHost );
+	    	vReceiver.startManagement();
+	    	mBotAIReceiver.add( vReceiver );
+	    	
+	    	startCreator();
+	    	
+	    	return vReceiver;
+    	}
+    	return null;
     	
     }
     
@@ -98,6 +131,14 @@ public class BotAIManagement {
     	
     }
     
+    public void removeReceiver( Receiver aReceiver ){
+    	
+    	mBotAIsConnections.getListOfHosts().remove( aReceiver.getBotAIConnect() );
+    	mBotAIReceiver.remove( aReceiver );
+    	aReceiver.close();
+    	
+    }
+    
     public ConcurrentHashMap<SocketAddress, BotAI> getMapOfBotAIs(){
     	
     	BotAIManagement.getLogger().trace( "Retrieving mapofconnectedbotais" );
@@ -105,4 +146,28 @@ public class BotAIManagement {
     	
     }
 
+	public List<Receiver> getBotAIReceiver() {
+		return mBotAIReceiver;
+	}
+	
+	public void unregisterBotAI( BotAI aAI ){
+		
+		ScenarioManagement.getInstance().unregisterBot( aAI );
+		mMapOfConnectedBotAIs.remove( (SocketAddress) aAI.getSocketAddress() );
+		
+	}
+	
+	public void registerBotAIListener( AIListener aListener ){
+		
+		mAIListener = aListener;
+		
+	}
+
+	public void putNewAI( BotAI aBotAI) {
+
+		mMapOfConnectedBotAIs.put( (SocketAddress) aBotAI.getSocketAddress(), aBotAI );
+		mAIListener.newAI( aBotAI );
+		
+	}
+    
 }

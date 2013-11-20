@@ -32,7 +32,7 @@
 
   <xs:complexType name="referencePoint">
     <xs:sequence>
-      <xs:element name="pointtype" type="id" minOccurs="0"/>
+      <xs:element name="pointtype" type="pointtype" minOccurs="0"/>
       <xs:element name="position" type="serverPoint" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
@@ -86,7 +86,7 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:simpleType name="id">
+  <xs:simpleType name="pointtype">
     <xs:restriction base="xs:string">
       <xs:enumeration value="nofixedname"/>
       <xs:enumeration value="player"/>

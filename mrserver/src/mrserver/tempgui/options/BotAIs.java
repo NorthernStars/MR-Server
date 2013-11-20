@@ -8,17 +8,26 @@ import javax.swing.border.LineBorder;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+
+import mrserver.core.botai.BotAIManagement;
+import mrserver.core.botai.data.BotAI;
+import mrserver.core.botai.network.receive.Receiver;
+import mrserver.tempgui.options.interfaces.AIListener;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
-public class BotAIs extends JPanel {
-	private JTextField textField;
-	private JTextField textField_1;
+public class BotAIs extends JPanel implements AIListener {
+	private JTextField mOwnIP;
+	private JTextField mOwnPortToBots;
 	private JPanel mBotAIPanel;
 	private JPanel mServerPortPanel;
 	private JPanel mPanelFiller = new JPanel();;
@@ -37,25 +46,47 @@ public class BotAIs extends JPanel {
 		label.setBounds(10, 11, 89, 14);
 		add(label);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(10, 25, 200, 20);
-		add(textField);
+		mOwnIP = new JTextField();
+		mOwnIP.setEditable(false);
+		mOwnIP.setColumns(10);
+		mOwnIP.setBounds(10, 25, 200, 20);
+		add(mOwnIP);
 		
 		JLabel label_1 = new JLabel("ServerPort");
 		label_1.setBounds(220, 11, 86, 14);
 		add(label_1);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(220, 25, 86, 20);
-		add(textField_1);
+		mOwnPortToBots = new JTextField();
+		mOwnPortToBots.setText("-1");
+		mOwnPortToBots.setColumns(10);
+		mOwnPortToBots.setBounds(220, 25, 86, 20);
+		add(mOwnPortToBots);
 		
 		JButton button = new JButton("Open");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				addServerPortPanel( new ServerPortPanel() );
+								
+				save();
+				new Thread( new Runnable() {
+
+					@Override
+					public void run() {
+		
+						final Receiver vReceiver = BotAIManagement.getInstance().addBotAIPort( Integer.parseInt( mOwnPortToBots.getText() ) );
+						if( vReceiver != null ){
+							
+							EventQueue.invokeLater(new Runnable() {
+								public void run() {
+									
+									addServerPortPanel( new ServerPortPanel( vReceiver ) );
+									reload();
+									
+								}
+							});
+							
+						}
+					}
+				} ).start();
 				
 			}
 		});
@@ -94,6 +125,8 @@ public class BotAIs extends JPanel {
 		
         mPanelFiller .setMinimumSize( new Dimension(0,0) );
         mPanelFiller.setPreferredSize( new Dimension(0,0) );
+        
+        BotAIManagement.getInstance().registerBotAIListener( this );
 
 	}
 
@@ -133,6 +166,30 @@ public class BotAIs extends JPanel {
         
         validate();
         
-    }
+    }	
+    
+    void save(){
+				
+	}
+	
+	void reload(){
+		
+		try { mOwnIP.setText( InetAddress.getLocalHost().getHostAddress() ); } catch ( UnknownHostException vIgnoreingExceptionOYeah) { };
+		
+	}
+
+	@Override
+	public void newAI( final BotAI aAI ) {
+					
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				
+				addBotAIPanel( new BotAIPanel( aAI ) );
+				reload();
+				
+			}
+		});
+		
+	}
 	
 }

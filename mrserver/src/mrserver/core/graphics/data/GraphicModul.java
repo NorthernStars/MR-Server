@@ -118,4 +118,10 @@ public class GraphicModul {
 		
 	}
 	
+	public String getName(){
+		
+		return mClientName;
+		
+	}
+	
 }

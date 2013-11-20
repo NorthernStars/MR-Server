@@ -1,5 +1,7 @@
 package mrserver.core.botai.network;
 
+import java.net.DatagramSocket;
+
 import mrservermisc.network.BasicUDPHostConnection;
 
 public class BotAiHost extends BasicUDPHostConnection{
@@ -23,6 +25,10 @@ public class BotAiHost extends BasicUDPHostConnection{
 	public String toString() {
 		return "BotAiHost [mTeam=" + mTeam + ", toString()=" + super.toString()
 				+ "]";
+	}
+
+	public int getPort() {
+		return mToTargetSocket.getLocalPort();
 	}
 
 }

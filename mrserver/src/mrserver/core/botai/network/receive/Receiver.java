@@ -26,6 +26,7 @@ public class Receiver extends Thread {
 	public void close(){
 		
 		stopManagement();
+		mBotAIConnect.closeConnection();
 		
 	}
 
@@ -141,6 +142,10 @@ public class Receiver extends Thread {
 	@Override
 	public String toString() {
 		return "Receiver [mBotAIConnect=" + mBotAIConnect + "]";
+	}
+
+	public BotAiHost getBotAIConnect() {
+		return mBotAIConnect;
 	}
 	
 }

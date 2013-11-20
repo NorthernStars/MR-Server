@@ -77,9 +77,39 @@ public class BotControlManagement implements BotControl{
 	        
     	}
     	
+    	VisionManagement.getLogger().info( "Counld not connect to botcontrol!" );
     	return false;
     	
     }
+
+	public boolean reconnectToBotControl( int aHostPort ) {
+		
+		try {
+    		if( aHostPort > 1024 ){
+    			
+    			mToBotControl = new BotControlConnection( aHostPort );
+    			mToBotControl.setReconnected();
+    		
+	    		if( mToBotControl.isConnected() ){
+	    			
+	    			VisionManagement.getLogger().info( "Reconnection to botcontrol established!" );
+	    			return mToBotControl.isConnected();
+	    			
+	    		}
+	    		
+    		}
+        
+    	} catch ( Exception vException ) {
+
+	        VisionManagement.getLogger().error( "Fehler beim initialisiern der botcontrolconnection: {}", vException.getLocalizedMessage() );
+	        VisionManagement.getLogger().catching( Level.ERROR, vException );
+	        
+    	}
+
+    	VisionManagement.getLogger().info( "Counld not reconnect to botcontrol!" );
+    	return false;
+	}
+
     
     public boolean connectToBotControl(){
     
@@ -130,7 +160,7 @@ public class BotControlManagement implements BotControl{
 		return false;
 	}
 
-	public int getPortToVision() {
+	public int getPortToBotControl() {
 		
 		return isConnected() ? mToBotControl.getPortToVision() : -1;
 		
@@ -142,5 +172,4 @@ public class BotControlManagement implements BotControl{
     	return mToBotControl != null && mToBotControl.isConnected();
     	
     }
-
 }

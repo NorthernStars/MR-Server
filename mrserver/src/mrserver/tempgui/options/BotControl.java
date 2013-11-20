@@ -10,6 +10,8 @@ import javax.swing.JButton;
 
 import mrserver.core.Core;
 import mrserver.core.botcontrol.BotControlManagement;
+
+import java.awt.EventQueue;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -50,22 +52,73 @@ public class BotControl extends JPanel {
 		mBtnDisconnect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				
-				
+				new Thread( new Runnable() {
+
+					@Override
+					public void run() {
+		
+						BotControlManagement.getInstance().disconnectBotControl();
+						EventQueue.invokeLater(new Runnable() {
+							public void run() {
+								reload();
+							}
+						});
+					}
+				} ).start();
+
 			}
 		});
 		mBtnDisconnect.setBounds(220, 56, 91, 23);
 		add(mBtnDisconnect);
 		
 		mBtnReconnect = new JButton("Reconnect ");
+		mBtnReconnect.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				save();
+				new Thread( new Runnable() {
+
+					@Override
+					public void run() {
+
+						BotControlManagement.getInstance().reconnectToBotControl( Integer.parseInt( mOwnPortToBotControl.getText() ) );
+						BotControlManagement.getInstance().startManagement();
+						EventQueue.invokeLater(new Runnable() {
+							public void run() {
+								reload();
+							}
+						});
+					}
+				} ).start();
+			}
+		});
 		mBtnReconnect.setBounds(111, 56, 99, 23);
 		add(mBtnReconnect);
 		
 		mBtnConnect = new JButton("Connect ");
+		mBtnConnect.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				save();
+				new Thread( new Runnable() {
+
+					@Override
+					public void run() {
+		
+						BotControlManagement.getInstance().connectToBotControl( Integer.parseInt( mOwnPortToBotControl.getText() ) );
+						BotControlManagement.getInstance().startManagement();
+						EventQueue.invokeLater(new Runnable() {
+							public void run() {
+								reload();
+							}
+						});
+					}
+				} ).start();
+			}
+		});
 		mBtnConnect.setBounds(10, 56, 91, 23);
 		add(mBtnConnect);
 		
 		mOwnIP = new JTextField();
+		mOwnIP.setEditable(false);
 		mOwnIP.setColumns(10);
 		mOwnIP.setBounds(10, 104, 200, 20);
 		add(mOwnIP);
@@ -79,6 +132,7 @@ public class BotControl extends JPanel {
 		add(lblServerport);
 		
 		mOwnPortToBotControl = new JTextField();
+		mOwnPortToBotControl.setText("-1");
 		mOwnPortToBotControl.setColumns(10);
 		mOwnPortToBotControl.setBounds(220, 104, 86, 20);
 		add(mOwnPortToBotControl);
@@ -95,7 +149,7 @@ public class BotControl extends JPanel {
 	void reload(){
 		
 		try { mOwnIP.setText( InetAddress.getLocalHost().getHostAddress() ); } catch ( UnknownHostException vIgnoreingExceptionOYeah) { }
-		mOwnPortToBotControl.setText( Integer.toString( BotControlManagement.getInstance().getPortToVision() ) );
+		mOwnPortToBotControl.setText( mOwnPortToBotControl.getText().equals("-1") ? Integer.toString( BotControlManagement.getInstance().getPortToBotControl() ) : mOwnPortToBotControl.getText() );
 		mBotControlIPAddress.setText( Core.getInstance().getServerConfig().getBotControlIPAdress().getHostAddress() );
 		mBotControlPort.setText( Integer.toString( Core.getInstance().getServerConfig().getBotControlPort() ) );
 

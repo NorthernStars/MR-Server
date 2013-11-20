@@ -57,9 +57,9 @@ public class VisionManagement{
         	disconnectVision();
         	
             INSTANCE = null;
-        	VisionManagement.getLogger().info( "Visionmanagement closed" );
             
         }
+    	VisionManagement.getLogger().info( "Visionmanagement closed" );
         
     }
     
@@ -112,6 +112,36 @@ public class VisionManagement{
     	return false;
     	
     }
+
+	public boolean reconnectToVision( int aHostPort ) {
+
+		try {
+    		if( aHostPort > 1024 ){
+    			mVisionConnect = new VisionConnection( aHostPort );
+    		
+	
+				mVisionConnect.setReconnected();
+	    		
+	    		if( mVisionConnect.isConnected() ){
+	    			
+	    			VisionManagement.getLogger().info( "Reconnection to vision established!" );
+	    			mIncomingPacketManagement = new VisionIncomingPacketsManagement( mVisionConnect );
+	    			return mVisionConnect.isConnected();
+	    			
+	    		}
+    		
+    		}
+        
+    	} catch ( Exception vException ) {
+
+	        VisionManagement.getLogger().error( "Fehler beim initialisiern der visionconnection: " + vException.getLocalizedMessage() );
+	        VisionManagement.getLogger().catching( Level.ERROR, vException );
+	        
+    	}
+    	
+    	return false;
+		
+	}
     
     public boolean connectToVision(){
     
@@ -121,7 +151,7 @@ public class VisionManagement{
     
     public boolean startRecievingPackets(){
     	
-    	if( mIncomingPacketManagement != null && isConnected() ){
+    	if( mIncomingPacketManagement != null ){
     		return mIncomingPacketManagement.startManagement();
     	}
     	return false;

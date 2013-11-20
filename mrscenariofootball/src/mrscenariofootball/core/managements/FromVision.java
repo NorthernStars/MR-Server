@@ -101,13 +101,18 @@ public class FromVision extends Thread {
 				if( vPositionData != null ){
 						
 					vWorldData = ScenarioCore.getInstance().getScenarioInformation().getWorldData().copy();
+
 					vWorldData.getListOfPlayers().clear();
 					
-					for( PositionObject vObject : vPositionData.mListOfObjects ){
+					if( vPositionData.mListOfObjects != null ){
 						
-						if( vObject instanceof PositionObjectBot ){
-						
-							vWorldData.getListOfPlayers().add( new Player( ( PositionObjectBot ) vObject , ScenarioCore.getInstance().getBotAIs().get( vObject.getId() ) ) );
+						for( PositionObject vObject : vPositionData.mListOfObjects ){
+							
+							if( vObject instanceof PositionObjectBot ){
+							
+								vWorldData.getListOfPlayers().add( new Player( ( PositionObjectBot ) vObject , ScenarioCore.getInstance().getBotAIs().get( vObject.getId() ) ) );
+								
+							}
 							
 						}
 						
@@ -124,7 +129,7 @@ public class FromVision extends Thread {
 								
 			} catch ( Exception vException ) {
 				
-				ScenarioCore.getLogger().error( "Error processing object from vision: " + vException.getLocalizedMessage() );
+				ScenarioCore.getLogger().error( "Error processing object from vision: {}", vException.getLocalizedMessage() );
 				ScenarioCore.getLogger().catching( Level.ERROR, vException );
                 				
 			}

@@ -103,6 +103,7 @@ public class ToGraphics extends Thread {
 					vWorldData = WORLDDATA.poll( 100, TimeUnit.MILLISECONDS );
 					if( vWorldData != null ){
 							
+						ScenarioCore.getLogger().trace("Sending Data {}", vWorldData);
 						mGraphics.sendWorldStatus( vWorldData.toXMLString() );
 						
 					}

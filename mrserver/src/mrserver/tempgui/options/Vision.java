@@ -72,8 +72,16 @@ public class Vision extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				
 				save();
-				VisionManagement.getInstance().connectToVision();
-				VisionManagement.getInstance().startRecievingPackets();
+				new Thread( new Runnable() {
+
+					@Override
+					public void run() {
+
+						VisionManagement.getInstance().connectToVision( Integer.parseInt( mOwnToVisionPort.getText() ) );
+						VisionManagement.getInstance().startRecievingPackets();
+		
+					}
+				} ).start();
 				reload();
 				
 			}
@@ -84,9 +92,20 @@ public class Vision extends JPanel {
 		mBtnDisconnect = new JButton("Disconnect");
 		mBtnDisconnect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				VisionManagement.getInstance().disconnectVision();
-				reload();
+
+				new Thread( new Runnable() {
+
+					@Override
+					public void run() {
+
+						VisionManagement.getInstance().disconnectVision();
+						EventQueue.invokeLater(new Runnable() {
+							public void run() {
+								reload();
+							}
+						});
+					}
+				} ).start();
 				
 			}
 		});
@@ -97,11 +116,21 @@ public class Vision extends JPanel {
 		mBtnReconnect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				save();
-				VisionManagement.getInstance().connectToVision( Integer.parseInt( mOwnToVisionPort.getText() ) );
-				VisionManagement.getInstance().startRecievingPackets();
-				
-				reload();
+				save();	
+				new Thread( new Runnable() {
+
+					@Override
+					public void run() {
+
+						VisionManagement.getInstance().reconnectToVision( Integer.parseInt( mOwnToVisionPort.getText() ) );
+						VisionManagement.getInstance().startRecievingPackets();
+						EventQueue.invokeLater(new Runnable() {
+							public void run() {
+								reload();
+							}
+						});
+					}
+				} ).start();
 				
 			}
 		});
@@ -109,6 +138,7 @@ public class Vision extends JPanel {
 		add(mBtnReconnect);
 		
 		mOwnIP = new JTextField();
+		mOwnIP.setEditable(false);
 		mOwnIP.setColumns(10);
 		mOwnIP.setBounds(10, 104, 200, 20);
 		add(mOwnIP);
@@ -122,6 +152,7 @@ public class Vision extends JPanel {
 		add(lblServerport);
 		
 		mOwnToVisionPort = new JTextField();
+		mOwnToVisionPort.setText("-1");
 		mOwnToVisionPort.setColumns(10);
 		mOwnToVisionPort.setBounds(220, 104, 86, 20);
 		add(mOwnToVisionPort);
@@ -136,7 +167,11 @@ public class Vision extends JPanel {
 					public void run() {
 
 						VisionManagement.getInstance().changeVisionMode( (VisionMode) mVisionModes.getSelectedItem()  );
-						
+						EventQueue.invokeLater(new Runnable() {
+							public void run() {
+								reload();
+							}
+						});
 					}
 				} ).start();
 				
@@ -162,7 +197,7 @@ public class Vision extends JPanel {
 	void reload(){
 		
 		try { mOwnIP.setText( InetAddress.getLocalHost().getHostAddress() ); } catch ( UnknownHostException vIgnoreingExceptionOYeah) { }
-		mOwnToVisionPort.setText( Integer.toString( VisionManagement.getInstance().getPortToVision() ) );
+		mOwnToVisionPort.setText( mOwnToVisionPort.getText().equals("-1") ? Integer.toString( VisionManagement.getInstance().getPortToVision() ) : mOwnToVisionPort.getText() );
 		mVisionIPAddress.setText( Core.getInstance().getServerConfig().getVisionIPAdress().getHostAddress() );
 		mVisionPort.setText( Integer.toString( Core.getInstance().getServerConfig().getVisionPort() ) );
 

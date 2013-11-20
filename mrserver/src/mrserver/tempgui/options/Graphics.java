@@ -6,20 +6,34 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+
 import javax.swing.border.LineBorder;
+
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.net.InetAddress;
+import java.net.SocketAddress;
+import java.net.UnknownHostException;
+
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
-public class Graphics extends JPanel {
-	private JTextField textField;
-	private JTextField textField_1;
+import mrserver.core.Core;
+import mrserver.core.botcontrol.BotControlManagement;
+import mrserver.core.graphics.GraphicsManagement;
+import mrserver.tempgui.options.interfaces.GraphicsManagementListener;
+
+public class Graphics extends JPanel implements GraphicsManagementListener{
+	private JTextField mOwnIP;
+	private JTextField mOwnPortForGraphics;
     private JPanel mPanelFiller = new JPanel();
 	private JPanel mConnetedGraphicsPanel;
+	private JButton mBtnOpen;
+	private JButton mBtnClose;
 
 	/**
 	 * Create the panel.
@@ -35,30 +49,44 @@ public class Graphics extends JPanel {
 		lblServeripaddress.setBounds(10, 11, 89, 14);
 		add(lblServeripaddress);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(10, 25, 200, 20);
-		add(textField);
+		mOwnIP = new JTextField();
+		mOwnIP.setEditable(false);
+		mOwnIP.setColumns(10);
+		mOwnIP.setBounds(10, 25, 200, 20);
+		add(mOwnIP);
 		
 		JLabel lblServerport = new JLabel("ServerPort");
 		lblServerport.setBounds(220, 11, 86, 14);
 		add(lblServerport);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(220, 25, 86, 20);
-		add(textField_1);
+		mOwnPortForGraphics = new JTextField();
+		mOwnPortForGraphics.setColumns(10);
+		mOwnPortForGraphics.setBounds(220, 25, 86, 20);
+		add(mOwnPortForGraphics);
 		
-		JButton btnOpen = new JButton("Open");
-		btnOpen.addActionListener(new ActionListener() {
+		mBtnOpen = new JButton("Open");
+		mBtnOpen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				addConnectedGraphicPanel( new ConnectedGraphicPanel() );
-				
+
+				save();
+				new Thread( new Runnable() {
+
+					@Override
+					public void run() {
+		
+						GraphicsManagement.getInstance().startGraphicsManagement();
+						EventQueue.invokeLater(new Runnable() {
+							public void run() {
+								reload();
+							}
+						});
+					}
+				} ).start();
+
 			}
 		});
-		btnOpen.setBounds(317, 11, 91, 34);
-		add(btnOpen);
+		mBtnOpen.setBounds(317, 11, 91, 34);
+		add(mBtnOpen);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -75,8 +103,34 @@ public class Graphics extends JPanel {
 		gbl_panel.rowWeights = new double[]{Double.MIN_VALUE};
 		mConnetedGraphicsPanel.setLayout(gbl_panel);
 		
+		mBtnClose = new JButton("Close");
+		mBtnClose.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				new Thread( new Runnable() {
+
+					@Override
+					public void run() {
+		
+						GraphicsManagement.getInstance().close();
+						EventQueue.invokeLater(new Runnable() {
+							public void run() {
+								reload();
+							}
+						});
+					}
+				} ).start();
+
+			}
+		});
+		mBtnClose.setEnabled(false);
+		mBtnClose.setBounds(317, 12, 91, 33);
+		add(mBtnClose);
+		
         mPanelFiller.setMinimumSize( new Dimension(0,0) );
         mPanelFiller.setPreferredSize( new Dimension(0,0) );
+        
+        GraphicsManagement.getInstance().registerListener(this);
 
 	}
 	
@@ -98,4 +152,34 @@ public class Graphics extends JPanel {
         validate();
         
     }
+
+	void save(){
+
+		Core.getInstance().getServerConfig().setVisionIPAdress( mOwnIP.getText() );
+		Core.getInstance().getServerConfig().setVisionPort( Integer.parseInt( mOwnPortForGraphics.getText() ) );
+				
+	}
+	
+	void reload(){
+		
+		try { mOwnIP.setText( InetAddress.getLocalHost().getHostAddress() ); } catch ( UnknownHostException vIgnoreingExceptionOYeah) { }
+		mOwnPortForGraphics.setText( Integer.toString( Core.getInstance().getServerConfig().getGraphicsPort() ) );
+
+		mBtnOpen.setEnabled( !GraphicsManagement.getInstance().isStarted() );
+		mBtnOpen.setVisible( !GraphicsManagement.getInstance().isStarted() );
+		mBtnClose.setEnabled( GraphicsManagement.getInstance().isStarted() );
+		mBtnClose.setVisible( GraphicsManagement.getInstance().isStarted() );
+		
+	}
+
+	@Override
+	public void newConnection( final SocketAddress aGraphic ) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				addConnectedGraphicPanel( new ConnectedGraphicPanel( aGraphic ) );
+			}
+		});
+		
+	}
+    
 }

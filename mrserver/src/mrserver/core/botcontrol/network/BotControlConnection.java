@@ -29,6 +29,12 @@ public class BotControlConnection extends BasicUDPServerConnection {
 		
 	}
 	
+	public void setReconnected(){
+		
+		mIsConnectionEstablished = true;
+		
+	}
+	
 	@Override
 	public boolean isConnected() {
 		

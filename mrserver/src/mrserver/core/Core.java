@@ -10,6 +10,7 @@ import mrserver.core.graphics.GraphicsManagement;
 import mrserver.core.scenario.ScenarioManagement;
 import mrserver.core.vision.VisionManagement;
 import mrserver.tempgui.Helper;
+import mrserver.tempgui.Main;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -99,35 +100,38 @@ public class Core {
             
             CommandLineOptions.getInstance().parseCommandLineArguments( aCommandline );
             //TODO: operatormanagement starten
-            ScenarioManagement.getInstance().loadScenario();
-            if ( ScenarioManagement.getInstance().needsVision() ) {
-
-            	VisionManagement.getInstance().connectToVision();
-            	VisionManagement.getInstance().startRecievingPackets();
-            	          	
-            }
-            if ( ScenarioManagement.getInstance().needsBotControl() ) {
-            	
-            	BotControlManagement.getInstance().startManagement();
-            	ScenarioManagement.getInstance().registerBotControl( BotControlManagement.getInstance() );
-            	
-            }
             
-            GraphicsManagement.getInstance().startGraphicsManagement();
-            ScenarioManagement.getInstance().registerGraphics( GraphicsManagement.getInstance() );
-            //TODO: Vision kalibrieren
-            BotAIManagement.getInstance().startBotAIManagement();
-
-            EventQueue.invokeLater(new Runnable() {
-    			public void run() {
-    				try {
-    					Helper window = new Helper();
-    					window.frame.setVisible(true);
-    				} catch (Exception e) {
-    					e.printStackTrace();
-    				}
-    			}
-    		});
+            Main.startGUI();
+            
+//            ScenarioManagement.getInstance().loadScenario();
+//            if ( ScenarioManagement.getInstance().needsVision() ) {
+//
+//            	VisionManagement.getInstance().connectToVision();
+//            	VisionManagement.getInstance().startRecievingPackets();
+//            	          	
+//            }
+//            if ( ScenarioManagement.getInstance().needsBotControl() ) {
+//            	
+//            	BotControlManagement.getInstance().startManagement();
+//            	ScenarioManagement.getInstance().registerBotControl( BotControlManagement.getInstance() );
+//            	
+//            }
+//            
+//            GraphicsManagement.getInstance().startGraphicsManagement();
+//            ScenarioManagement.getInstance().registerGraphics( GraphicsManagement.getInstance() );
+//            //TODO: Vision kalibrieren
+//            BotAIManagement.getInstance().startBotAIManagement();
+//
+//            EventQueue.invokeLater(new Runnable() {
+//    			public void run() {
+//    				try {
+//    					Helper window = new Helper();
+//    					window.frame.setVisible(true);
+//    				} catch (Exception e) {
+//    					e.printStackTrace();
+//    				}
+//    			}
+//    		});
             
         } catch ( Exception vException ) {
 

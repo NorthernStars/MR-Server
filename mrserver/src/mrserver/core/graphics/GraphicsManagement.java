@@ -13,6 +13,7 @@ import mrserver.core.graphics.data.GraphicModul;
 import mrserver.core.graphics.network.GraphicsConnection;
 import mrserver.core.graphics.network.receive.Creator;
 import mrserver.core.graphics.network.receive.Receiver;
+import mrserver.tempgui.options.interfaces.GraphicsManagementListener;
 import mrservermisc.graphics.interfaces.Graphics;
 import mrservermisc.network.data.position.PositionDataPackage;
 
@@ -47,6 +48,7 @@ public class GraphicsManagement implements Graphics{
     private GraphicsConnection mGraphicsConnection;
     private Receiver mGraphicsReceiver;
     private Creator mGraphicsCreator;
+	private GraphicsManagementListener mListener;
 
     private GraphicsManagement(){
     	
@@ -105,5 +107,25 @@ public class GraphicsManagement implements Graphics{
 		
 		return true;
 	}
+
+	public boolean isStarted() {
+
+		return mGraphicsConnection != null && mGraphicsConnection.isConnected() && 
+			   mGraphicsCreator != null && mGraphicsCreator.isAlive() && 
+			   mGraphicsReceiver!= null && mGraphicsReceiver.isAlive();
+		
+	}
+	
+	public void registerListener( GraphicsManagementListener aListener ){
+		
+		mListener = aListener;
+		
+	}
+
+	public GraphicsManagementListener getListener() {
+		return mListener;
+	}
+	
+	
 
 }

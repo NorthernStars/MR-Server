@@ -98,6 +98,8 @@ public class Options extends JFrame {
 		mServer.reload();
 		mVision.reload();
 		mBotControl.reload();
+		mGraphics.reload();
+		mBotAIs.reload();
 		
 	}
 	void saveOptions(){
@@ -105,6 +107,8 @@ public class Options extends JFrame {
 		mServer.save();
 		mVision.save();
 		mBotControl.save();
+		mGraphics.save();
+		mBotAIs.save();
 		
 	}
 

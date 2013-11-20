@@ -179,4 +179,8 @@ public class BotAI implements Bot{
 		
 	}
 
+	public InetSocketAddress getSocketAddress() {
+		return mSocketAddress;
+	}
+
 }

@@ -1,15 +1,19 @@
 package mrserver.core.scenario;
 
+import java.awt.Component;
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.List;
+
+import javax.swing.JPanel;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import mrserver.core.Core;
+import mrserver.core.botai.data.BotAI;
 import mrservermisc.botcontrol.interfaces.BotControl;
 import mrservermisc.bots.interfaces.Bot;
 import mrservermisc.graphics.interfaces.Graphics;
@@ -213,6 +217,27 @@ public class ScenarioManagement {
 			mScenario.unpauseScenario();
 			
 		}
+		
+	}
+
+	public void unregisterBot(BotAI aAI) {
+
+		if( mScenario != null ){
+			
+			mScenario.unregisterBot( aAI );
+			
+		}
+		
+	}
+
+	public JPanel getScenarioGUI() {
+
+		if( mScenario != null ){
+			
+			return mScenario.getScenarioGUI();
+			
+		}
+		return null;
 		
 	}
 
