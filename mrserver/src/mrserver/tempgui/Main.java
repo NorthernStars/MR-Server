@@ -228,6 +228,24 @@ public class Main {
 				
 			}
 		});
+		
+		JMenuItem mntmStart = new JMenuItem("Start");
+		mntmStart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				new Thread( new Runnable() {
+
+					@Override
+					public void run() {
+		
+						ScenarioManagement.getInstance().startScenario();
+						
+					}
+				} ).start();
+				
+			}
+		});
+		mnScenario.add(mntmStart);
 		mnScenario.add(mntmPause);
 		
 		JMenuItem mntmUnpause = new JMenuItem("Unpause");

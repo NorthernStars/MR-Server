@@ -37,11 +37,17 @@ public enum ReferencePointName {
     
     private final int mId;
 	private ServerPoint mRelativePosition;
+	private String mShortName = "";
     
     private ReferencePointName( int aId , double aRelativeX, double aRelativeY) {
 
         mId = aId;
         mRelativePosition = new ServerPoint( aRelativeX, aRelativeY );
+        for( int vCharCounter = 0; vCharCounter < name().length(); vCharCounter++){
+           if( Character.isUpperCase( name().charAt(vCharCounter) )){
+        	   mShortName += name().charAt(vCharCounter);
+           }
+        }
         
     }
 
@@ -54,6 +60,13 @@ public enum ReferencePointName {
 	public ServerPoint getRelativePosition() {
 
 		return mRelativePosition;
+		
+	}
+	
+	public String getShortName(){
+		
+		return mShortName;
+		
 		
 	}
     

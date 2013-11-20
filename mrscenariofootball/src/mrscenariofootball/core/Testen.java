@@ -275,7 +275,7 @@ public class Testen extends JFrame implements BoundsListener {
 	 */
 	protected void gameLoop() {
 		// get the graphics object to render to
-		Graphics2D g = (Graphics2D)this.canvas.getBufferStrategy().getDrawGraphics();
+		Graphics2D g = (Graphics2D) this.canvas.getBufferStrategy().getDrawGraphics();
 		
 		// before we render everything im going to flip the y axis and move the
 		// origin to the center (instead of it being in the top left corner)

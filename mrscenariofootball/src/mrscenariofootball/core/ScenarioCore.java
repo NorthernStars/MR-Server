@@ -70,7 +70,7 @@ public class ScenarioCore implements Scenario {
     
 	private Graphics mGraphics;
 	@GuardedBy("this") private ConcurrentHashMap<Integer, BotAI> mBotAIs = new ConcurrentHashMap<Integer, BotAI>();
-	private ScenarioInformation mScenarioInformation;
+	private ScenarioInformation mScenarioInformation = new ScenarioInformation();;
 	private FromVision mFromVisionManagement;
 	private ToGraphics mToGraphicsManagement;
 	private BotControl mBotControl;
@@ -166,8 +166,6 @@ public class ScenarioCore implements Scenario {
 	public void startScenario() {
 
 		WorldData.createWorldDataSchema();
-		
-		mScenarioInformation = new ScenarioInformation();
 		
 		mFromVisionManagement = new FromVision();
 		mFromVisionManagement.startManagement();

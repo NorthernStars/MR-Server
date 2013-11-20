@@ -54,7 +54,11 @@
 	    	<manifest>
 	    	</manifest>
 	    	<fileset dir="${build.dir}" />
-	    	<fileset dir="${src.dir}" includes="**/*.java"/>
+	    	<fileset dir="${src.dir}">
+	    		<include name="**/*.java" />
+    	    	<include name="mrscenariofootball/core/gui/*.png" />
+    	    	<include name="mrscenariofootball/core/gui/*.jpg" />
+	    	</fileset>
 	    	<fileset dir="${docs.dir}" />
 	    </jar>
 	  </target>
