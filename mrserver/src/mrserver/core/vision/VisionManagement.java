@@ -54,18 +54,7 @@ public class VisionManagement{
 
         if( INSTANCE != null ){
 
-        	if( mIncomingPacketManagement != null ){
-
-        		mIncomingPacketManagement.stopManagement();
-        		mIncomingPacketManagement = null;
-        		
-        	}
-        	if( mVisionConnect != null ){
-
-            	mVisionConnect.closeConnection();
-            	mVisionConnect = null;
-        		
-        	}
+        	disconnectVision();
         	
             INSTANCE = null;
         	VisionManagement.getLogger().info( "Visionmanagement closed" );
@@ -74,16 +63,36 @@ public class VisionManagement{
         
     }
     
+    public void disconnectVision(){
+    	
+    	if( mIncomingPacketManagement != null ){
+
+    		mIncomingPacketManagement.stopManagement();
+    		mIncomingPacketManagement = null;
+    		
+    	}
+    	if( mVisionConnect != null ){
+
+        	mVisionConnect.closeConnection();
+        	mVisionConnect = null;
+    		
+    	}
+    	
+    }
+    
     /**
      * Verbindet den Server zu einem Visionmodul 
      * 
      * @return true ob die Verbindung erfolgreich hergestellt werden konnte, fale wenn nicht
      */
-    public boolean connectToVision(){
+    public boolean connectToVision( int aHostPort ){
     	
     	try {
-    		
-    		mVisionConnect = new VisionConnection();
+    		if( aHostPort > 1024 ){
+    			mVisionConnect = new VisionConnection( aHostPort );
+    		} else {
+    			mVisionConnect = new VisionConnection();
+    		}
     		
     		if( mVisionConnect.establishConnection() ){
     			
@@ -104,9 +113,15 @@ public class VisionManagement{
     	
     }
     
+    public boolean connectToVision(){
+    
+    	return connectToVision( -1 );
+    
+    }
+    
     public boolean startRecievingPackets(){
     	
-    	if( mIncomingPacketManagement != null ){
+    	if( mIncomingPacketManagement != null && isConnected() ){
     		return mIncomingPacketManagement.startManagement();
     	}
     	return false;
@@ -118,37 +133,54 @@ public class VisionManagement{
      * @return true ob der Modus erfolgreich geändert werden konnte
      */
     public boolean changeVisionMode( VisionMode aVisionMode ){
+    	
+    	if( isConnected() ){
     		
-		try {
+			try {
+			
+				VisionManagement.getLogger().debug( "Setting visionmode: " + aVisionMode );
+				
+				mIncomingPacketManagement.suspendManagement();
+				mVisionConnect.sendDatagrammString( new ChangeVisionMode( aVisionMode ).toXMLString() );
+				
+				ChangeVisionMode vChangeAcknowlegement = ChangeVisionMode.unmarshallXMLChangeVisionModeString( mVisionConnect.getDatagrammString( 1000 ) );
+				
+				//TODO: in ein datapacket ändern
+				VisionManagement.getLogger().debug( "Recieving visionmode acknowlegement: " + vChangeAcknowlegement );
+				
+				if( vChangeAcknowlegement != null && aVisionMode == vChangeAcknowlegement.getVisionMode() ){
+					
+					mIncomingPacketManagement.resumeManagement();
+					VisionManagement.getLogger().info( "Set visionmode to " + aVisionMode );
+					return true;
+					
+				}
 		
-			VisionManagement.getLogger().debug( "Setting visionmode: " + aVisionMode );
-			
-			mIncomingPacketManagement.suspendManagement();
-			mVisionConnect.sendDatagrammString( new ChangeVisionMode( aVisionMode ).toXMLString() );
-			
-			ChangeVisionMode vChangeAcknowlegement = ChangeVisionMode.unmarshallXMLChangeVisionModeString( mVisionConnect.getDatagrammString( 1000 ) );
-			
-			//TODO: in ein datapacket ändern
-			VisionManagement.getLogger().debug( "Recieving visionmode acknowlegement: " + vChangeAcknowlegement );
-			
-			if( vChangeAcknowlegement != null && aVisionMode == vChangeAcknowlegement.getVisionMode() ){
-				
-				mIncomingPacketManagement.resumeManagement();
-				VisionManagement.getLogger().info( "Set visionmode to " + aVisionMode );
-				return true;
-				
+			} catch ( Exception vException ) {
+		
+		        VisionManagement.getLogger().error( "Could not establish connection to vision: " + vException.getLocalizedMessage() );
+		        VisionManagement.getLogger().catching( Level.ERROR, vException );
+		        
 			}
-	
-		} catch ( Exception vException ) {
-	
-	        VisionManagement.getLogger().error( "Could not establish connection to vision: " + vException.getLocalizedMessage() );
-	        VisionManagement.getLogger().catching( Level.ERROR, vException );
-	        
-		}
 
-		mIncomingPacketManagement.resumeManagement();
+			mIncomingPacketManagement.resumeManagement();
+			
+    	}
+    	
 		VisionManagement.getLogger().info( "Failed to set visionmode to " + aVisionMode );
 		return false;
+    	
+    }
+    
+    public boolean isConnected(){
+    	
+    	return mVisionConnect != null && mVisionConnect.isConnected() && mIncomingPacketManagement != null && mIncomingPacketManagement.isAlive();
+    	
+    }
+    
+    public int getPortToVision(){
+    	
+    	return isConnected() ? mVisionConnect.getPortToVision() : -1;
     	
     }
 

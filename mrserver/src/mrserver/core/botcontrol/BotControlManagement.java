@@ -1,9 +1,14 @@
 package mrserver.core.botcontrol;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import mrserver.core.Core;
+import mrserver.core.botcontrol.network.BotControlConnection;
+import mrserver.core.vision.VisionIncomingPacketsManagement;
+import mrserver.core.vision.VisionManagement;
+import mrserver.core.vision.network.VisionConnection;
 import mrservermisc.botcontrol.interfaces.BotControl;
 import mrservermisc.network.BasicUDPServerConnection;
 
@@ -42,32 +47,77 @@ public class BotControlManagement implements BotControl{
         
     }
     
-    BasicUDPServerConnection aToBotControl;
+    BotControlConnection mToBotControl;
     
     public void startManagement(){
     	
-    	aToBotControl = new BasicUDPServerConnection( Core.getInstance().getServerConfig().getBotControlIPAdress(), Core.getInstance().getServerConfig().getBotControlPort() );
     	BotControlManagement.getLogger().info( "Botcontrolmanagement started");
+    }    
+    
+    public boolean connectToBotControl( int aHostPort ){
+    	
+    	try {
+    		if( aHostPort > 1024 ){
+    			mToBotControl = new BotControlConnection( aHostPort );
+    		} else {
+    			mToBotControl = new BotControlConnection();
+    		}
+    		
+    		if( mToBotControl.establishConnection() ){
+    			
+    			VisionManagement.getLogger().info( "Connection to botcontrol established!" );
+    			return mToBotControl.isConnected();
+    			
+    		}
+        
+    	} catch ( Exception vException ) {
+
+	        VisionManagement.getLogger().error( "Fehler beim initialisiern der botcontrolconnection: {}", vException.getLocalizedMessage() );
+	        VisionManagement.getLogger().catching( Level.ERROR, vException );
+	        
+    	}
+    	
+    	return false;
+    	
+    }
+    
+    public boolean connectToBotControl(){
+    
+    	return connectToBotControl( -1 );
+    
     }
     
     public void close() {
 
         if( INSTANCE != null ){
         	
+        	disconnectBotControl();
+        	
             INSTANCE = null;
-        	BotControlManagement.getLogger().info( "Botcontrolmanagement closed");
+        	BotControlManagement.getLogger().info( "Botcontrolmanagement closed" );
             
         }
         
+    }
+    
+    public void disconnectBotControl(){
+    	
+    	if( mToBotControl != null ){
+
+    		mToBotControl.closeConnection();
+    		mToBotControl = null;
+    		
+    	}
+    	
     }
 
 	@Override
 	public boolean sendMovement(int aBot, int aLeftWheelSpeed, int aRightWheelSpeed) {
 		
-		if( aToBotControl != null && aToBotControl.isConnected() ){
+		if( mToBotControl != null && mToBotControl.isConnected() ){
 			
 			BotControlManagement.getLogger().debug( "Sending command {}|{}|{} to botcontrol", aBot, aLeftWheelSpeed, aRightWheelSpeed );
-			aToBotControl.sendDatagrammString( aBot + "|" + aLeftWheelSpeed + "|" + aRightWheelSpeed );
+			mToBotControl.sendDatagrammString( aBot + "|" + aLeftWheelSpeed + "|" + aRightWheelSpeed );
 			
 			return true;
 			
@@ -79,5 +129,18 @@ public class BotControlManagement implements BotControl{
 		
 		return false;
 	}
+
+	public int getPortToVision() {
+		
+		return isConnected() ? mToBotControl.getPortToVision() : -1;
+		
+	}
+	
+    
+    public boolean isConnected(){
+    	
+    	return mToBotControl != null && mToBotControl.isConnected();
+    	
+    }
 
 }

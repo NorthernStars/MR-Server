@@ -54,7 +54,7 @@ public class BasicUDPServerConnection {
 			
 			mToTargetSocket = new DatagramSocket();
 			mToTargetSocket.connect( aTargetAddress, aTargetPort );
-			
+
 			mSocketInitialized = true;
 	        
 		} catch ( IOException vIoException ) {
@@ -74,7 +74,7 @@ public class BasicUDPServerConnection {
 		
     }
 	
-	public BasicUDPServerConnection( InetAddress aTargetAddress, int aTargetPort, int aHostPort)
+	public BasicUDPServerConnection( InetAddress aTargetAddress, int aTargetPort, int aHostPort )
     {       
 		try {
 			

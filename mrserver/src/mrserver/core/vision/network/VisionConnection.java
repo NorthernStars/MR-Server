@@ -14,10 +14,16 @@ import mrservermisc.network.handshake.server.ConnectionRequest;
 public class VisionConnection extends BasicUDPServerConnection{
 	
 	private boolean mIsConnectionEstablished = false;
-	
+
 	public VisionConnection() throws IOException{
 		
 		super( Core.getInstance().getServerConfig().getVisionIPAdress(), Core.getInstance().getServerConfig().getVisionPort() );
+				
+	}
+	
+	public VisionConnection( int aHostPort ) throws IOException{
+		
+		super( Core.getInstance().getServerConfig().getVisionIPAdress(), Core.getInstance().getServerConfig().getVisionPort(), aHostPort );
 				
 	}
 	
@@ -62,6 +68,12 @@ public class VisionConnection extends BasicUDPServerConnection{
 	public boolean isConnected() {
 		
 		return super.isConnected() && mIsConnectionEstablished;
+		
+	}
+	
+	public int getPortToVision(){
+		
+		return mToTargetSocket.getLocalPort();
 		
 	}
 
