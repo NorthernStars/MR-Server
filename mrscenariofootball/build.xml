@@ -58,6 +58,7 @@
 	    		<include name="**/*.java" />
     	    	<include name="mrscenariofootball/core/gui/*.png" />
     	    	<include name="mrscenariofootball/core/gui/*.jpg" />
+    	    	<include name="mrscenariofootball/core/gui/*.gif" />
 	    	</fileset>
 	    	<fileset dir="${docs.dir}" />
 	    </jar>
