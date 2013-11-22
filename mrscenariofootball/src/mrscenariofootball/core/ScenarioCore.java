@@ -76,7 +76,7 @@ public class ScenarioCore implements Scenario {
 	private BotControl mBotControl;
 	private ToBotAIs mToBotAIs;
 	private AtomicBoolean mPaused = new AtomicBoolean( true );
-	private ScenarioGUI aGUI = new ScenarioGUI();
+	private ScenarioGUI mGUI = new ScenarioGUI();
 	
 	@Override
 	public void close() {
@@ -170,7 +170,7 @@ public class ScenarioCore implements Scenario {
 		mFromVisionManagement = new FromVision();
 		mFromVisionManagement.startManagement();
 		
-		mToGraphicsManagement = new ToGraphics( mGraphics );
+		mToGraphicsManagement = new ToGraphics();
 		mToGraphicsManagement.startManagement();
 		
 		mToBotAIs = new ToBotAIs();
@@ -210,12 +210,10 @@ public class ScenarioCore implements Scenario {
 					if( vCommand.isMovement() ){
 						mBotControl.sendMovement( vBotAI.getRcId(), vCommand.getMovement().getLeftWheelVelocity(), vCommand.getMovement().getRightWheelVelocity() );
 					} else if( vCommand.isKick() ){
-
-						ScenarioCore.getLogger().debug(vCommand.getKick());
+						
 						for( Player vPlayer : vWorldData.getListOfPlayers() ){
 							
-							
-							if( vPlayer.getId() == vBotAI.getVtId() && vPlayer.getPosition().distance( vWorldData.getBallPosition().getPosition() ) >= 0.01 ){
+							if( vPlayer.getId() == vBotAI.getVtId() && vPlayer.getPosition().distance( vWorldData.getBallPosition().getPosition() ) <= 0.05 ){
 								
 								ScenarioCore.getLogger().debug(" Player {} tries to kick {} with distance {}", vPlayer, vWorldData.getBallPosition(), vPlayer.getPosition().distance( vWorldData.getBallPosition().getPosition() ));
 																
@@ -242,6 +240,7 @@ public class ScenarioCore implements Scenario {
 			mScenarioInformation.addTimePlayed( 0.05 );
 			
 			ScenarioCore.getLogger().trace( "Scenario ticked {}", mScenarioInformation.getWorldData().copy() );
+			mGUI.updateUI();
 			
 			while( System.nanoTime() - vTickTime <= 50000000 ){
 			
@@ -286,8 +285,12 @@ public class ScenarioCore implements Scenario {
 	@Override
 	public JPanel getScenarioGUI() {
 		
-		return aGUI;
+		return mGUI;
 		
+	}
+
+	public Graphics getGraphics() {
+		return mGraphics;
 	}
 
 }

@@ -79,10 +79,14 @@ public class Vision extends JPanel {
 
 						VisionManagement.getInstance().connectToVision( Integer.parseInt( mOwnToVisionPort.getText() ) );
 						VisionManagement.getInstance().startRecievingPackets();
+						EventQueue.invokeLater(new Runnable() {
+							public void run() {
+								reload();
+							}
+						});
 		
 					}
 				} ).start();
-				reload();
 				
 			}
 		});

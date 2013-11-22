@@ -98,7 +98,7 @@ public class VisionIncomingPacketsManagement extends Thread{
 
 	private boolean suspendManagement( boolean aSuspend ) {
 		mSuspend.set( aSuspend );
-		while( mIsSuspended.get() != aSuspend ){ try { Thread.sleep( 1 ); } catch ( InterruptedException vInterruptedException ) { VisionManagement.getLogger().error( "Error suspending VisionIncomingPacketManagement: {}", vInterruptedException.getLocalizedMessage() ); VisionManagement.getLogger().catching( Level.ERROR, vInterruptedException ); } }
+		while( mIsSuspended.get() != aSuspend ){ try { Thread.sleep( 10 ); } catch ( InterruptedException vInterruptedException ) { VisionManagement.getLogger().error( "Error suspending VisionIncomingPacketManagement: {}", vInterruptedException.getLocalizedMessage() ); VisionManagement.getLogger().catching( Level.ERROR, vInterruptedException ); } }
 		return mIsSuspended.get();
 	}
 	
@@ -108,10 +108,10 @@ public class VisionIncomingPacketsManagement extends Thread{
 		PositionDataPackage vPositionDataFromVision;
 		
 		while( mManageMessagesfromVision.get() ){
-            
-			if( mSuspend.get() ){ synchronized(this){ mIsSuspended.set( true ); } }
-            while( mSuspend.get() ){ try { this.wait( 10 ); } catch ( InterruptedException vInterruptedException ) { VisionManagement.getLogger().error( "Error suspending VisionIncomingPacketManagement: {}",vInterruptedException.getLocalizedMessage() ); VisionManagement.getLogger().catching( Level.ERROR, vInterruptedException ); } }
-			mIsSuspended.compareAndSet(true, false);
+			
+			if( mSuspend.get() ){ mIsSuspended.set( true ); }
+            while( mSuspend.get() ){ try { Thread.sleep( 10 ); } catch ( InterruptedException vInterruptedException ) { VisionManagement.getLogger().error( "Error suspending VisionIncomingPacketManagement: {}",vInterruptedException.getLocalizedMessage() ); VisionManagement.getLogger().catching( Level.ERROR, vInterruptedException ); } }
+			mIsSuspended.compareAndSet( true, false );
             
 			try {
 				

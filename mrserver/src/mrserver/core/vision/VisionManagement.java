@@ -168,10 +168,14 @@ public class VisionManagement{
     		
 			try {
 			
-				VisionManagement.getLogger().debug( "Setting visionmode: " + aVisionMode );
+				VisionManagement.getLogger().info( "Setting visionmode: " + aVisionMode );
 				
 				mIncomingPacketManagement.suspendManagement();
-				mVisionConnect.sendDatagrammString( new ChangeVisionMode( aVisionMode ).toXMLString() );
+				
+				ChangeVisionMode vNewMode = new ChangeVisionMode( aVisionMode );
+				VisionManagement.getLogger().debug( "Sending visionmodechange {}", vNewMode.toXMLString() );
+				
+				mVisionConnect.sendDatagrammString( vNewMode.toXMLString() );
 				
 				ChangeVisionMode vChangeAcknowlegement = ChangeVisionMode.unmarshallXMLChangeVisionModeString( mVisionConnect.getDatagrammString( 1000 ) );
 				
@@ -188,7 +192,7 @@ public class VisionManagement{
 		
 			} catch ( Exception vException ) {
 		
-		        VisionManagement.getLogger().error( "Could not establish connection to vision: " + vException.getLocalizedMessage() );
+		        VisionManagement.getLogger().error( "Could not get confirmation from vision: " + vException.getLocalizedMessage() );
 		        VisionManagement.getLogger().catching( Level.ERROR, vException );
 		        
 			}

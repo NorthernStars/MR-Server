@@ -1,29 +1,21 @@
 package mrscenariofootball.core.gui;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.Shape;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.PathIterator;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-import javax.swing.JButton;
 
 import mrscenariofootball.core.ScenarioCore;
 import mrscenariofootball.core.data.worlddata.server.Player;
 import mrscenariofootball.core.data.worlddata.server.ReferencePoint;
+import mrscenariofootball.core.data.worlddata.server.Team;
 import mrscenariofootball.core.data.worlddata.server.WorldData;
-
-import java.awt.BorderLayout;
 
 import javax.swing.JLabel;
 
@@ -33,7 +25,7 @@ import javax.swing.SwingConstants;
 
 public class ScenarioGUI extends JPanel {
 
-	private BufferedImage mBackgroundImage, mBallImage, mBlueBotImage, mYellowBotImage;
+	private BufferedImage mBackgroundImage, mBallImage, mBlueBotImage, mYellowBotImage, mNoneBotImage;
 
 
 	/**
@@ -49,6 +41,7 @@ public class ScenarioGUI extends JPanel {
 			mBallImage = ImageIO.read( ScenarioGUI.class.getResource( "/mrscenariofootball/core/gui/ball.png" ));
 			mBlueBotImage = ImageIO.read( ScenarioGUI.class.getResource( "/mrscenariofootball/core/gui/playerblue.gif" ));
 			mYellowBotImage = ImageIO.read( ScenarioGUI.class.getResource( "/mrscenariofootball/core/gui/playeryellow.gif" ));
+			mNoneBotImage = ImageIO.read( ScenarioGUI.class.getResource( "/mrscenariofootball/core/gui/playernone.gif" ));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -93,38 +86,24 @@ public class ScenarioGUI extends JPanel {
 				
 			}
 			
-			// create the transform, note that the transformations happen
-            // in reversed order (so check them backwards)
-            AffineTransform at = new AffineTransform();
-
-            // 4. translate it to the center of the component
-            at.translate( getWidth() / 2, -getHeight() / 2 );
-
-            // 3. do the actual rotation
-            at.rotate( Math.toRadians( -45 ) );
-
-            // 2. just a scale because this image is big
-            at.scale( ( height / 25.0 ) / mBlueBotImage.getWidth(), ( height / 25.0 ) / mBlueBotImage.getHeight() );
-
-            // 1. translate the object so that you rotate it around the 
-            //    center (easier :))
-            at.translate( mBlueBotImage.getWidth() / 2, mBlueBotImage.getHeight() / 2);
-			g2d.drawImage( mBlueBotImage, at, this );
-			
+			AffineTransform mTransformation;
 			for( Player vPlayer : vWorld.getListOfPlayers() ){
 				
-				g2d.fillOval( (int)( width * vPlayer.getPosition().getX() - height / 100), 
-							(int)( -height * vPlayer.getPosition().getY() - height / 100 ), 
-							(int)( height / 50 ), 
-							(int)( height / 50 ) );
+				mTransformation = new AffineTransform();
+	            mTransformation.translate( 	width * vPlayer.getPosition().getX() - ( height / 25.0 ) / mBlueBotImage.getWidth() / 2,
+	            		 					-height * vPlayer.getPosition().getY() - ( height / 25.0 ) / mBlueBotImage.getHeight() / 2 );
+	            mTransformation.rotate( Math.toRadians( -vPlayer.getOrientationAngle() ) );
+	            mTransformation.scale( ( height / 25.0 ) / mBlueBotImage.getWidth(), ( height / 25.0 ) / mBlueBotImage.getHeight() );
+	            mTransformation.translate( mBlueBotImage.getWidth() / 2, mBlueBotImage.getHeight() / 2);
+				g2d.drawImage( vPlayer.getTeam() == Team.Yellow ? mYellowBotImage : vPlayer.getTeam() == Team.Blue ? mBlueBotImage : mNoneBotImage, mTransformation, this );
 				
-				lblNewLabel = new JLabel( vPlayer.getPointName().getShortName() );
+				lblNewLabel = new JLabel( vPlayer.getNickname() + " (" + vPlayer.getId() + ")"  );
 				lblNewLabel.setForeground( Color.WHITE );
 				lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 				lblNewLabel.setHorizontalTextPosition(SwingConstants.CENTER);
 				lblNewLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 				lblNewLabel.setBounds( 	(int)( width * vPlayer.getPosition().getX() - 100 ),
-										(int)( -height * vPlayer.getPosition().getY() + height / 50 ), 200, 14);
+										(int)( -height * vPlayer.getPosition().getY() ), 200, 14);
 				add(lblNewLabel);
 				
 			}
@@ -139,4 +118,17 @@ public class ScenarioGUI extends JPanel {
 			e.printStackTrace();
 		}		
     }  
+    
+    public void update(){
+    	
+    	EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				
+				repaint();
+				validate();
+				
+			}
+		});
+    	
+    }
 }

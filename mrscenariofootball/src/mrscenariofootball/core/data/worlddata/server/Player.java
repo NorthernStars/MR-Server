@@ -2,6 +2,7 @@ package mrscenariofootball.core.data.worlddata.server;
 
 import javax.xml.bind.annotation.XmlElement;
 
+import mrscenariofootball.core.ScenarioCore;
 import mrscenariofootball.core.data.BotAI;
 import mrservermisc.network.data.position.PositionObjectBot;
 
@@ -26,7 +27,8 @@ public class Player extends ReferencePoint {
 
 	public Player( PositionObjectBot aFoundBot, BotAI aBotAI ) {
 
-		super( ReferencePointName.Player, new ServerPoint( aFoundBot.getLocation()[0], aFoundBot.getLocation()[1] ) );
+		super( ReferencePointName.Player, new ServerPoint( 	aFoundBot.getLocation()[0] * ScenarioCore.getInstance().getScenarioInformation().getXFactor(),
+															aFoundBot.getLocation()[1] * ScenarioCore.getInstance().getScenarioInformation().getYFactor() ) );
 		mId = aFoundBot.getId();
 		mOrientationAngle = aFoundBot.getAngle();
 		if( aBotAI == null ){

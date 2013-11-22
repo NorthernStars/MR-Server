@@ -14,6 +14,8 @@ import org.apache.logging.log4j.Logger;
 
 import mrserver.core.Core;
 import mrserver.core.botai.data.BotAI;
+import mrserver.core.botcontrol.BotControlManagement;
+import mrserver.core.graphics.GraphicsManagement;
 import mrservermisc.botcontrol.interfaces.BotControl;
 import mrservermisc.bots.interfaces.Bot;
 import mrservermisc.graphics.interfaces.Graphics;
@@ -89,7 +91,10 @@ public class ScenarioManagement {
                 
             }
             ScenarioManagement.getLogger().info( "Loaded scenario " + Core.getInstance().getServerConfig().getScenarioClass() + " from " + Core.getInstance().getServerConfig().getScenarioLibrary() );
-           
+            registerGraphics( GraphicsManagement.getInstance() );
+            registerBotControl( BotControlManagement.getInstance() );
+            
+            
         } catch ( Exception vException ) {
             
         	ScenarioManagement.getLogger().error( "Error loading AI " +Core.getInstance().getServerConfig().getScenarioClass() + " from " + Core.getInstance().getServerConfig().getScenarioLibrary() + " " + vException.getLocalizedMessage() );

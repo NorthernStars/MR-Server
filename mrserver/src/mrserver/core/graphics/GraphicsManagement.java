@@ -44,7 +44,7 @@ public class GraphicsManagement implements Graphics{
         
     }
     
-    private ConcurrentHashMap<SocketAddress, GraphicModul> mMapOfConnectedGraphicModules;
+    private ConcurrentHashMap<SocketAddress, GraphicModul> mMapOfConnectedGraphicModules = new ConcurrentHashMap<SocketAddress, GraphicModul>();;
     private GraphicsConnection mGraphicsConnection;
     private Receiver mGraphicsReceiver;
     private Creator mGraphicsCreator;
@@ -60,9 +60,6 @@ public class GraphicsManagement implements Graphics{
     	
     	GraphicsManagement.getLogger().debug( "Creating graphicsconnection." );
     	mGraphicsConnection = new GraphicsConnection();
-    	
-    	GraphicsManagement.getLogger().debug( "Creating MapOfConnectedGraphicModules." );
-    	mMapOfConnectedGraphicModules = new ConcurrentHashMap<SocketAddress, GraphicModul>();
 
     	GraphicsManagement.getLogger().debug( "Starting receiver." );
     	mGraphicsReceiver = new Receiver( mGraphicsConnection );

@@ -23,13 +23,8 @@ public class ToGraphics extends Thread {
 		}
 		
 		private AtomicBoolean mManageMessagesToGraphics = new AtomicBoolean( false );
-		private Graphics mGraphics;
 		
-		public ToGraphics( Graphics aGraphics ) {
-
-			mGraphics = aGraphics;
-			
-		}
+		public ToGraphics() {}
 		
 		public void close(){
 			
@@ -101,16 +96,17 @@ public class ToGraphics extends Thread {
 				try {
 
 					vWorldData = WORLDDATA.poll( 100, TimeUnit.MILLISECONDS );
+					
 					if( vWorldData != null ){
 							
 						ScenarioCore.getLogger().trace("Sending Data {}", vWorldData);
-						mGraphics.sendWorldStatus( vWorldData.toXMLString() );
+						ScenarioCore.getInstance().getGraphics().sendWorldStatus( vWorldData.toXMLString() );
 						
 					}
 					
 				} catch ( Exception vException ) {
 					
-					ScenarioCore.getLogger().error( "Error sending to graphics: " + vException.getLocalizedMessage() );
+					ScenarioCore.getLogger().error( "Error sending to graphics: {}", vException.getLocalizedMessage() );
 					ScenarioCore.getLogger().catching( Level.ERROR, vException );
 	                				
 				}

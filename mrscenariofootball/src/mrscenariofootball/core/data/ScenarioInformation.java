@@ -76,4 +76,13 @@ public class ScenarioInformation {
 		
 	}
 
+	public double getXFactor() {
+		return mXFactor;
+	}
+
+	public double getYFactor() {
+		return mYFactor;
+	}
+	
+
 }

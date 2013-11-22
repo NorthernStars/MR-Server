@@ -46,8 +46,7 @@ public class ChangeVisionMode {
 		
 	}
 
-	@XmlTransient
-	public void setVisionMode(VisionMode aVisionMode) {
+	public void setVisionMode( VisionMode aVisionMode ) {
 		
 		mVisionMode = aVisionMode;
 		

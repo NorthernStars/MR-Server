@@ -25,6 +25,7 @@ import javax.swing.ScrollPaneConstants;
 import mrserver.core.Core;
 import mrserver.core.botcontrol.BotControlManagement;
 import mrserver.core.graphics.GraphicsManagement;
+import mrserver.core.scenario.ScenarioManagement;
 import mrserver.tempgui.options.interfaces.GraphicsManagementListener;
 
 public class Graphics extends JPanel implements GraphicsManagementListener{
@@ -75,6 +76,7 @@ public class Graphics extends JPanel implements GraphicsManagementListener{
 					public void run() {
 		
 						GraphicsManagement.getInstance().startGraphicsManagement();
+			            ScenarioManagement.getInstance().registerGraphics( GraphicsManagement.getInstance() );
 						EventQueue.invokeLater(new Runnable() {
 							public void run() {
 								reload();

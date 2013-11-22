@@ -91,13 +91,14 @@ public class FromVision extends Thread {
 	public void run(){
 
 		PositionDataPackage vPositionData;
-		WorldData vWorldData;
+		WorldData vWorldData  = ScenarioCore.getInstance().getScenarioInformation().getWorldData().copy();
 		
 		while( mManagePositionDataFromVision.get() ){
               
 			try {
 
 				vPositionData = NEWPOSITIONDATA.poll( 100, TimeUnit.MILLISECONDS );
+				ScenarioCore.getLogger().trace( "New positiondata {}", vPositionData );
 				if( vPositionData != null ){
 						
 					vWorldData = ScenarioCore.getInstance().getScenarioInformation().getWorldData().copy();
