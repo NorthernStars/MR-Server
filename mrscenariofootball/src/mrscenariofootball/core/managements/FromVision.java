@@ -122,8 +122,6 @@ public class FromVision extends Thread {
 					ScenarioCore.getLogger().trace( "Created {}", vWorldData );
 					
 					ScenarioCore.getInstance().getScenarioInformation().setPlayers( vWorldData.getListOfPlayers() );
-					ToBotAIs.putWorldDatainSendingQueue( vWorldData );
-					ToGraphics.putWorldDatainSendingQueue( vWorldData );
 					
 					
 				}

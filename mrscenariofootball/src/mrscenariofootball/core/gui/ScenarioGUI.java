@@ -1,134 +1,51 @@
 package mrscenariofootball.core.gui;
 
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import mrscenariofootball.core.ScenarioCore;
-import mrscenariofootball.core.data.worlddata.server.Player;
-import mrscenariofootball.core.data.worlddata.server.ReferencePoint;
-import mrscenariofootball.core.data.worlddata.server.Team;
-import mrscenariofootball.core.data.worlddata.server.WorldData;
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 
-import java.awt.Component;
-
-import javax.swing.SwingConstants;
+import mrscenariofootball.core.ScenarioCore;
 
 public class ScenarioGUI extends JPanel {
 
-	private BufferedImage mBackgroundImage, mBallImage, mBlueBotImage, mYellowBotImage, mNoneBotImage;
-
+	private PlayField mPlayfield;
+	private JLabel mTime;
 
 	/**
 	 * Create the panel.
 	 */
 	public ScenarioGUI() {
-		setBackground(new Color(34, 139, 34));
+		setLayout(new BorderLayout(0, 0));
 		
-		setLayout(null);
+		JPanel panel = new JPanel();
+		add(panel, BorderLayout.NORTH);
+		mPlayfield = new PlayField();
+		add( mPlayfield, BorderLayout.CENTER );
+		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		
-		try {
-			mBackgroundImage = ImageIO.read( ScenarioGUI.class.getResource( "/mrscenariofootball/core/gui/grass.jpg" ));
-			mBallImage = ImageIO.read( ScenarioGUI.class.getResource( "/mrscenariofootball/core/gui/ball.png" ));
-			mBlueBotImage = ImageIO.read( ScenarioGUI.class.getResource( "/mrscenariofootball/core/gui/playerblue.gif" ));
-			mYellowBotImage = ImageIO.read( ScenarioGUI.class.getResource( "/mrscenariofootball/core/gui/playeryellow.gif" ));
-			mNoneBotImage = ImageIO.read( ScenarioGUI.class.getResource( "/mrscenariofootball/core/gui/playernone.gif" ));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		mTime = new JLabel( "00:00:00" );
+		panel.add(mTime);
+
 	}
-
-
-    public void paintComponent( Graphics g ) {
-    	try{
-	    	super.paintComponent(g);       
-
-			Graphics2D g2d = (Graphics2D) g;
-			
-			g2d.translate( 0, this.getHeight() );
-			
-	    	removeAll();
-	    	
-	        WorldData vWorld = ScenarioCore.getInstance().getScenarioInformation().getWorldData().copy();
-			int width, height;
-			JLabel lblNewLabel;
-			
-			width = this.getWidth();
-			height = this.getHeight();
-			
-			//g2d.drawImage( mBackgroundImage, 0, 0, width, -height, this);
-			
-			g2d.setColor( Color.WHITE );
-			for( ReferencePoint vPoint : vWorld.getReferencePoints() ){
-				
-				g2d.fillOval( (int)( width * vPoint.getPosition().getX() - height / 100), 
-							(int)( -height * vPoint.getPosition().getY() - height / 100 ), 
-							(int)( height / 50 ), 
-							(int)( height / 50 ) );
-				
-				lblNewLabel = new JLabel( vPoint.getPointName().getShortName() );
-				lblNewLabel.setForeground( Color.WHITE );
-				lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-				lblNewLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-				lblNewLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-				lblNewLabel.setBounds( 	(int)( width * vPoint.getPosition().getX() - 100 ),
-										(int)( -height * vPoint.getPosition().getY() + height / 50 ), 200, 14);
-				add(lblNewLabel);
-				
-			}
-			
-			AffineTransform mTransformation;
-			for( Player vPlayer : vWorld.getListOfPlayers() ){
-				
-				mTransformation = new AffineTransform();
-	            mTransformation.translate( 	width * vPlayer.getPosition().getX() - ( height / 25.0 ) / mBlueBotImage.getWidth() / 2,
-	            		 					-height * vPlayer.getPosition().getY() - ( height / 25.0 ) / mBlueBotImage.getHeight() / 2 );
-	            mTransformation.rotate( Math.toRadians( -vPlayer.getOrientationAngle() ) );
-	            mTransformation.scale( ( height / 25.0 ) / mBlueBotImage.getWidth(), ( height / 25.0 ) / mBlueBotImage.getHeight() );
-	            mTransformation.translate( mBlueBotImage.getWidth() / 2, mBlueBotImage.getHeight() / 2);
-				g2d.drawImage( vPlayer.getTeam() == Team.Yellow ? mYellowBotImage : vPlayer.getTeam() == Team.Blue ? mBlueBotImage : mNoneBotImage, mTransformation, this );
-				
-				lblNewLabel = new JLabel( vPlayer.getNickname() + " (" + vPlayer.getId() + ")"  );
-				lblNewLabel.setForeground( Color.WHITE );
-				lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-				lblNewLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-				lblNewLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-				lblNewLabel.setBounds( 	(int)( width * vPlayer.getPosition().getX() - 100 ),
-										(int)( -height * vPlayer.getPosition().getY() ), 200, 14);
-				add(lblNewLabel);
-				
-			}
-			
-			g2d.drawImage( 	mBallImage, 
-							(int)(width*vWorld.getBallPosition().getPosition().getX() - height/60),
-							(int)(-height*vWorld.getBallPosition().getPosition().getY() - height/60), 
-							(int)(height/30), (int)(height/30), this);
-			
-			
-	    } catch (Exception e) {
-			e.printStackTrace();
-		}		
-    }  
-    
-    public void update(){
+	
+	public void update(){
     	
     	EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				
-				repaint();
+				mTime.setText( new SimpleDateFormat( "mm:ss:SS" ).format( new Date( (long) (ScenarioCore.getInstance().getScenarioInformation().getWorldData().getPlayTime() * 1000) ) ) );
 				validate();
 				
 			}
 		});
+    	mPlayfield.update();
     	
     }
+
 }

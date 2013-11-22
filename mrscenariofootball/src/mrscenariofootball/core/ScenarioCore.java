@@ -19,6 +19,7 @@ import mrscenariofootball.core.data.worlddata.server.Player;
 import mrscenariofootball.core.data.worlddata.server.ReferencePointName;
 import mrscenariofootball.core.data.worlddata.server.ServerPoint;
 import mrscenariofootball.core.data.worlddata.server.WorldData;
+import mrscenariofootball.core.gui.PlayField;
 import mrscenariofootball.core.gui.ScenarioGUI;
 import mrscenariofootball.core.managements.FromVision;
 import mrscenariofootball.core.managements.ToBotAIs;
@@ -240,7 +241,11 @@ public class ScenarioCore implements Scenario {
 			mScenarioInformation.addTimePlayed( 0.05 );
 			
 			ScenarioCore.getLogger().trace( "Scenario ticked {}", mScenarioInformation.getWorldData().copy() );
-			mGUI.updateUI();
+			
+			ToBotAIs.putWorldDatainSendingQueue( mScenarioInformation.getWorldData().copy() );
+			ToGraphics.putWorldDatainSendingQueue( mScenarioInformation.getWorldData().copy() );
+			
+			mGUI.update();
 			
 			while( System.nanoTime() - vTickTime <= 50000000 ){
 			
