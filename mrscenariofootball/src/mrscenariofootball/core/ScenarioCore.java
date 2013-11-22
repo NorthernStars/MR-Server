@@ -183,6 +183,7 @@ public class ScenarioCore implements Scenario {
 		WorldData vWorldData;
 		double vXForce, vYForce;
 		BallPosition vBall;
+		ServerPoint vBallForce = new ServerPoint( 0, 0 );
 		long vTickTime;
 		
 		while(true){
@@ -202,7 +203,7 @@ public class ScenarioCore implements Scenario {
 			vTickTime = System.nanoTime();
 			
 			vWorldData = mScenarioInformation.getWorldData().copy();
-			vBall = new BallPosition( ReferencePointName.Ball, new ServerPoint( vWorldData.getBallPosition().getPosition().getX(), vWorldData.getBallPosition().getPosition().getY() ) );
+			
 			for( BotAI vBotAI : mBotAIs.values() ){
 				
 				vCommand = Command.unmarshallXMLPositionDataPackageString( vBotAI.getLastAction() );
@@ -218,11 +219,11 @@ public class ScenarioCore implements Scenario {
 								
 								ScenarioCore.getLogger().debug(" Player {} tries to kick {} with distance {}", vPlayer, vWorldData.getBallPosition(), vPlayer.getPosition().distance( vWorldData.getBallPosition().getPosition() ));
 																
-								vXForce = vCommand.getKick().getForce() * Math.cos( vCommand.getKick().getAngle() );
-								vYForce = vCommand.getKick().getForce() * Math.sin( vCommand.getKick().getAngle() );
+								vXForce = vCommand.getKick().getForce() * Math.cos( vCommand.getKick().getAngle() + vPlayer.getOrientationAngle() );
+								vYForce = vCommand.getKick().getForce() * Math.sin( vCommand.getKick().getAngle() + vPlayer.getOrientationAngle() );
 								
 								//TODO: Kick ball in reality
-								vBall = new BallPosition( ReferencePointName.Ball, new ServerPoint( vBall.getPosition().getX() + vXForce/10.0, vBall.getPosition().getY() + vYForce/10.0 ) );
+								vBallForce = new ServerPoint( vBallForce.getX() + vXForce/10.0, vBallForce.getY() + vYForce/10.0 );
 								
 								break;
 								
@@ -236,7 +237,12 @@ public class ScenarioCore implements Scenario {
 			}
 			
 			//TODO real tick
+			vBall = new BallPosition( ReferencePointName.Ball, 
+					new ServerPoint( 
+							vWorldData.getBallPosition().getPosition().getX() + 0.05 * vBallForce.getX(),
+							vWorldData.getBallPosition().getPosition().getY() + 0.05 * vBallForce.getX() ) );
 			mScenarioInformation.setBall( vBall );
+			vBallForce.setLocation( vBallForce.getX() * 0.95, vBallForce.getY() * 0.95 );
 			// TODO check for goal
 			mScenarioInformation.addTimePlayed( 0.05 );
 			

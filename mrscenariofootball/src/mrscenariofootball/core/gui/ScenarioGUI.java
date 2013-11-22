@@ -4,18 +4,27 @@ import javax.swing.JPanel;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import mrscenariofootball.core.ScenarioCore;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.SwingConstants;
+import java.awt.Dimension;
 
 public class ScenarioGUI extends JPanel {
 
 	private PlayField mPlayfield;
 	private JLabel mTime;
+	private JLabel mLblYellowScore;
+	private JLabel mLblBlueScore;
 
 	/**
 	 * Create the panel.
@@ -30,7 +39,98 @@ public class ScenarioGUI extends JPanel {
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		
 		mTime = new JLabel( "00:00:00" );
+		mTime.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				String vNewTime = (String)JOptionPane.showInputDialog(
+	                    mTime,
+	                    "Time:",
+	                    "Set time",
+	                    JOptionPane.QUESTION_MESSAGE,
+	                    null,
+	                    null,
+	                    mTime.getText());
+				try {
+					Date vNewDate = (Date) new SimpleDateFormat( "mm:ss:SSS" ).parseObject( vNewTime );
+					ScenarioCore.getLogger().info( "Set date to {}", new SimpleDateFormat( "mm:ss:SS" ).format( vNewDate ) );
+					ScenarioCore.getInstance().getScenarioInformation().getWorldData().setPlayTime( vNewDate.getTime()/1000.0 );
+					update();
+				} catch (ParseException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
 		panel.add(mTime);
+		
+		JLabel lblNewLabel = new JLabel("Yellow ");
+		lblNewLabel.setMaximumSize(new Dimension(100, 15));
+		lblNewLabel.setMinimumSize(new Dimension(100, 15));
+		lblNewLabel.setPreferredSize(new Dimension(100, 15));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		panel.add(lblNewLabel);
+		
+		mLblYellowScore = new JLabel("0");
+		mLblYellowScore.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				String vNewScore = (String)JOptionPane.showInputDialog(
+	                    mTime,
+	                    "Score:",
+	                    "Set yellow score",
+	                    JOptionPane.QUESTION_MESSAGE,
+	                    null,
+	                    null,
+	                    mLblYellowScore.getText());
+				try {
+					int vYellowScore = Integer.parseInt( vNewScore );
+					ScenarioCore.getLogger().info( "Set yellow score to to {}",  vYellowScore );
+					ScenarioCore.getInstance().getScenarioInformation().getWorldData().getScore().setScoreYellowTeam( vYellowScore );
+					update();
+				} catch ( Exception e1 ) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
+		panel.add(mLblYellowScore);
+		
+		JLabel label = new JLabel(" : ");
+		panel.add(label);
+		
+		mLblBlueScore = new JLabel("0");
+		mLblBlueScore.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				String vNewScore = (String)JOptionPane.showInputDialog(
+	                    mTime,
+	                    "Score:",
+	                    "Set blue score",
+	                    JOptionPane.QUESTION_MESSAGE,
+	                    null,
+	                    null,
+	                    mLblBlueScore.getText());
+				try {
+					int vBlueScore = Integer.parseInt( vNewScore );
+					ScenarioCore.getLogger().info( "Set blue score to to {}",  vBlueScore );
+					ScenarioCore.getInstance().getScenarioInformation().getWorldData().getScore().setScoreBlueTeam( vBlueScore );
+					update();
+				} catch ( Exception e1 ) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			}
+		});
+		panel.add(mLblBlueScore);
+		
+		JLabel lblNewLabel_1 = new JLabel(" Blue");
+		panel.add(lblNewLabel_1);
 
 	}
 	
@@ -40,6 +140,8 @@ public class ScenarioGUI extends JPanel {
 			public void run() {
 				
 				mTime.setText( new SimpleDateFormat( "mm:ss:SS" ).format( new Date( (long) (ScenarioCore.getInstance().getScenarioInformation().getWorldData().getPlayTime() * 1000) ) ) );
+				mLblBlueScore.setText( Integer.toString( ScenarioCore.getInstance().getScenarioInformation().getWorldData().getScore().getScoreBlueTeam() ) );
+				mLblYellowScore.setText( Integer.toString( ScenarioCore.getInstance().getScenarioInformation().getWorldData().getScore().getScoreYellowTeam() ) );
 				validate();
 				
 			}
@@ -47,5 +149,4 @@ public class ScenarioGUI extends JPanel {
     	mPlayfield.update();
     	
     }
-
 }

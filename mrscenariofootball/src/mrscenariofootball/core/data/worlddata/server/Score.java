@@ -32,5 +32,13 @@ public class Score {
 	public int getScoreBlueTeam() {
 		return mBlueTeam;
 	}
+
+	public void setScoreYellowTeam( int aNewScore ) {
+		mYellowTeam = aNewScore;
+	}
+
+	public void setScoreBlueTeam( int aNewScore ) {
+		mBlueTeam = aNewScore;
+	}
     
 }

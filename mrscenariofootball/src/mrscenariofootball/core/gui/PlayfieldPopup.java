@@ -15,6 +15,7 @@ import mrscenariofootball.core.data.worlddata.server.ServerPoint;
 public class PlayfieldPopup extends JPopupMenu {
 	
 	double mXPosition, mYPosition, mXMax, mYMax;
+	Component mInvoker;
 	
 	public PlayfieldPopup() {
 		
@@ -29,7 +30,7 @@ public class PlayfieldPopup extends JPopupMenu {
             	
             	ScenarioCore.getInstance().getScenarioInformation().setBall( vNewPosition );
             	ScenarioCore.getLogger().info( "Ball set to position: {}", vNewPosition );
-            	
+            	((PlayField) mInvoker).update();
             }
         });
         add(vSetBallPosition);
@@ -45,6 +46,8 @@ public class PlayfieldPopup extends JPopupMenu {
 		
 		mXMax = aInvoker.getWidth();
 		mYMax = aInvoker.getHeight();
+		
+		mInvoker = aInvoker;
 		
 	}
 
