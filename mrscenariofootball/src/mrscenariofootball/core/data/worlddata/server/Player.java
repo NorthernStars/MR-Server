@@ -84,6 +84,10 @@ public class Player extends ReferencePoint {
 		return mOrientationAngle;
 	}
 
+	public void setOrientationAngle( double aOrientationAngle ) {
+		mOrientationAngle = aOrientationAngle;
+	}
+
 	public Team getTeam() {
 		return mTeam;
 	}

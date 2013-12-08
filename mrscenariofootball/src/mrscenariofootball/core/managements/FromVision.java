@@ -9,6 +9,7 @@ import mrscenariofootball.core.ScenarioCore;
 import mrscenariofootball.core.data.ScenarioInformation;
 import mrscenariofootball.core.data.worlddata.server.Player;
 import mrscenariofootball.core.data.worlddata.server.WorldData;
+import mrscenariofootball.game.Core;
 import mrservermisc.network.data.position.PositionDataPackage;
 import mrservermisc.network.data.position.PositionObject;
 import mrservermisc.network.data.position.PositionObjectBot;
@@ -113,7 +114,7 @@ public class FromVision extends Thread {
 
 				vPositionData = NEWPOSITIONDATA.poll( 100, TimeUnit.MILLISECONDS );
 				ScenarioCore.getLogger().trace( "New positiondata {}", vPositionData );
-				if( vPositionData != null ){
+				if( vPositionData != null && !Core.getInstance().isSimulation() ){
 						
 					vWorldData = ScenarioInformation.getInstance().getWorldData().copy();
 

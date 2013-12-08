@@ -6,6 +6,7 @@ import mrscenariofootball.core.ScenarioCore;
 import mrscenariofootball.core.data.BotAI;
 import mrscenariofootball.core.data.ScenarioInformation;
 import mrscenariofootball.core.data.action.Command;
+import mrscenariofootball.core.data.action.Movement;
 import mrscenariofootball.core.data.worlddata.server.BallPosition;
 import mrscenariofootball.core.data.worlddata.server.Player;
 import mrscenariofootball.core.data.worlddata.server.ReferencePointName;
@@ -14,6 +15,8 @@ import mrscenariofootball.core.data.worlddata.server.WorldData;
 import mrscenariofootball.core.managements.FromVision;
 import mrscenariofootball.core.managements.ToBotAIs;
 import mrscenariofootball.core.managements.ToGraphics;
+import mrservermisc.network.data.position.PositionObjectBot;
+import mrservermisc.network.data.position.PositionObjectType;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -43,8 +46,9 @@ public class Core {
         return Core.INSTANCE;
         
     }
-    
+
 	private AtomicBoolean mSuspended = new AtomicBoolean( false );
+	private AtomicBoolean mSimulation = new AtomicBoolean( true );
 
 	public void startGame() {
 		
@@ -90,7 +94,7 @@ public class Core {
 					
 					if( vCommand.isMovement() ){
 						
-						ScenarioInformation.getInstance().getBotControl().sendMovement( vBotAI.getRcId(), vCommand.getMovement().getLeftWheelVelocity(), vCommand.getMovement().getRightWheelVelocity() );
+						moveBot( vCommand.getMovement() , vBotAI );
 						
 					} else if( vCommand.isKick() ){
 						
@@ -149,6 +153,54 @@ public class Core {
 		}
 	}
 
+	
+	
+	private void moveBot( Movement aMovement, BotAI aBotAI) {
+		
+		if( mSimulation.get() ){
+			
+			double vSpeed, vRotation;
+			
+			vSpeed = ( aMovement.getLeftWheelVelocity() + aMovement.getRightWheelVelocity() ) / 200; //TODO: remove magic number
+			
+			vRotation = (180 - 180/200 * ( aMovement.getLeftWheelVelocity() + 100 ) ) +
+					(-180 + 180/200 *( aMovement.getRightWheelVelocity() + 100 ) ) /
+					18;
+			
+			Core.getLogger().info( "Added rotation {} and speed {} to bot {}", vRotation, vSpeed, aBotAI );
+			
+			for( Player vPlayer : ScenarioInformation.getInstance().getWorldData().getListOfPlayers() ){
+				
+				if( vPlayer.getId() == aBotAI.getVtId() ){
+					
+					vPlayer.setOrientationAngle( vPlayer.getOrientationAngle() + vRotation);
+					vPlayer.getPosition().setLocation( 
+							vPlayer.getPosition().getX() + vSpeed * Math.cos( vRotation ),
+							vPlayer.getPosition().getY() + vSpeed * Math.sin( vRotation ) );
+					
+					Core.getLogger().info( "Added rotation {} and speed {} to player {}({})", vRotation, vSpeed, vPlayer, aBotAI );
+					
+					return;
+					
+				}
+				
+			}
+			
+			ScenarioInformation.getInstance().getWorldData().getListOfPlayers().add( 
+					new Player( new PositionObjectBot( PositionObjectType.BOT, aBotAI.getVtId(), "", new double[]{ 0.0,0.0 }, null, 0.0 ) , 
+							aBotAI ) );
+			
+			Core.getLogger().info( "Added new bot {}", aBotAI );
+			
+			
+		} else {
+			
+			ScenarioInformation.getInstance().getBotControl().sendMovement( aBotAI.getRcId(), aMovement.getLeftWheelVelocity(), aMovement.getRightWheelVelocity() );
+		
+		}	
+			
+	}
+
 	private void startManagements() {
 		FromVision.getInstance().startManagement();
 		ToGraphics.getInstance().startManagement();
@@ -166,6 +218,12 @@ public class Core {
 		
 		Core.getLogger().info( "Game unpaused" );
 		return mSuspended.compareAndSet( true, false );
+		
+	}
+
+	public boolean isSimulation() {
+
+		return mSimulation.get();
 		
 	}
     
