@@ -24,6 +24,7 @@ import mrscenariofootball.core.gui.ScenarioGUI;
 import mrscenariofootball.core.managements.FromVision;
 import mrscenariofootball.core.managements.ToBotAIs;
 import mrscenariofootball.core.managements.ToGraphics;
+import mrscenariofootball.game.Core;
 import mrservermisc.botcontrol.interfaces.BotControl;
 import mrservermisc.bots.interfaces.Bot;
 import mrservermisc.graphics.interfaces.Graphics;
@@ -68,35 +69,15 @@ public class ScenarioCore implements Scenario {
         return ScenarioCore.INSTANCE;
         
     }
-    
-	private Graphics mGraphics;
-	@GuardedBy("this") private ConcurrentHashMap<Integer, BotAI> mBotAIs = new ConcurrentHashMap<Integer, BotAI>();
-	private ScenarioInformation mScenarioInformation = new ScenarioInformation();;
-	private FromVision mFromVisionManagement;
-	private ToGraphics mToGraphicsManagement;
-	private BotControl mBotControl;
-	private ToBotAIs mToBotAIs;
-	private AtomicBoolean mPaused = new AtomicBoolean( true );
+
 	private ScenarioGUI mGUI = new ScenarioGUI();
 	
 	@Override
 	public void close() {
-
-		if( mFromVisionManagement != null ){
-					
-			mFromVisionManagement.close();
-			
-		}
-		if( mToGraphicsManagement != null ){
-			
-			mToGraphicsManagement.close();
-			
-		}
-		if( mToBotAIs != null ){
-			
-			mToBotAIs.close();
-			
-		}
+		
+		FromVision.getInstance().close();
+		ToBotAIs.getInstance().close();
+		ToGraphics.getInstance().close();
 		
 	}
 
@@ -118,178 +99,52 @@ public class ScenarioCore implements Scenario {
 	}
 
 	@Override
-	public boolean registerBotControl(BotControl aBotControl) {
+	public boolean registerBotControl( BotControl aBotControl ) {
 
-		mBotControl = aBotControl;
+		ScenarioInformation.getInstance().setBotControl( aBotControl );
 		
 		return false;
+		
 	}
 
 	@Override
 	public synchronized boolean registerNewBot( Bot aBot ) {
-		if( mBotAIs.putIfAbsent( aBot.getVtId(), new BotAI(aBot) ) == null ){
-			
-			ScenarioCore.getLogger().info( "Registered new bot: {}", aBot.toString() );
-			return true;
-			
-		} else {
-			
-			ScenarioCore.getLogger().info(" BotAI with used id tryed to connect: {}", aBot.toString() );
-			return false;
-		}
+		
+		return ScenarioInformation.getInstance().addBotAI( new BotAI(aBot) );
 		
 	}
 	
 	@Override
 	public synchronized boolean unregisterBot( Bot aBot ) {
-		if( mBotAIs.remove( aBot.getVtId() ) != null ){
-			
-			ScenarioCore.getLogger().info( "Unegistered new bot: {}", aBot.toString() );
-			return true;
-			
-		} else {
-			
-			ScenarioCore.getLogger().info(" No AI to unregister: {}", aBot.toString() );
-			return false;
-		}
+		
+		return ScenarioInformation.getInstance().removeBotAI( new BotAI(aBot) );
 		
 	}
 
 	@Override
 	public boolean registerGraphics(Graphics aGraphics) {
 		
-		mGraphics = aGraphics;
+		ScenarioInformation.getInstance().setGraphics( aGraphics );
 		return true;
 		
 	}
 
 	@Override
 	public void startScenario() {
-
-		WorldData.createWorldDataSchema();
-		
-		mFromVisionManagement = new FromVision();
-		mFromVisionManagement.startManagement();
-		
-		mToGraphicsManagement = new ToGraphics();
-		mToGraphicsManagement.startManagement();
-		
-		mToBotAIs = new ToBotAIs();
-		mToBotAIs.startManagement();
-		
-		ScenarioCore.getLogger().info( "Scenario started. Game paused" );
-		
-		Command vCommand;
-		WorldData vWorldData;
-		double vXForce, vYForce;
-		BallPosition vBall;
-		ServerPoint vBallForce = new ServerPoint( 0, 0 );
-		long vTickTime;
-		
-		while(true){
-			
-			while( mPaused.get() ){ 
-				
-				try { Thread.sleep( 10 ); } catch ( InterruptedException vInterruptedException ) { ScenarioCore.getLogger().error( "Error suspending Scenario: {}",vInterruptedException.getLocalizedMessage() ); ScenarioCore.getLogger().catching( Level.ERROR, vInterruptedException ); }
-
-				for( BotAI vBotAI : mBotAIs.values() ){
-					
-					mBotControl.sendMovement( vBotAI.getRcId(), 0, 0 );
-					
-				}
-			
-			}
-			
-			vTickTime = System.nanoTime();
-			
-			vWorldData = mScenarioInformation.getWorldData().copy();
-			
-			for( BotAI vBotAI : mBotAIs.values() ){
-				
-				vCommand = Command.unmarshallXMLPositionDataPackageString( vBotAI.getLastAction() );
-				
-				if( vCommand != null ){
-					if( vCommand.isMovement() ){
-						mBotControl.sendMovement( vBotAI.getRcId(), vCommand.getMovement().getLeftWheelVelocity(), vCommand.getMovement().getRightWheelVelocity() );
-					} else if( vCommand.isKick() ){
-						
-						for( Player vPlayer : vWorldData.getListOfPlayers() ){
-							
-							if( vPlayer.getId() == vBotAI.getVtId() && vPlayer.getPosition().distance( vWorldData.getBallPosition().getPosition() ) <= 0.05 ){
-								
-								ScenarioCore.getLogger().debug(" Player {} tries to kick {} with distance {}", vPlayer, vWorldData.getBallPosition(), vPlayer.getPosition().distance( vWorldData.getBallPosition().getPosition() ));
-																
-								vXForce = vCommand.getKick().getForce() * Math.cos( vCommand.getKick().getAngle() + vPlayer.getOrientationAngle() );
-								vYForce = vCommand.getKick().getForce() * Math.sin( vCommand.getKick().getAngle() + vPlayer.getOrientationAngle() );
-								
-								//TODO: Kick ball in reality
-								vBallForce = new ServerPoint( vBallForce.getX() + vXForce/10.0, vBallForce.getY() + vYForce/10.0 );
-								
-								break;
-								
-							}
-							
-						}
-						
-					}
-				}
-				
-			}
-			
-			//TODO real tick
-			vBall = new BallPosition( ReferencePointName.Ball, 
-					new ServerPoint( 
-							vWorldData.getBallPosition().getPosition().getX() + 0.05 * vBallForce.getX(),
-							vWorldData.getBallPosition().getPosition().getY() + 0.05 * vBallForce.getX() ) );
-			mScenarioInformation.setBall( vBall );
-			vBallForce.setLocation( vBallForce.getX() * 0.95, vBallForce.getY() * 0.95 );
-			// TODO check for goal
-			mScenarioInformation.addTimePlayed( 0.05 );
-			
-			ScenarioCore.getLogger().trace( "Scenario ticked {}", mScenarioInformation.getWorldData().copy() );
-			
-			ToBotAIs.putWorldDatainSendingQueue( mScenarioInformation.getWorldData().copy() );
-			ToGraphics.putWorldDatainSendingQueue( mScenarioInformation.getWorldData().copy() );
-			
-			mGUI.update();
-			
-			while( System.nanoTime() - vTickTime <= 50000000 ){
-			
-				try {
-					Thread.sleep( 5 );
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			
-			}
-		}
-		
+		Core.getInstance().startGame();
 	}
 
-	public ScenarioInformation getScenarioInformation() {
-		return mScenarioInformation;
-	}
-	
-	public ConcurrentHashMap<Integer, BotAI> getBotAIs(){
-		
-		return mBotAIs;
+	@Override
+	public boolean suspendScenario() {
+
+		return Core.getInstance().suspend();
 		
 	}
 
 	@Override
-	public boolean pauseScenario() {
+	public boolean resumeScenario() {
 
-		ScenarioCore.getLogger().info( "Game paused" );
-		return mPaused.compareAndSet( false, true );
-		
-	}
-
-	@Override
-	public boolean unpauseScenario() {
-
-		ScenarioCore.getLogger().info( "Game unpaused" );
-		return mPaused.compareAndSet( true, false );
+		return Core.getInstance().resume();
 		
 	}
 
@@ -300,8 +155,10 @@ public class ScenarioCore implements Scenario {
 		
 	}
 
-	public Graphics getGraphics() {
-		return mGraphics;
+	public ScenarioGUI getGUI() {
+
+		return mGUI;
+		
 	}
 
 }

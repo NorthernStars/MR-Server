@@ -205,21 +205,21 @@ public class ScenarioManagement {
 		
 	}
 
-	public void pauseScenario() {
+	public void suspendScenario() {
 
 		if( mScenario != null ){
 			
-			mScenario.pauseScenario();
+			mScenario.suspendScenario();
 			
 		}
 		
 	}
 
-	public void unpauseScenario() {
+	public void resumeScenario() {
 
 		if( mScenario != null ){
 			
-			mScenario.unpauseScenario();
+			mScenario.resumeScenario();
 			
 		}
 		

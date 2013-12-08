@@ -1,6 +1,5 @@
 package mrscenariofootball.core.managements;
 
-import java.util.HashMap;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -8,10 +7,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import mrscenariofootball.core.ScenarioCore;
 import mrscenariofootball.core.data.BotAI;
+import mrscenariofootball.core.data.ScenarioInformation;
 import mrscenariofootball.core.data.worlddata.client.ClientWorldData;
 import mrscenariofootball.core.data.worlddata.server.Player;
 import mrscenariofootball.core.data.worlddata.server.WorldData;
-import mrservermisc.bots.interfaces.Bot;
 
 import org.apache.logging.log4j.Level;
 
@@ -29,6 +28,19 @@ public class ToBotAIs extends Thread {
 		private AtomicBoolean mManageMessagesToBotAIs = new AtomicBoolean( false );
 		
 		public ToBotAIs() {}
+		private static ToBotAIs INSTANCE;
+	    
+	    public static ToBotAIs getInstance() {
+	        
+	        if( ToBotAIs.INSTANCE == null){
+	        	ScenarioCore.getLogger().debug( "Creating ToBotAIs-instance." );
+	        	ToBotAIs.INSTANCE = new ToBotAIs();
+	        }
+
+	        ScenarioCore.getLogger().trace( "Retrieving ToBotAIs-instance." );
+	        return ToBotAIs.INSTANCE;
+	        
+	    }
 		
 		public void close(){
 			
@@ -105,7 +117,7 @@ public class ToBotAIs extends Thread {
 						
 						for( Player vFoundRealBot : vWorldData.getListOfPlayers() ){
 							
-							vFoundBotAI = ScenarioCore.getInstance().getBotAIs().get( vFoundRealBot.getId() );
+							vFoundBotAI = ScenarioInformation.getInstance().getBotAIs().get( vFoundRealBot.getId() );
 							
 							if( vFoundBotAI != null ){
 								
@@ -115,7 +127,7 @@ public class ToBotAIs extends Thread {
 							
 						}
 								
-						for( BotAI vBotAI : ScenarioCore.getInstance().getBotAIs().values() ){
+						for( BotAI vBotAI : ScenarioInformation.getInstance().getBotAIs().values() ){
 							
 							vBotAI.sendWorldData( vWorldData );
 							

@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import mrscenariofootball.core.ScenarioCore;
+import mrscenariofootball.core.data.ScenarioInformation;
 import mrscenariofootball.core.data.worlddata.server.Player;
 import mrscenariofootball.core.data.worlddata.server.WorldData;
 import mrservermisc.network.data.position.PositionDataPackage;
@@ -26,8 +27,21 @@ public class FromVision extends Thread {
 	}
 	private AtomicBoolean mManagePositionDataFromVision = new AtomicBoolean( false );
 	
-	public FromVision( ) {}
-	
+	private FromVision( ) {}
+	private static FromVision INSTANCE;
+    
+    public static FromVision getInstance() {
+        
+        if( FromVision.INSTANCE == null){
+        	ScenarioCore.getLogger().debug( "Creating FromVision-instance." );
+        	FromVision.INSTANCE = new FromVision();
+        }
+
+        ScenarioCore.getLogger().trace( "Retrieving FromVision-instance." );
+        return FromVision.INSTANCE;
+        
+    }
+    
 	public void close(){
 		
 		stopManagement();
@@ -91,7 +105,7 @@ public class FromVision extends Thread {
 	public void run(){
 
 		PositionDataPackage vPositionData;
-		WorldData vWorldData  = ScenarioCore.getInstance().getScenarioInformation().getWorldData().copy();
+		WorldData vWorldData  = ScenarioInformation.getInstance().getWorldData().copy();
 		
 		while( mManagePositionDataFromVision.get() ){
               
@@ -101,7 +115,7 @@ public class FromVision extends Thread {
 				ScenarioCore.getLogger().trace( "New positiondata {}", vPositionData );
 				if( vPositionData != null ){
 						
-					vWorldData = ScenarioCore.getInstance().getScenarioInformation().getWorldData().copy();
+					vWorldData = ScenarioInformation.getInstance().getWorldData().copy();
 
 					vWorldData.getListOfPlayers().clear();
 					
@@ -111,7 +125,7 @@ public class FromVision extends Thread {
 							
 							if( vObject instanceof PositionObjectBot ){
 							
-								vWorldData.getListOfPlayers().add( new Player( ( PositionObjectBot ) vObject , ScenarioCore.getInstance().getBotAIs().get( vObject.getId() ) ) );
+								vWorldData.getListOfPlayers().add( new Player( ( PositionObjectBot ) vObject , ScenarioInformation.getInstance().getBotAIs().get( vObject.getId() ) ) );
 								
 							}
 							
@@ -121,7 +135,7 @@ public class FromVision extends Thread {
 					
 					ScenarioCore.getLogger().trace( "Created {}", vWorldData );
 					
-					ScenarioCore.getInstance().getScenarioInformation().setPlayers( vWorldData.getListOfPlayers() );
+					ScenarioInformation.getInstance().setPlayers( vWorldData.getListOfPlayers() );
 					
 					
 				}

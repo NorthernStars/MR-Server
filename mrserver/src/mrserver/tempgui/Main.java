@@ -187,8 +187,8 @@ public class Main {
 		});
 		mnScenario.add(mntmLoad);
 		
-		JMenuItem mntmClose = new JMenuItem("Close");
-		mntmClose.addActionListener(new ActionListener() {
+		JMenuItem mntmUnload = new JMenuItem("Unload");
+		mntmUnload.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				new Thread( new Runnable() {
@@ -208,13 +208,13 @@ public class Main {
 				
 			}
 		});
-		mnScenario.add(mntmClose);
+		mnScenario.add(mntmUnload);
 		
 		JSeparator separator_4 = new JSeparator();
 		mnScenario.add(separator_4);
 		
-		JMenuItem mntmPause = new JMenuItem("Pause");
-		mntmPause.addActionListener(new ActionListener() {
+		JMenuItem mntmSuspend = new JMenuItem("Suspend");
+		mntmSuspend.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				new Thread( new Runnable() {
@@ -222,7 +222,7 @@ public class Main {
 					@Override
 					public void run() {
 		
-						ScenarioManagement.getInstance().pauseScenario();
+						ScenarioManagement.getInstance().suspendScenario();
 					}
 				} ).start();
 				
@@ -246,10 +246,10 @@ public class Main {
 			}
 		});
 		mnScenario.add(mntmStart);
-		mnScenario.add(mntmPause);
+		mnScenario.add(mntmSuspend);
 		
-		JMenuItem mntmUnpause = new JMenuItem("Unpause");
-		mntmUnpause.addActionListener(new ActionListener() {
+		JMenuItem mntmResume = new JMenuItem("Resume");
+		mntmResume.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				new Thread( new Runnable() {
@@ -257,14 +257,14 @@ public class Main {
 					@Override
 					public void run() {
 		
-						ScenarioManagement.getInstance().unpauseScenario();
+						ScenarioManagement.getInstance().resumeScenario();
 						
 					}
 				} ).start();
 				
 			}
 		});
-		mnScenario.add(mntmUnpause);
+		mnScenario.add(mntmResume);
 		
 		JSeparator separator_2 = new JSeparator();
 		mnScenario.add(separator_2);

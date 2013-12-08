@@ -8,6 +8,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import mrscenariofootball.core.ScenarioCore;
+import mrscenariofootball.core.data.ScenarioInformation;
 import mrscenariofootball.core.data.worlddata.server.BallPosition;
 import mrscenariofootball.core.data.worlddata.server.ReferencePointName;
 import mrscenariofootball.core.data.worlddata.server.ServerPoint;
@@ -25,10 +26,10 @@ public class PlayfieldPopup extends JPopupMenu {
 			public void actionPerformed( ActionEvent e ) {
                 
             	BallPosition vNewPosition = new BallPosition( ReferencePointName.Ball,
-    					new ServerPoint( (mXPosition / mXMax) * ScenarioCore.getInstance().getScenarioInformation().getXFactor(),
-								         (1 - (mYPosition / mYMax)) * ScenarioCore.getInstance().getScenarioInformation().getYFactor()));
+    					new ServerPoint( (mXPosition / mXMax) * ScenarioInformation.getInstance().getXFactor(),
+								         (1 - (mYPosition / mYMax)) * ScenarioInformation.getInstance().getYFactor()));
             	
-            	ScenarioCore.getInstance().getScenarioInformation().setBall( vNewPosition );
+            	ScenarioInformation.getInstance().setBall( vNewPosition );
             	ScenarioCore.getLogger().info( "Ball set to position: {}", vNewPosition );
             	((PlayField) mInvoker).update();
             }

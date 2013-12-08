@@ -19,6 +19,8 @@
     <xs:sequence>
       <xs:element name="yellow" type="xs:int"/>
       <xs:element name="blue" type="xs:int"/>
+      <xs:element name="scoreBlueTeam" type="xs:int"/>
+      <xs:element name="scoreYellowTeam" type="xs:int"/>
     </xs:sequence>
   </xs:complexType>
 

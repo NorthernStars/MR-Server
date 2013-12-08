@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
 import mrscenariofootball.core.ScenarioCore;
+import mrscenariofootball.core.data.ScenarioInformation;
 import mrscenariofootball.core.data.worlddata.server.Player;
 import mrscenariofootball.core.data.worlddata.server.ReferencePoint;
 import mrscenariofootball.core.data.worlddata.server.Team;
@@ -74,12 +75,12 @@ public class PlayField extends JPanel {
 			Graphics2D g2d = (Graphics2D) g;
 			
 			g2d.translate( 0, this.getHeight() );
-			g2d.scale( 1.0 / ScenarioCore.getInstance().getScenarioInformation().getXFactor(),
-					   1.0 / ScenarioCore.getInstance().getScenarioInformation().getYFactor());
+			g2d.scale( 1.0 / ScenarioInformation.getInstance().getXFactor(),
+					   1.0 / ScenarioInformation.getInstance().getYFactor());
 			
 	    	removeAll();
 	    	
-	        WorldData vWorld = ScenarioCore.getInstance().getScenarioInformation().getWorldData().copy();
+	        WorldData vWorld = ScenarioInformation.getInstance().getWorldData().copy();
 			int width, height;
 			JLabel lblNewLabel;
 			

@@ -59,6 +59,10 @@
       <appender-ref ref="Console"/>
       <appender-ref ref="ERROR" />
     </logger>
+    <logger name="GAME" level="debug" additivity="false">
+      <appender-ref ref="Console"/>
+      <appender-ref ref="ERROR" />
+    </logger>
     <root level="error">
     </root>
   </loggers>

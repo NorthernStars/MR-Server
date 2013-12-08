@@ -35,7 +35,7 @@ public class Helper {
 		JButton btnNewButton = new JButton("Pause");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ScenarioManagement.getInstance().pauseScenario();
+				ScenarioManagement.getInstance().suspendScenario();
 			}
 		});
 		btnNewButton.setMaximumSize(new Dimension(11799915, 25));
@@ -44,7 +44,7 @@ public class Helper {
 		JButton btnUnpause = new JButton("Unpause");
 		btnUnpause.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ScenarioManagement.getInstance().unpauseScenario();
+				ScenarioManagement.getInstance().resumeScenario();
 			}
 		});
 		btnUnpause.setMaximumSize(new Dimension(11799915, 25));

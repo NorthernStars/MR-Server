@@ -85,9 +85,9 @@ public interface Scenario {
 	
 	public void startScenario();
 
-	public boolean pauseScenario();
+	public boolean suspendScenario();
 	
-	public boolean unpauseScenario();
+	public boolean resumeScenario();
 	
 	public JPanel getScenarioGUI();
 

@@ -13,10 +13,13 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import mrscenariofootball.core.ScenarioCore;
+import mrscenariofootball.core.data.ScenarioInformation;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import javax.swing.SwingConstants;
+
 import java.awt.Dimension;
 
 public class ScenarioGUI extends JPanel {
@@ -54,7 +57,7 @@ public class ScenarioGUI extends JPanel {
 				try {
 					Date vNewDate = (Date) new SimpleDateFormat( "mm:ss:SSS" ).parseObject( vNewTime );
 					ScenarioCore.getLogger().info( "Set date to {}", new SimpleDateFormat( "mm:ss:SS" ).format( vNewDate ) );
-					ScenarioCore.getInstance().getScenarioInformation().getWorldData().setPlayTime( vNewDate.getTime()/1000.0 );
+					ScenarioInformation.getInstance().getWorldData().setPlayTime( vNewDate.getTime()/1000.0 );
 					update();
 				} catch (ParseException e1) {
 					// TODO Auto-generated catch block
@@ -88,7 +91,7 @@ public class ScenarioGUI extends JPanel {
 				try {
 					int vYellowScore = Integer.parseInt( vNewScore );
 					ScenarioCore.getLogger().info( "Set yellow score to to {}",  vYellowScore );
-					ScenarioCore.getInstance().getScenarioInformation().getWorldData().getScore().setScoreYellowTeam( vYellowScore );
+					ScenarioInformation.getInstance().getWorldData().getScore().setScoreYellowTeam( vYellowScore );
 					update();
 				} catch ( Exception e1 ) {
 					// TODO Auto-generated catch block
@@ -118,7 +121,7 @@ public class ScenarioGUI extends JPanel {
 				try {
 					int vBlueScore = Integer.parseInt( vNewScore );
 					ScenarioCore.getLogger().info( "Set blue score to to {}",  vBlueScore );
-					ScenarioCore.getInstance().getScenarioInformation().getWorldData().getScore().setScoreBlueTeam( vBlueScore );
+					ScenarioInformation.getInstance().getWorldData().getScore().setScoreBlueTeam( vBlueScore );
 					update();
 				} catch ( Exception e1 ) {
 					// TODO Auto-generated catch block
@@ -139,9 +142,9 @@ public class ScenarioGUI extends JPanel {
     	EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				
-				mTime.setText( new SimpleDateFormat( "mm:ss:SS" ).format( new Date( (long) (ScenarioCore.getInstance().getScenarioInformation().getWorldData().getPlayTime() * 1000) ) ) );
-				mLblBlueScore.setText( Integer.toString( ScenarioCore.getInstance().getScenarioInformation().getWorldData().getScore().getScoreBlueTeam() ) );
-				mLblYellowScore.setText( Integer.toString( ScenarioCore.getInstance().getScenarioInformation().getWorldData().getScore().getScoreYellowTeam() ) );
+				mTime.setText( new SimpleDateFormat( "mm:ss:SS" ).format( new Date( (long) (ScenarioInformation.getInstance().getWorldData().getPlayTime() * 1000) ) ) );
+				mLblBlueScore.setText( Integer.toString( ScenarioInformation.getInstance().getWorldData().getScore().getScoreBlueTeam() ) );
+				mLblYellowScore.setText( Integer.toString( ScenarioInformation.getInstance().getWorldData().getScore().getScoreYellowTeam() ) );
 				validate();
 				
 			}

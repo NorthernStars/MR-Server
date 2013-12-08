@@ -6,8 +6,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import mrscenariofootball.core.ScenarioCore;
+import mrscenariofootball.core.data.ScenarioInformation;
 import mrscenariofootball.core.data.worlddata.server.WorldData;
-import mrservermisc.graphics.interfaces.Graphics;
 
 import org.apache.logging.log4j.Level;
 
@@ -25,6 +25,19 @@ public class ToGraphics extends Thread {
 		private AtomicBoolean mManageMessagesToGraphics = new AtomicBoolean( false );
 		
 		public ToGraphics() {}
+		private static ToGraphics INSTANCE;
+	    
+	    public static ToGraphics getInstance() {
+	        
+	        if( ToGraphics.INSTANCE == null){
+	        	ScenarioCore.getLogger().debug( "Creating ToGraphics-instance." );
+	        	ToGraphics.INSTANCE = new ToGraphics();
+	        }
+
+	        ScenarioCore.getLogger().trace( "Retrieving ToGraphics-instance." );
+	        return ToGraphics.INSTANCE;
+	        
+	    }
 		
 		public void close(){
 			
@@ -100,7 +113,7 @@ public class ToGraphics extends Thread {
 					if( vWorldData != null ){
 							
 						ScenarioCore.getLogger().trace("Sending Data {}", vWorldData);
-						ScenarioCore.getInstance().getGraphics().sendWorldStatus( vWorldData.toXMLString() );
+						ScenarioInformation.getInstance().getGraphics().sendWorldStatus( vWorldData.toXMLString() );
 						
 					}
 					
