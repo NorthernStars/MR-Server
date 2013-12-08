@@ -25,7 +25,7 @@ public class ClientReferencePoint {
 		
 		mAngleToPoint = Math.toDegrees( Math.atan2( aReferencePoint.getPosition().getY() - aOrigin.getPosition().getY(), 
 				aReferencePoint.getPosition().getX() - aOrigin.getPosition().getX() ) ) 
-				+ aOrigin.getOrientationAngle();
+				- aOrigin.getOrientationAngle();
 		
 		if( mAngleToPoint > 180.0 ){
 			mAngleToPoint = mAngleToPoint - 360;

@@ -57,7 +57,7 @@ public class BotAIs extends JPanel implements AIListener {
 		add(label_1);
 		
 		mOwnPortToBots = new JTextField();
-		mOwnPortToBots.setText("-1");
+		mOwnPortToBots.setText("3311");
 		mOwnPortToBots.setColumns(10);
 		mOwnPortToBots.setBounds(220, 25, 86, 20);
 		add(mOwnPortToBots);
