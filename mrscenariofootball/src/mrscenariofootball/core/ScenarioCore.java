@@ -78,6 +78,7 @@ public class ScenarioCore implements Scenario {
 		FromVision.getInstance().close();
 		ToBotAIs.getInstance().close();
 		ToGraphics.getInstance().close();
+		resumeScenario();
 		
 	}
 
@@ -122,7 +123,7 @@ public class ScenarioCore implements Scenario {
 	}
 
 	@Override
-	public boolean registerGraphics(Graphics aGraphics) {
+	public boolean registerGraphics( Graphics aGraphics) {
 		
 		ScenarioInformation.getInstance().setGraphics( aGraphics );
 		return true;

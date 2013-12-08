@@ -110,7 +110,7 @@ public class ScenarioInformation {
 	}
 
 	public void setGraphics( Graphics aGraphics ) {
-		this.mGraphics = mGraphics;
+		this.mGraphics = aGraphics;
 	}
 
 	public BotControl getBotControl() {

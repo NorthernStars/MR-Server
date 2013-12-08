@@ -110,22 +110,22 @@ public class PlayField extends JPanel {
 			
 			AffineTransform mTransformation;
 			for( Player vPlayer : vWorld.getListOfPlayers() ){
-				
+			
 				mTransformation = new AffineTransform();
 	            mTransformation.translate( 	width * vPlayer.getPosition().getX() - ( height / 25.0 ) / mBlueBotImage.getWidth() / 2,
-	            		 					-height * vPlayer.getPosition().getY() - ( height / 25.0 ) / mBlueBotImage.getHeight() / 2 );
+	            		 					-(height * vPlayer.getPosition().getY() - ( height / 25.0 ) / mBlueBotImage.getHeight() / 2 ));
 	            mTransformation.rotate( Math.toRadians( -vPlayer.getOrientationAngle() ) );
 	            mTransformation.scale( ( height / 25.0 ) / mBlueBotImage.getWidth(), ( height / 25.0 ) / mBlueBotImage.getHeight() );
-	            mTransformation.translate( mBlueBotImage.getWidth() / 2, mBlueBotImage.getHeight() / 2);
+	            mTransformation.translate( -mBlueBotImage.getWidth() / 2, -mBlueBotImage.getHeight() / 2);
 				g2d.drawImage( vPlayer.getTeam() == Team.Yellow ? mYellowBotImage : vPlayer.getTeam() == Team.Blue ? mBlueBotImage : mNoneBotImage, mTransformation, this );
 				
-				lblNewLabel = new JLabel( vPlayer.getNickname() + " (" + vPlayer.getId() + ")"  );
+				lblNewLabel = new JLabel( vPlayer.getNickname() + " (" + vPlayer.getId() + ")" + " (" + (int) vPlayer.getOrientationAngle() + "°)"  );
 				lblNewLabel.setForeground( Color.WHITE );
 				lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 				lblNewLabel.setHorizontalTextPosition(SwingConstants.CENTER);
 				lblNewLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 				lblNewLabel.setBounds( 	(int)( width * vPlayer.getPosition().getX() - 100 ),
-										(int)( -height * vPlayer.getPosition().getY() ), 200, 14);
+										(int)( -height * vPlayer.getPosition().getY() + 10 ), 200, 14);
 				add(lblNewLabel);
 				
 			}

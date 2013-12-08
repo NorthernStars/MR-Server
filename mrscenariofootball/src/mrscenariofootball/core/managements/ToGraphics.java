@@ -24,7 +24,11 @@ public class ToGraphics extends Thread {
 		
 		private AtomicBoolean mManageMessagesToGraphics = new AtomicBoolean( false );
 		
-		public ToGraphics() {}
+		public ToGraphics() {
+			
+	        this.setName( "Scenario_ToGraphics" );
+	        
+		}
 		private static ToGraphics INSTANCE;
 	    
 	    public static ToGraphics getInstance() {
@@ -108,8 +112,8 @@ public class ToGraphics extends Thread {
 	            
 				try {
 
-					vWorldData = WORLDDATA.poll( 100, TimeUnit.MILLISECONDS );
-					
+					vWorldData = WORLDDATA.take();
+
 					if( vWorldData != null ){
 							
 						ScenarioCore.getLogger().trace("Sending Data {}", vWorldData);

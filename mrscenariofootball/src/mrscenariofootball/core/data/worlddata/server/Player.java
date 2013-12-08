@@ -85,6 +85,18 @@ public class Player extends ReferencePoint {
 	}
 
 	public void setOrientationAngle( double aOrientationAngle ) {
+		
+		if( aOrientationAngle > 180 ){
+			
+			aOrientationAngle -= 360;
+			
+		}
+		if( aOrientationAngle < -180 ){
+			
+			aOrientationAngle += 360;
+			
+		}
+		
 		mOrientationAngle = aOrientationAngle;
 	}
 

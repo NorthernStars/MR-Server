@@ -58,12 +58,12 @@ public class Core {
 		
 		Command vCommand;
 		WorldData vWorldData;
-		double vXForce, vYForce;
+		double vXForce, vYForce, vKickAngle;
 		BallPosition vBall;
 		ServerPoint vBallForce = new ServerPoint( 0, 0 );
 		long vTickTime;
 		
-		while(true){
+		while( true ){
 			
 			// TODO: after pause send last command to bots?
 			if( mSuspended.get() ){
@@ -102,13 +102,17 @@ public class Core {
 							
 							if( vPlayer.getId() == vBotAI.getVtId() && vPlayer.getPosition().distance( vWorldData.getBallPosition().getPosition() ) <= 0.05 ){ // TODO: remove magic number
 								
-								Core.getLogger().debug(" Player {} tries to kick {} with distance {}", vPlayer, vWorldData.getBallPosition(), vPlayer.getPosition().distance( vWorldData.getBallPosition().getPosition() ));
-																
-								vXForce = vCommand.getKick().getForce() * Math.cos( vCommand.getKick().getAngle() + vPlayer.getOrientationAngle() );
-								vYForce = vCommand.getKick().getForce() * Math.sin( vCommand.getKick().getAngle() + vPlayer.getOrientationAngle() );
+								Core.getLogger().trace(" Player {} tries to kick {} with distance {}", vPlayer, vWorldData.getBallPosition(), vPlayer.getPosition().distance( vWorldData.getBallPosition().getPosition() ));
 								
+								vKickAngle = vCommand.getKick().getAngle() + vPlayer.getOrientationAngle();
+								vKickAngle = vKickAngle > 180.0 ? vKickAngle - 360.0 : vKickAngle;
+								vKickAngle = vKickAngle < -180.0 ? vKickAngle + 360.0 : vKickAngle;
+								
+								vXForce = vCommand.getKick().getForce() * Math.cos( Math.toRadians( vKickAngle )  );
+								vYForce = vCommand.getKick().getForce() * Math.sin( Math.toRadians( vKickAngle ) );
+								Core.getLogger().trace(" Kick with Force {}|{} ({})", vXForce, vYForce, vCommand.getKick() );
 								//TODO: Kick ball in reality
-								vBallForce = new ServerPoint( vBallForce.getX() + vXForce/10.0, vBallForce.getY() + vYForce/10.0 ); // TODO: remove magic number
+								vBallForce = new ServerPoint( vBallForce.getX() + vXForce/20.0, vBallForce.getY() + vYForce/20.0 ); // TODO: remove magic number
 								
 								break;
 								
@@ -121,15 +125,14 @@ public class Core {
 				
 			}
 			
-			//TODO real tick
-			vBall = new BallPosition( ReferencePointName.Ball, 
-					new ServerPoint( 
-							vWorldData.getBallPosition().getPosition().getX() + 0.05 * vBallForce.getX(),
-							vWorldData.getBallPosition().getPosition().getY() + 0.05 * vBallForce.getX() ) );
-			ScenarioInformation.getInstance().setBall( vBall );
+			//TODO real tick 
+			vWorldData.getBallPosition().getPosition().setLocation(
+					vWorldData.getBallPosition().getPosition().getX() + 0.05 * vBallForce.getX(),
+					vWorldData.getBallPosition().getPosition().getY() + 0.05 * vBallForce.getY() );
+			ScenarioInformation.getInstance().setBall( vWorldData.getBallPosition() );
 			vBallForce.setLocation( vBallForce.getX() * 0.95, vBallForce.getY() * 0.95 );
 			// TODO check for goal
-			ScenarioInformation.getInstance().addTimePlayed( 0.05 );
+			ScenarioInformation.getInstance().addTimePlayed( 0.1 );
 			
 			vWorldData = ScenarioInformation.getInstance().getWorldData().copy();
 			
@@ -140,7 +143,7 @@ public class Core {
 			
 			ScenarioCore.getInstance().getGUI().update();
 			
-			while( System.nanoTime() - vTickTime <= 50000000 ){
+			while( System.nanoTime() - vTickTime <= 100000000 ){
 			
 				try {
 					Thread.sleep( 5 );
@@ -161,24 +164,22 @@ public class Core {
 			
 			double vSpeed, vRotation;
 			
-			vSpeed = ( aMovement.getLeftWheelVelocity() + aMovement.getRightWheelVelocity() ) / 200; //TODO: remove magic number
+			vSpeed = ( aMovement.getLeftWheelVelocity() + aMovement.getRightWheelVelocity() ) / 20000.0; //TODO: remove magic number
 			
-			vRotation = (180 - 180/200 * ( aMovement.getLeftWheelVelocity() + 100 ) ) +
-					(-180 + 180/200 *( aMovement.getRightWheelVelocity() + 100 ) ) /
-					18;
 			
-			Core.getLogger().info( "Added rotation {} and speed {} to bot {}", vRotation, vSpeed, aBotAI );
+			vRotation = ( ( aMovement.getLeftWheelVelocity() + 100.0 ) * -180.0 / 200 + ( aMovement.getRightWheelVelocity() + 100.0 ) * 180.0 / 200 ) / -2.0 ;
+			vRotation /= 10.0;
 			
 			for( Player vPlayer : ScenarioInformation.getInstance().getWorldData().getListOfPlayers() ){
 				
 				if( vPlayer.getId() == aBotAI.getVtId() ){
 					
-					vPlayer.setOrientationAngle( vPlayer.getOrientationAngle() + vRotation);
+					vPlayer.setOrientationAngle( vPlayer.getOrientationAngle() + vRotation );
 					vPlayer.getPosition().setLocation( 
-							vPlayer.getPosition().getX() + vSpeed * Math.cos( vRotation ),
-							vPlayer.getPosition().getY() + vSpeed * Math.sin( vRotation ) );
-					
-					Core.getLogger().info( "Added rotation {} and speed {} to player {}({})", vRotation, vSpeed, vPlayer, aBotAI );
+							vPlayer.getPosition().getX() + vSpeed * Math.cos( Math.toRadians( -vPlayer.getOrientationAngle() ) ),
+							vPlayer.getPosition().getY() + vSpeed * Math.sin( Math.toRadians( -vPlayer.getOrientationAngle() ) ) );
+
+					Core.getLogger().trace( "Added rotation {} and speed {} to player {}({})", vRotation, vSpeed, vPlayer, aBotAI );
 					
 					return;
 					
@@ -187,11 +188,11 @@ public class Core {
 			}
 			
 			ScenarioInformation.getInstance().getWorldData().getListOfPlayers().add( 
-					new Player( new PositionObjectBot( PositionObjectType.BOT, aBotAI.getVtId(), "", new double[]{ 0.0,0.0 }, null, 0.0 ) , 
+					new Player( new PositionObjectBot( PositionObjectType.BOT, aBotAI.getVtId(), "", 
+							new double[]{ 0.5 * ScenarioInformation.getInstance().getXFactor() ,0.5 * ScenarioInformation.getInstance().getYFactor() }, null, 0.0 ) , 
 							aBotAI ) );
 			
 			Core.getLogger().info( "Added new bot {}", aBotAI );
-			
 			
 		} else {
 			
