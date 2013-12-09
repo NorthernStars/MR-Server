@@ -1,6 +1,7 @@
 package mrscenariofootball.core.data.worlddata.server;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 public class Score {
 
@@ -25,10 +26,12 @@ public class Score {
 				+ "]";
 	}
 
+	@XmlTransient
 	public int getScoreYellowTeam() {
 		return mYellowTeam;
 	}
 
+	@XmlTransient
 	public int getScoreBlueTeam() {
 		return mBlueTeam;
 	}

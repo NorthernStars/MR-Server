@@ -1,6 +1,7 @@
 package mrscenariofootball.core.data.worlddata.server;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import mrscenariofootball.core.ScenarioCore;
 import mrscenariofootball.core.data.BotAI;
@@ -80,6 +81,7 @@ public class Player extends ReferencePoint {
 		return mStatus;
 	}
 
+	@XmlTransient
 	public double getOrientationAngle() {
 		return mOrientationAngle;
 	}
