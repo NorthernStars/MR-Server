@@ -14,7 +14,7 @@ public class WorldData {
     
     @XmlElement(name="time")
 	double mPlayTime;
-	@XmlElement(name="playMode")
+	@XmlElement(name="playmode")
 	PlayMode mPlayMode;
 	@XmlElement(name="score")
 	Score mScore;
@@ -55,7 +55,7 @@ public class WorldData {
 	public WorldData( WorldData aWorldData ) {
 		
 		mPlayTime = aWorldData.getPlayTime();
-		mPlayMode = getPlayMode();
+		mPlayMode = aWorldData.getPlayMode();
 		mScore = new Score( aWorldData.getScore() );
 		mMaxNumberOfAgents = aWorldData.getMaxNumberOfAgents();
 		mBallPosition = new BallPosition( aWorldData.getBallPosition() );
