@@ -55,7 +55,7 @@ public class ScenarioInformation {
 								ReferencePointName.FieldCenter.getRelativePosition().getX() * mXFactor, 
 								ReferencePointName.FieldCenter.getRelativePosition().getY() * mYFactor) ),
 				new ArrayList<Player>(),
-				ReferencePoint.getDefaultList( mXFactor, mYFactor ) );
+				ReferencePoint.getDefaultMap( mXFactor, mYFactor ) );
 		
 		ScenarioCore.getLogger().debug( "Created Worlddata: " + mWorldData );
 		

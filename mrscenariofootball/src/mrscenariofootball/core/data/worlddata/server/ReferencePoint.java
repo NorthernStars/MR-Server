@@ -1,7 +1,9 @@
 package mrscenariofootball.core.data.worlddata.server;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlElement;
 
@@ -34,21 +36,21 @@ public class ReferencePoint {
 				+ mPosition + "]";
 	}
 
-	public static List<ReferencePoint> getDefaultList( double aXMulti, double aYMulti ) {
+	public static Map<ReferencePointName, ReferencePoint> getDefaultMap( double aXMulti, double aYMulti ) {
 		
-		List<ReferencePoint> vListOfReferencePoints = new ArrayList<ReferencePoint>();
+		Map<ReferencePointName, ReferencePoint> vMapOfReferencePoints = new HashMap<ReferencePointName, ReferencePoint>();
 		
 		for( ReferencePointName vRefPoint : ReferencePointName.values() ){
 			
 			if( vRefPoint.getId() >= 0 ){
 				
-				vListOfReferencePoints.add( new ReferencePoint( vRefPoint, new ServerPoint( vRefPoint.getRelativePosition().getX() * aXMulti, vRefPoint.getRelativePosition().getY() * aYMulti ) ));
+				vMapOfReferencePoints.put( vRefPoint, new ReferencePoint( vRefPoint, new ServerPoint( vRefPoint.getRelativePosition().getX() * aXMulti, vRefPoint.getRelativePosition().getY() * aYMulti ) ));
 			
 			}
 			
 		}
 		
-		return vListOfReferencePoints;
+		return vMapOfReferencePoints;
 	}
 
 	public ReferencePointName getPointName() {

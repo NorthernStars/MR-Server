@@ -74,4 +74,10 @@ public class BotAI {
 		
 	}
 
+	@Override
+	public String toString() {
+		return "BotAI [mRemoteAI=" + mRemoteAI + ", mWorldDataToSend="
+				+ mWorldDataToSend + "]";
+	}
+
 }

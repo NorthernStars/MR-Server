@@ -1,7 +1,9 @@
 package mrscenariofootball.core.data.worlddata.server;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -28,8 +30,8 @@ public class WorldData {
 	@XmlElement(name="players")
 	List<Player> mListOfPlayers;
 
-    @XmlElement(name="flag")
-    List<ReferencePoint> mReferencePoints;
+    @XmlTransient
+    Map<ReferencePointName, ReferencePoint> mReferencePoints;
 	
     public WorldData(){}
     
@@ -40,7 +42,7 @@ public class WorldData {
 			int aMaxNumberOfAgents, 
 			BallPosition aBallPosition,
 			List<Player> aListOfPlayers,
-			List<ReferencePoint> aReferencePoints ) {
+			Map<ReferencePointName, ReferencePoint> aReferencePoints ) {
 		
 		mPlayTime = aPlayTime;
 		mPlayMode = aPlayMode;
@@ -49,6 +51,8 @@ public class WorldData {
 		mBallPosition = aBallPosition;
 		mListOfPlayers = aListOfPlayers;
 		mReferencePoints = aReferencePoints;
+		
+		System.out.print( toString() );
 		
 	}	
 	
@@ -66,10 +70,10 @@ public class WorldData {
 			
 		}
 		
-		mReferencePoints =  new ArrayList<ReferencePoint>( aWorldData.getReferencePoints().size() );
+		mReferencePoints =  new HashMap<ReferencePointName, ReferencePoint>();
 		for( ReferencePoint vReferencePoint : aWorldData.getReferencePoints() ){
 			
-			mReferencePoints.add( new ReferencePoint( vReferencePoint ) );
+			mReferencePoints.put( vReferencePoint.getPointName(), new ReferencePoint( vReferencePoint ) );
 			
 		}
 		
@@ -158,18 +162,32 @@ public class WorldData {
 	public void setListOfPlayers( List<Player> aListOfPlayers ) {
 		mListOfPlayers = aListOfPlayers;
 	}
-	@XmlTransient
+	
+	@XmlElement(name="flag")
 	public List<ReferencePoint> getReferencePoints() {
-		return mReferencePoints;
+		return new ArrayList<ReferencePoint>( mReferencePoints.values() );
 	}
 
 	public void setReferencePoints( List<ReferencePoint> aReferencePoints ) {
-		mReferencePoints = aReferencePoints;
+		
+		mReferencePoints =  new HashMap<ReferencePointName, ReferencePoint>();
+		for( ReferencePoint vReferencePoint : aReferencePoints ){
+			
+			mReferencePoints.put( vReferencePoint.getPointName(), new ReferencePoint( vReferencePoint ) );
+			
+		}
+		
+	}
+	@XmlTransient
+	public Map<ReferencePointName, ReferencePoint> getMapOfReferencePoints(){
+		
+		return mReferencePoints;
+		
 	}
 
 	public WorldData copy() {
 		
-		return  new WorldData( this );
+		return new WorldData( this );
 		
 	}
 	
