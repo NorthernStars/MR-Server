@@ -9,11 +9,14 @@ import mrscenariofootball.core.ScenarioCore;
 import mrscenariofootball.core.data.BotAI;
 import mrscenariofootball.core.data.ScenarioInformation;
 import mrscenariofootball.core.data.action.Command;
+import mrscenariofootball.core.data.action.Kick;
 import mrscenariofootball.core.data.action.Movement;
 import mrscenariofootball.core.data.worlddata.server.BallPosition;
+import mrscenariofootball.core.data.worlddata.server.PlayMode;
 import mrscenariofootball.core.data.worlddata.server.Player;
 import mrscenariofootball.core.data.worlddata.server.ReferencePointName;
 import mrscenariofootball.core.data.worlddata.server.ServerPoint;
+import mrscenariofootball.core.data.worlddata.server.Team;
 import mrscenariofootball.core.data.worlddata.server.WorldData;
 import mrscenariofootball.core.managements.FromVision;
 import mrscenariofootball.core.managements.ToBotAIs;
@@ -52,169 +55,88 @@ public class Core {
 
 	private AtomicBoolean mSuspended = new AtomicBoolean( false );
 	private AtomicBoolean mSimulation = new AtomicBoolean( true );
+	private AtomicBoolean mAutomaticGame = new AtomicBoolean( true );
+	
+	private ServerPoint mBallForce;
 
+	// Main game loop
 	public void startGame() {
 		
 		startManagements();
 		
 		Core.getLogger().info( "Game started." );
 		
-		Command vCommand;
 		WorldData vWorldData;
-		double vXForce, vYForce, vKickAngle, vM, vB, vIntersection, vAngleToOtherPlayer;
-		BallPosition vBall;
-		ServerPoint vBallForce = new ServerPoint( 0, 0 );
+		BallPosition vOldBallPosition;
+		PlayMode vCurrentPlaymode;
+		
+		resetBallForce();
+		
 		long vTickTime;
-		List<BotAI> vListofPlayers;
+		double vOneTick = 0.05, vTimeCounter = 0; // one cycle in seconds
 		
 		while( true ){
 			
-			// TODO: after pause send last command to bots?
-			if( mSuspended.get() ){
-				
-				for( BotAI vBotAI : ScenarioInformation.getInstance().getBotAIs().values() ){
-					
-					ScenarioInformation.getInstance().getBotControl().sendMovement( vBotAI.getRcId(), 0, 0 );
-					
-				}
-				
-				while( mSuspended.get() ){ 
-					
-					try { Thread.sleep( 10 ); } catch ( InterruptedException vInterruptedException ) { Core.getLogger().error( "Error suspending Scenario: {}",vInterruptedException.getLocalizedMessage() ); Core.getLogger().catching( Level.ERROR, vInterruptedException ); }
+			vTickTime = System.nanoTime();
+			vCurrentPlaymode = ScenarioInformation.getInstance().getWorldData().getPlayMode();
 			
-				}
+			if( !mSuspended.get() && vCurrentPlaymode.canBotsMove() ){
+
+				processBotAIActions();
+				
+			} else {
+				
+				stopRealBots();
 				
 			}
 			
-			vTickTime = System.nanoTime();
-			
-			vWorldData = ScenarioInformation.getInstance().getWorldData().copy();
-			
-			vListofPlayers = new ArrayList<BotAI>( ScenarioInformation.getInstance().getBotAIs().values() );
-			Collections.shuffle( vListofPlayers );
-			
-			for( BotAI vBotAI : vListofPlayers ){
+			if( !mSuspended.get() && vCurrentPlaymode.canBallMove() ){
+
+				vOldBallPosition = ScenarioInformation.getInstance().getWorldData().copy().getBallPosition();
 				
+				moveBall();
 				
-				vCommand = Command.unmarshallXMLPositionDataPackageString( vBotAI.getLastAction() );
+				isBallInGoal( vOldBallPosition );
 				
-				if( vCommand != null ){
+			}
+			
+			if( !mSuspended.get() && vCurrentPlaymode.isTimeRunning() ){
+
+				ScenarioInformation.getInstance().addTimePlayed( vOneTick );
+				
+			} else if( !mSuspended.get() && mAutomaticGame.get() ) {
+				
+				if( 	vCurrentPlaymode == PlayMode.KickOff ||
+						vCurrentPlaymode == PlayMode.KickOffBlue ||
+						vCurrentPlaymode == PlayMode.KickOffYellow ){
 					
-					if( vCommand.isMovement() ){
+					vTimeCounter += vOneTick;
+					
+					if( vTimeCounter >= 10 ){
 						
-						moveBot( vCommand.getMovement() , vBotAI );
-						
-					} else if( vCommand.isKick() ){
-						
-						for( Player vPlayer : vWorldData.getListOfPlayers() ){
-							
-							if( vPlayer.getId() == vBotAI.getVtId() && vPlayer.getPosition().distance( vWorldData.getBallPosition().getPosition() ) <= 0.026 ){ // TODO: remove magic number
-								
-								Core.getLogger().trace(" Player {} tries to kick {} with distance {}", vPlayer, vWorldData.getBallPosition(), vPlayer.getPosition().distance( vWorldData.getBallPosition().getPosition() ));
-								
-								vKickAngle = vCommand.getKick().getAngle() + vPlayer.getOrientationAngle();
-								vKickAngle = vKickAngle > 180.0 ? vKickAngle - 360.0 : vKickAngle;
-								vKickAngle = vKickAngle < -180.0 ? vKickAngle + 360.0 : vKickAngle;
-								
-								vXForce = vCommand.getKick().getForce() * Math.cos( Math.toRadians( vKickAngle )  );
-								vYForce = vCommand.getKick().getForce() * Math.sin( Math.toRadians( vKickAngle ) );
-								Core.getLogger().trace(" Kick with Force {}|{} ({})", vXForce, vYForce, vCommand.getKick() );
-								//TODO: Kick ball in reality
-								vBallForce = new ServerPoint( (vBallForce.getX() + vXForce)/5.0, (vBallForce.getY() + vYForce)/5.0 ); // TODO: remove magic number
-								
-								break;
-								
-							}
-							
-						}
+						ScenarioInformation.getInstance().getWorldData().setPlayMode( PlayMode.PlayOn );
+						vTimeCounter = 0;
 						
 					}
-				}
-				
-			}
-			
-			//TODO real tick 
-			
-			vWorldData.getBallPosition().getPosition().setLocation(
-					vWorldData.getBallPosition().getPosition().getX() + 0.05 * vBallForce.getX(),
-					vWorldData.getBallPosition().getPosition().getY() + 0.05 * vBallForce.getY() );
-			
-			for( Player vPlayerDist : ScenarioInformation.getInstance().getWorldData().getListOfPlayers() ){
-				
-				if( vPlayerDist.getPosition().distance( vWorldData.getBallPosition().getPosition() ) < 0.020 ){
-					vAngleToOtherPlayer = Math.atan2( vWorldData.getBallPosition().getPosition().getY() - vPlayerDist.getPosition().getY(), 
-							vWorldData.getBallPosition().getPosition().getX() - vPlayerDist.getPosition().getX() );
-					
-					vWorldData.getBallPosition().getPosition().setLocation(
-							vPlayerDist.getPosition().getX() + 0.02 * Math.cos( vAngleToOtherPlayer ),
-							vPlayerDist.getPosition().getY() + 0.02 * Math.sin( vAngleToOtherPlayer ) );
-					vPlayerDist.getPosition().setLocation(
-									vPlayerDist.getPosition().getX() + 0.0025 * Math.cos( vAngleToOtherPlayer ),
-									vPlayerDist.getPosition().getY() + 0.0025 * Math.sin( vAngleToOtherPlayer ) );
-							
-				}
-				
-			}
-			
-			if( ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getX() >= ScenarioInformation.getInstance().getWorldData().getMapOfReferencePoints().get(ReferencePointName.YellowGoalCornerBottom).getPosition().getX() &&
-				vWorldData.getBallPosition().getPosition().getX() < ScenarioInformation.getInstance().getWorldData().getMapOfReferencePoints().get(ReferencePointName.YellowGoalCornerBottom).getPosition().getX() ){
-				
-				vM = ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getY() - vWorldData.getBallPosition().getPosition().getY() /
-					 ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getX() - vWorldData.getBallPosition().getPosition().getX();
-				vB = vWorldData.getBallPosition().getPosition().getY() - vM * vWorldData.getBallPosition().getPosition().getX();
-				vIntersection = vM * ScenarioInformation.getInstance().getWorldData().getMapOfReferencePoints().get(ReferencePointName.YellowGoalCornerBottom).getPosition().getX() + vB;
-				
-				if( vIntersection > ScenarioInformation.getInstance().getWorldData().getMapOfReferencePoints().get(ReferencePointName.YellowGoalCornerBottom).getPosition().getY() &&
-				    vIntersection < ScenarioInformation.getInstance().getWorldData().getMapOfReferencePoints().get(ReferencePointName.YellowGoalCornerTop).getPosition().getY()){
-					
-					ScenarioInformation.getInstance().getWorldData().getScore().setScoreBlueTeam( ScenarioInformation.getInstance().getWorldData().getScore().getScoreBlueTeam() + 1 );
-					//mSuspended.set( true );
-					vWorldData.getBallPosition().getPosition().setLocation(
-							ReferencePointName.FieldCenter.getRelativePosition().getX() * ScenarioInformation.getInstance().getXFactor(), 
-							ReferencePointName.FieldCenter.getRelativePosition().getY() * ScenarioInformation.getInstance().getYFactor() );
-					
-					vBallForce = new ServerPoint( 0, 0 );
-				}
-				
-			}
-			if( ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getX() <= ScenarioInformation.getInstance().getWorldData().getMapOfReferencePoints().get(ReferencePointName.BlueGoalCornerBottom).getPosition().getX() &&
-			    vWorldData.getBallPosition().getPosition().getX() > ScenarioInformation.getInstance().getWorldData().getMapOfReferencePoints().get(ReferencePointName.BlueGoalCornerBottom).getPosition().getX() ){
-				
-				vM = ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getY() - vWorldData.getBallPosition().getPosition().getY() /
-					 ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getX() - vWorldData.getBallPosition().getPosition().getX();
-				vB = vWorldData.getBallPosition().getPosition().getY() - vM * vWorldData.getBallPosition().getPosition().getX();
-				vIntersection = vM * ScenarioInformation.getInstance().getWorldData().getMapOfReferencePoints().get(ReferencePointName.BlueGoalCornerBottom).getPosition().getX() + vB;
-				
-				if( vIntersection > ScenarioInformation.getInstance().getWorldData().getMapOfReferencePoints().get(ReferencePointName.BlueGoalCornerBottom).getPosition().getY() &&
-				    vIntersection < ScenarioInformation.getInstance().getWorldData().getMapOfReferencePoints().get(ReferencePointName.BlueGoalCornerTop).getPosition().getY()){
-					
-					ScenarioInformation.getInstance().getWorldData().getScore().setScoreYellowTeam( ScenarioInformation.getInstance().getWorldData().getScore().getScoreYellowTeam() + 1 );
-					//mSuspended.set( true );
-					vWorldData.getBallPosition().getPosition().setLocation(
-							ReferencePointName.FieldCenter.getRelativePosition().getX() * ScenarioInformation.getInstance().getXFactor(), 
-							ReferencePointName.FieldCenter.getRelativePosition().getY() * ScenarioInformation.getInstance().getYFactor() );
-					
-					vBallForce = new ServerPoint( 0, 0 );
 					
 				}
 				
 			}
 			
-			ScenarioInformation.getInstance().setBall( vWorldData.getBallPosition() );
-			vBallForce = new ServerPoint( vBallForce.getX() * 0.95, vBallForce.getY() * 0.95 );
-			// TODO check for goal
-			ScenarioInformation.getInstance().addTimePlayed( 0.1 );
+			{	// always send data!
+				
+				vWorldData = ScenarioInformation.getInstance().getWorldData().copy();
+				
+				Core.getLogger().trace( "Scenario ticked {}", vWorldData );
+				
+				ToBotAIs.putWorldDatainSendingQueue( vWorldData.copy() );
+				ToGraphics.putWorldDatainSendingQueue( vWorldData.copy() );
+				
+				ScenarioCore.getInstance().getGUI().update();
+				
+			}
 			
-			vWorldData = ScenarioInformation.getInstance().getWorldData().copy();
-			
-			Core.getLogger().trace( "Scenario ticked {}", vWorldData );
-			
-			ToBotAIs.putWorldDatainSendingQueue( vWorldData.copy() );
-			ToGraphics.putWorldDatainSendingQueue( vWorldData.copy() );
-			
-			ScenarioCore.getInstance().getGUI().update();
-			
-			while( System.nanoTime() - vTickTime <= 50000000 ){
+			while( System.nanoTime() - vTickTime <= vOneTick * 1000000000 ){
 			
 				try {
 					Thread.sleep( 5 );
@@ -226,8 +148,184 @@ public class Core {
 			}
 		}
 	}
-
 	
+	private void setKickoff( Team aTeam ){
+	
+		if( aTeam == Team.None ){
+			
+			ScenarioInformation.getInstance().getWorldData().setPlayMode( PlayMode.KickOff );
+			
+			resetBallForce();
+			
+			ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().setLocation(
+					ReferencePointName.FieldCenter.getRelativePosition().getX() * ScenarioInformation.getInstance().getXFactor(), 
+					ReferencePointName.FieldCenter.getRelativePosition().getY() * ScenarioInformation.getInstance().getYFactor() );
+			
+		} else if( aTeam == Team.Blue ){
+			
+			ScenarioInformation.getInstance().getWorldData().setPlayMode( PlayMode.KickOffBlue );
+			
+			resetBallForce();
+			
+			ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().setLocation(
+					ReferencePointName.FieldCenter.getRelativePosition().getX() * ScenarioInformation.getInstance().getXFactor(), 
+					ReferencePointName.FieldCenter.getRelativePosition().getY() * ScenarioInformation.getInstance().getYFactor() );
+			
+		} else if( aTeam == Team.Yellow ){
+			
+			ScenarioInformation.getInstance().getWorldData().setPlayMode( PlayMode.KickOffYellow );
+			
+			resetBallForce();
+			
+			ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().setLocation(
+					ReferencePointName.FieldCenter.getRelativePosition().getX() * ScenarioInformation.getInstance().getXFactor(), 
+					ReferencePointName.FieldCenter.getRelativePosition().getY() * ScenarioInformation.getInstance().getYFactor() );
+			
+		}
+		
+	}
+
+	private void stopRealBots() {
+		for( BotAI vBotAI : ScenarioInformation.getInstance().getBotAIs().values() ){
+			
+			ScenarioInformation.getInstance().getBotControl().sendMovement( vBotAI.getRcId(), 0, 0 );
+			
+		}
+	}
+
+	private void processBotAIActions() {
+		
+		Command vCommand;
+		List<BotAI> vListofPlayers = new ArrayList<BotAI>( ScenarioInformation.getInstance().getBotAIs().values() );
+		Collections.shuffle( vListofPlayers );
+		
+		for( BotAI vBotAI : vListofPlayers ){
+			
+			vCommand = Command.unmarshallXMLPositionDataPackageString( vBotAI.getLastAction() );
+			
+			if( vCommand != null ){
+				
+				if( vCommand.isMovement() ){
+					
+					moveBot( vCommand.getMovement() , vBotAI );
+					
+				} else if( vCommand.isKick() && ScenarioInformation.getInstance().getWorldData().getPlayMode().canBallMove() ){
+					
+					kickBall( vCommand.getKick(), vBotAI );
+					
+				}
+			}
+			
+		}
+	}
+
+	private void kickBall( Kick aKick, BotAI aBotAI ) {
+		
+		double vXForce, vYForce, vKickAngle;
+		
+		for( Player vPlayer : ScenarioInformation.getInstance().getWorldData().getListOfPlayers() ){
+			
+			if( vPlayer.getId() == aBotAI.getVtId() && vPlayer.getPosition().distance( ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition() ) <= 0.026 ){ // TODO: remove magic number
+				
+				Core.getLogger().trace(" Player {} tries to kick {} with distance {}", vPlayer, ScenarioInformation.getInstance().getWorldData().getBallPosition(), vPlayer.getPosition().distance( ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition() ));
+				
+				vKickAngle = aKick.getAngle() + vPlayer.getOrientationAngle();
+				vKickAngle = vKickAngle > 180.0 ? vKickAngle - 360.0 : vKickAngle;
+				vKickAngle = vKickAngle < -180.0 ? vKickAngle + 360.0 : vKickAngle;
+				
+				vXForce = aKick.getForce() * Math.cos( Math.toRadians( vKickAngle )  );
+				vYForce = aKick.getForce() * Math.sin( Math.toRadians( vKickAngle ) );
+				Core.getLogger().trace(" Kick with Force {}|{} ({})", vXForce, vYForce, aKick );
+				
+				mBallForce.add( vXForce, vYForce ).divide( 5.0 ); // TODO: remove magic number
+				
+				break;
+				
+			}
+			
+		}
+	}
+
+	private void moveBall() {
+
+		ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().setLocation(
+				ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getX() + 0.05 * mBallForce.getX(),
+				ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getY() + 0.05 * mBallForce.getY() );
+		
+		mBallForce.multiply( 0.95 );
+		
+		if( mSimulation.get() ){
+			
+			ballCollisionWithPlayerSimulation();
+			
+		}
+		
+	}
+
+	private void ballCollisionWithPlayerSimulation() {
+		
+		double vAngleToOtherPlayer;
+		
+		for( Player vPlayerDist : ScenarioInformation.getInstance().getWorldData().getListOfPlayers() ){
+			
+			if( vPlayerDist.getPosition().distance( ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition() ) < 0.020 ){
+				vAngleToOtherPlayer = Math.atan2( ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getY() - vPlayerDist.getPosition().getY(), 
+						ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getX() - vPlayerDist.getPosition().getX() );
+				
+				ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().setLocation(
+						vPlayerDist.getPosition().getX() + 0.02 * Math.cos( vAngleToOtherPlayer ),
+						vPlayerDist.getPosition().getY() + 0.02 * Math.sin( vAngleToOtherPlayer ) );
+				vPlayerDist.getPosition().setLocation(
+								vPlayerDist.getPosition().getX() + 0.0025 * Math.cos( vAngleToOtherPlayer ),
+								vPlayerDist.getPosition().getY() + 0.0025 * Math.sin( vAngleToOtherPlayer ) );
+						
+			}
+			
+		}
+		
+	}
+
+	private void isBallInGoal( BallPosition aOldBallPosition ) {
+		
+		double vM, vB, vIntersection;
+		
+		if( ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getX() < ScenarioInformation.getInstance().getWorldData().getMapOfReferencePoints().get(ReferencePointName.YellowGoalCornerBottom).getPosition().getX() &&
+				aOldBallPosition.getPosition().getX() >= ScenarioInformation.getInstance().getWorldData().getMapOfReferencePoints().get(ReferencePointName.YellowGoalCornerBottom).getPosition().getX() ){
+			
+			vM = ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getY() - aOldBallPosition.getPosition().getY() /
+				 ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getX() - aOldBallPosition.getPosition().getX();
+			vB = aOldBallPosition.getPosition().getY() - vM * aOldBallPosition.getPosition().getX();
+			vIntersection = vM * ScenarioInformation.getInstance().getWorldData().getMapOfReferencePoints().get(ReferencePointName.YellowGoalCornerBottom).getPosition().getX() + vB;
+			
+			if( vIntersection > ScenarioInformation.getInstance().getWorldData().getMapOfReferencePoints().get(ReferencePointName.YellowGoalCornerBottom).getPosition().getY() &&
+			    vIntersection < ScenarioInformation.getInstance().getWorldData().getMapOfReferencePoints().get(ReferencePointName.YellowGoalCornerTop).getPosition().getY()){
+				
+				ScenarioInformation.getInstance().getWorldData().getScore().setScoreBlueTeam( ScenarioInformation.getInstance().getWorldData().getScore().getScoreBlueTeam() + 1 );
+				
+				setKickoff( Team.Yellow );
+			}
+			
+		}
+		if( ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getX() > ScenarioInformation.getInstance().getWorldData().getMapOfReferencePoints().get(ReferencePointName.BlueGoalCornerBottom).getPosition().getX() &&
+				aOldBallPosition.getPosition().getX() <= ScenarioInformation.getInstance().getWorldData().getMapOfReferencePoints().get(ReferencePointName.BlueGoalCornerBottom).getPosition().getX() ){
+			
+			vM = ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getY() - aOldBallPosition.getPosition().getY() /
+				 ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getX() - aOldBallPosition.getPosition().getX();
+			vB = aOldBallPosition.getPosition().getY() - vM * aOldBallPosition.getPosition().getX();
+			vIntersection = vM * ScenarioInformation.getInstance().getWorldData().getMapOfReferencePoints().get(ReferencePointName.BlueGoalCornerBottom).getPosition().getX() + vB;
+			
+			if( vIntersection > ScenarioInformation.getInstance().getWorldData().getMapOfReferencePoints().get(ReferencePointName.BlueGoalCornerBottom).getPosition().getY() &&
+			    vIntersection < ScenarioInformation.getInstance().getWorldData().getMapOfReferencePoints().get(ReferencePointName.BlueGoalCornerTop).getPosition().getY()){
+				
+				ScenarioInformation.getInstance().getWorldData().getScore().setScoreYellowTeam( ScenarioInformation.getInstance().getWorldData().getScore().getScoreYellowTeam() + 1 );
+				
+				setKickoff( Team.Blue );
+				
+			}
+			
+		}
+		
+	}
 	
 	private void moveBot( Movement aMovement, BotAI aBotAI) {
 		
@@ -320,5 +418,8 @@ public class Core {
 		
 	}
     
-    
+	public void resetBallForce() {
+		this.mBallForce = new ServerPoint( 0, 0 );
+	}
+	
 }

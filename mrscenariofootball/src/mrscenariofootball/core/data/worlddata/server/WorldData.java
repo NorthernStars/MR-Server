@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import mrscenariofootball.game.Core;
 import mrservermisc.network.xml.Helpers;
 
 @XmlRootElement(name="WorldData")
@@ -128,6 +129,7 @@ public class WorldData {
 	}
 
 	public void setPlayMode( PlayMode aPlayMode ) {
+		Core.getLogger().info( "Playmode set to {}", aPlayMode );
 		mPlayMode = aPlayMode;
 	}
 	@XmlTransient

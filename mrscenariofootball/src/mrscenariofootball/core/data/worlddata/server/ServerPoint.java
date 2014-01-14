@@ -39,6 +39,38 @@ public class ServerPoint extends Point2D {
 		return mY;
 	}
 
+	public ServerPoint add( ServerPoint aServerPoint ) {
+		
+		mX += aServerPoint.getX();
+		mY += aServerPoint.getY();
+		
+		return this;
+	}
+
+	public ServerPoint add( double aX, double aY ) {
+		
+		mX += aX;
+		mY += aY;
+		
+		return this;
+	}
+
+	public ServerPoint multiply( double aFactor ) {
+		
+		mX *= aFactor;
+		mY *= aFactor;
+		
+		return this;
+	}
+
+	public ServerPoint divide( double aDivisor ) {
+		
+		mX /= aDivisor;
+		mY /= aDivisor;
+		
+		return this;
+	}
+
 	@Override
 	public void setLocation( double aX, double aY ) {
 		
