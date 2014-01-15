@@ -53,6 +53,7 @@ public class BasicUDPServerConnection {
 			initialiseDatagram( aTargetAddress, aTargetPort );
 			
 			mToTargetSocket = new DatagramSocket();
+			mToTargetSocket.setReuseAddress(true);
 			mToTargetSocket.connect( aTargetAddress, aTargetPort );
 
 			mSocketInitialized = true;
@@ -81,6 +82,7 @@ public class BasicUDPServerConnection {
 		    initialiseDatagram( aTargetAddress, aTargetPort );
 		    
 	        mToTargetSocket = new DatagramSocket( aHostPort );
+			mToTargetSocket.setReuseAddress(true);
 	        mToTargetSocket.connect( aTargetAddress, aTargetPort );
 	
 	        mSocketInitialized = true;

@@ -47,7 +47,8 @@ public class BasicUDPHostConnection {
 		try {
 			
 			mToTargetSocket = new DatagramSocket();
-		
+			mToTargetSocket.setReuseAddress(true);
+			
 			mSocketInitialized = true;
 	        Loggers.getNetworkLogger().debug( "Created socket: {}", ((InetSocketAddress) mToTargetSocket.getLocalSocketAddress()) );
 	        
@@ -65,6 +66,7 @@ public class BasicUDPHostConnection {
 	    
 		try {
 	        mToTargetSocket = new DatagramSocket( aHostPort );
+			mToTargetSocket.setReuseAddress(true);
 	
 	        mSocketInitialized = true;
 	        Loggers.getNetworkLogger().debug( "Created socket: {}", ((InetSocketAddress) mToTargetSocket.getLocalSocketAddress()) );
