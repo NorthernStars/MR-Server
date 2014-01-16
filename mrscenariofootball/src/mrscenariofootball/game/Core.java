@@ -233,9 +233,9 @@ public class Core {
 
 		ServerPoint vBallForce = new ServerPoint( 0, 0 );
 		List<KickEcho> vOldKicks = new ArrayList<KickEcho>();
-		if( mKicks.size() > 0 ){
-			Core.getLogger().debug("Ball moved by {} forces", mKicks.size() );
-		}
+
+		Core.getLogger().trace("Ball moved by {} forces", mKicks.size() );
+			
 		for( KickEcho vKickEcho : mKicks ){
 			
 			if( vKickEcho.isAlive() ){
@@ -262,9 +262,9 @@ public class Core {
 			vBallForce.setVectorLengthTo( 0.01 );
 			
 		}
-		if( vBallForce.getLengthOfVector() > 0.0 ){
-			Core.getLogger().debug("Ball moves {}° with {}", vBallForce.getDegreeOfVector(), vBallForce.getLengthOfVector());
-		}
+		
+		Core.getLogger().trace("Ball moves {}° with {}", vBallForce.getDegreeOfVector(), vBallForce.getLengthOfVector());
+			
 		ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().setLocation(
 				ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getX() + vBallForce.getX(),
 				ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getY() + vBallForce.getY() );

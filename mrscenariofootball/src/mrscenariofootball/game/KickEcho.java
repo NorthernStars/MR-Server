@@ -20,7 +20,6 @@ public class KickEcho extends ServerPoint {
 		Core.getLogger().trace(" Kick with Force {}|{} ({})", mX, mY, aKick );
 		
 		mLifetime = 25;
-		Core.getLogger().trace( "Lifetime of Kick = {}", mLifetime);
 		
 	}
 	
