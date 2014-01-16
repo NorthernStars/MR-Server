@@ -292,8 +292,8 @@ public class Core {
 		if( ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getX() < ScenarioInformation.getInstance().getWorldData().getMapOfReferencePoints().get(ReferencePointName.YellowGoalCornerBottom).getPosition().getX() &&
 				aOldBallPosition.getPosition().getX() >= ScenarioInformation.getInstance().getWorldData().getMapOfReferencePoints().get(ReferencePointName.YellowGoalCornerBottom).getPosition().getX() ){
 			
-			vM = ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getY() - aOldBallPosition.getPosition().getY() /
-				 ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getX() - aOldBallPosition.getPosition().getX();
+			vM = (ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getY() - aOldBallPosition.getPosition().getY()) /
+				 (ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getX() - aOldBallPosition.getPosition().getX());
 			vB = aOldBallPosition.getPosition().getY() - vM * aOldBallPosition.getPosition().getX();
 			vIntersection = vM * ScenarioInformation.getInstance().getWorldData().getMapOfReferencePoints().get(ReferencePointName.YellowGoalCornerBottom).getPosition().getX() + vB;
 			
@@ -309,8 +309,8 @@ public class Core {
 		if( ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getX() > ScenarioInformation.getInstance().getWorldData().getMapOfReferencePoints().get(ReferencePointName.BlueGoalCornerBottom).getPosition().getX() &&
 				aOldBallPosition.getPosition().getX() <= ScenarioInformation.getInstance().getWorldData().getMapOfReferencePoints().get(ReferencePointName.BlueGoalCornerBottom).getPosition().getX() ){
 			
-			vM = ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getY() - aOldBallPosition.getPosition().getY() /
-				 ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getX() - aOldBallPosition.getPosition().getX();
+			vM = (ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getY() - aOldBallPosition.getPosition().getY()) /
+				 (ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getX() - aOldBallPosition.getPosition().getX());
 			vB = aOldBallPosition.getPosition().getY() - vM * aOldBallPosition.getPosition().getX();
 			vIntersection = vM * ScenarioInformation.getInstance().getWorldData().getMapOfReferencePoints().get(ReferencePointName.BlueGoalCornerBottom).getPosition().getX() + vB;
 			
