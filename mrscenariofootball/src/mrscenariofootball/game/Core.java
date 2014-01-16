@@ -24,7 +24,6 @@ import mrscenariofootball.core.managements.ToGraphics;
 import mrservermisc.network.data.position.PositionObjectBot;
 import mrservermisc.network.data.position.PositionObjectType;
 
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -57,7 +56,7 @@ public class Core {
 	private AtomicBoolean mSimulation = new AtomicBoolean( true );
 	private AtomicBoolean mAutomaticGame = new AtomicBoolean( true );
 	
-	private ServerPoint mBallForce;
+	private List<KickEcho> mKicks = new ArrayList<KickEcho>( 100 );
 
 	// Main game loop
 	public void startGame() {
@@ -69,8 +68,6 @@ public class Core {
 		WorldData vWorldData;
 		BallPosition vOldBallPosition;
 		PlayMode vCurrentPlaymode;
-		
-		resetBallForce();
 		
 		long vTickTime;
 		double vOneTick = 0.05, vTimeCounter = 0; // one cycle in seconds
@@ -151,11 +148,11 @@ public class Core {
 	
 	private void setKickoff( Team aTeam ){
 	
+		mKicks.clear();
+		
 		if( aTeam == Team.None ){
 			
 			ScenarioInformation.getInstance().getWorldData().setPlayMode( PlayMode.KickOff );
-			
-			resetBallForce();
 			
 			ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().setLocation(
 					ReferencePointName.FieldCenter.getRelativePosition().getX() * ScenarioInformation.getInstance().getXFactor(), 
@@ -165,8 +162,6 @@ public class Core {
 			
 			ScenarioInformation.getInstance().getWorldData().setPlayMode( PlayMode.KickOffBlue );
 			
-			resetBallForce();
-			
 			ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().setLocation(
 					ReferencePointName.FieldCenter.getRelativePosition().getX() * ScenarioInformation.getInstance().getXFactor(), 
 					ReferencePointName.FieldCenter.getRelativePosition().getY() * ScenarioInformation.getInstance().getYFactor() );
@@ -174,8 +169,6 @@ public class Core {
 		} else if( aTeam == Team.Yellow ){
 			
 			ScenarioInformation.getInstance().getWorldData().setPlayMode( PlayMode.KickOffYellow );
-			
-			resetBallForce();
 			
 			ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().setLocation(
 					ReferencePointName.FieldCenter.getRelativePosition().getX() * ScenarioInformation.getInstance().getXFactor(), 
@@ -220,24 +213,14 @@ public class Core {
 	}
 
 	private void kickBall( Kick aKick, BotAI aBotAI ) {
-		
-		double vXForce, vYForce, vKickAngle;
-		
+				
 		for( Player vPlayer : ScenarioInformation.getInstance().getWorldData().getListOfPlayers() ){
 			
 			if( vPlayer.getId() == aBotAI.getVtId() && vPlayer.getPosition().distance( ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition() ) <= 0.026 ){ // TODO: remove magic number
 				
 				Core.getLogger().trace(" Player {} tries to kick {} with distance {}", vPlayer, ScenarioInformation.getInstance().getWorldData().getBallPosition(), vPlayer.getPosition().distance( ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition() ));
 				
-				vKickAngle = aKick.getAngle() + vPlayer.getOrientationAngle();
-				vKickAngle = vKickAngle > 180.0 ? vKickAngle - 360.0 : vKickAngle;
-				vKickAngle = vKickAngle < -180.0 ? vKickAngle + 360.0 : vKickAngle;
-				
-				vXForce = aKick.getForce() * Math.cos( Math.toRadians( vKickAngle )  );
-				vYForce = aKick.getForce() * Math.sin( Math.toRadians( vKickAngle ) );
-				Core.getLogger().trace(" Kick with Force {}|{} ({})", vXForce, vYForce, aKick );
-				
-				mBallForce.add( vXForce, vYForce ).divide( 5.0 ); // TODO: remove magic number
+				mKicks.add(new KickEcho( aKick, vPlayer.getOrientationAngle() ));
 				
 				break;
 				
@@ -248,11 +231,44 @@ public class Core {
 
 	private void moveBall() {
 
-		ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().setLocation(
-				ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getX() + 0.05 * mBallForce.getX(),
-				ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getY() + 0.05 * mBallForce.getY() );
+		ServerPoint vBallForce = new ServerPoint( 0, 0 );
+		List<KickEcho> vOldKicks = new ArrayList<KickEcho>();
+		if( mKicks.size() > 0 ){
+			Core.getLogger().debug("Ball moved by {} forces", mKicks.size() );
+		}
+		for( KickEcho vKickEcho : mKicks ){
+			
+			if( vKickEcho.isAlive() ){
+				
+				vBallForce.add( vKickEcho );
+				vKickEcho.reduceLife();
+				
+			} else {
+				
+				vOldKicks.add( vKickEcho );
+				
+			}
+			
+		}
 		
-		mBallForce.multiply( 0.95 );
+		for( KickEcho vKickEcho : vOldKicks ){
+			
+			mKicks.remove( vKickEcho );
+			
+		}
+		
+		if( vBallForce.getLengthOfVector() > 0.01 ){ //TODO: Magic number
+			
+			vBallForce.setVectorLengthTo( 0.01 );
+			
+		}
+		if( vBallForce.getLengthOfVector() > 0.0 ){
+			Core.getLogger().debug("Ball moves {}° with {}", vBallForce.getDegreeOfVector(), vBallForce.getLengthOfVector());
+		}
+		ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().setLocation(
+				ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getX() + vBallForce.getX(),
+				ScenarioInformation.getInstance().getWorldData().getBallPosition().getPosition().getY() + vBallForce.getY() );
+		
 		
 		if( mSimulation.get() ){
 			
@@ -416,10 +432,6 @@ public class Core {
 
 		return mSimulation.get();
 		
-	}
-    
-	public void resetBallForce() {
-		this.mBallForce = new ServerPoint( 0, 0 );
 	}
 	
 }

@@ -9,9 +9,9 @@ import mrscenariofootball.core.data.ScenarioInformation;
 public class ServerPoint extends Point2D {
 	
 	@XmlElement(name="x")
-	double mX;
+	protected double mX;
 	@XmlElement(name="y")
-	double mY;
+	protected double mY;
 	
 	public ServerPoint() {}
 	
@@ -69,6 +69,27 @@ public class ServerPoint extends Point2D {
 		mY /= aDivisor;
 		
 		return this;
+	}
+	
+	public double getDegreeOfVector(){
+		
+		return  Math.toDegrees( Math.atan2( mY, mX ) );
+		
+	}
+	
+	public double getLengthOfVector(){
+		
+		return  Math.sqrt( mX * mX + mY * mY );
+		
+	}
+	
+	public void setVectorLengthTo( double aLength ){
+		
+		double vCurrentLength = getLengthOfVector();
+		
+		mX *= (aLength/vCurrentLength);
+		mY *= (aLength/vCurrentLength);
+		
 	}
 
 	@Override

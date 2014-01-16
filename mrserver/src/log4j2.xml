@@ -51,7 +51,7 @@
       <appender-ref ref="Console"/>
       <appender-ref ref="ERROR" />
     </logger>
-    <logger name="XML" level="error" additivity="false">
+    <logger name="XML" level="off" additivity="false">
       <appender-ref ref="Console"/>
       <appender-ref ref="ERROR" />
     </logger>
