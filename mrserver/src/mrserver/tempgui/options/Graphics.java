@@ -157,8 +157,7 @@ public class Graphics extends JPanel implements GraphicsManagementListener{
 
 	void save(){
 
-		Core.getInstance().getServerConfig().setVisionIPAdress( mOwnIP.getText() );
-		Core.getInstance().getServerConfig().setVisionPort( Integer.parseInt( mOwnPortForGraphics.getText() ) );
+		Core.getInstance().getServerConfig().setGraphicsPort( Integer.parseInt( mOwnPortForGraphics.getText() ) );
 				
 	}
 	
