@@ -2,20 +2,24 @@ package mrserver.gui;
 
 import java.awt.EventQueue;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 
+import mrserver.core.Core;
 import mrserver.core.scenario.ScenarioManagement;
 import mrserver.gui.options.Options;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
+import java.io.File;
 
 import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Main {
 
@@ -168,6 +172,15 @@ public class Main {
 		mntmLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+			    JFileChooser chooser = new JFileChooser();
+			    chooser.setSelectedFile( new File( Core.getInstance().getServerConfig().getScenarioLibrary() ) );
+			    FileNameExtensionFilter filter = new FileNameExtensionFilter( "Scenario JARs", "jar");
+			    chooser.setFileFilter( filter );
+			    int returnVal = chooser.showOpenDialog( frmServercontrol );
+			    if(returnVal == JFileChooser.APPROVE_OPTION) {
+			       System.out.println("You chose to open this file: " + chooser.getSelectedFile().getName());
+			    }
+				
 				new Thread( new Runnable() {
 
 					@Override
@@ -201,7 +214,8 @@ public class Main {
 						EventQueue.invokeLater(new Runnable() {
 							public void run() {
 								
-								
+								frmServercontrol.getContentPane().removeAll();
+								frmServercontrol.getContentPane().validate();
 							}
 						});
 					}
@@ -210,62 +224,6 @@ public class Main {
 			}
 		});
 		mnScenario.add(mntmUnload);
-		
-		JSeparator separator_4 = new JSeparator();
-		mnScenario.add(separator_4);
-		
-		JMenuItem mntmSuspend = new JMenuItem("Suspend");
-		mntmSuspend.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				new Thread( new Runnable() {
-
-					@Override
-					public void run() {
-		
-						ScenarioManagement.getInstance().suspendScenario();
-					}
-				} ).start();
-				
-			}
-		});
-		
-		JMenuItem mntmStart = new JMenuItem("Start");
-		mntmStart.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				new Thread( new Runnable() {
-
-					@Override
-					public void run() {
-		
-						ScenarioManagement.getInstance().startScenario();
-						
-					}
-				} ).start();
-				
-			}
-		});
-		mnScenario.add(mntmStart);
-		mnScenario.add(mntmSuspend);
-		
-		JMenuItem mntmResume = new JMenuItem("Resume");
-		mntmResume.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				new Thread( new Runnable() {
-
-					@Override
-					public void run() {
-		
-						ScenarioManagement.getInstance().resumeScenario();
-						
-					}
-				} ).start();
-				
-			}
-		});
-		mnScenario.add(mntmResume);
 		
 		JSeparator separator_2 = new JSeparator();
 		mnScenario.add(separator_2);
