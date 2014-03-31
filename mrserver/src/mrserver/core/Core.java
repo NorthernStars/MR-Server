@@ -9,8 +9,8 @@ import mrserver.core.config.commandline.CommandLineOptions;
 import mrserver.core.graphics.GraphicsManagement;
 import mrserver.core.scenario.ScenarioManagement;
 import mrserver.core.vision.VisionManagement;
-import mrserver.tempgui.Helper;
-import mrserver.tempgui.Main;
+import mrserver.gui.Helper;
+import mrserver.gui.Main;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;

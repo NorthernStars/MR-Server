@@ -12,7 +12,7 @@ import mrserver.core.botai.network.BotAiHost;
 import mrserver.core.botai.network.receive.Creator;
 import mrserver.core.botai.network.receive.Receiver;
 import mrserver.core.scenario.ScenarioManagement;
-import mrserver.tempgui.options.interfaces.AIListener;
+import mrserver.gui.options.interfaces.AIListener;
 import mrservermisc.network.BasicUDPHostConnection;
 
 import org.apache.logging.log4j.LogManager;

@@ -1,4 +1,4 @@
-package mrserver.tempgui;
+package mrserver.gui;
 
 import javax.swing.JFrame;
 import javax.swing.BoxLayout;

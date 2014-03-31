@@ -1,4 +1,4 @@
-package mrserver.tempgui.options;
+package mrserver.gui.options;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

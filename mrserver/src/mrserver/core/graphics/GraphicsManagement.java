@@ -13,7 +13,7 @@ import mrserver.core.graphics.data.GraphicModul;
 import mrserver.core.graphics.network.GraphicsConnection;
 import mrserver.core.graphics.network.receive.Creator;
 import mrserver.core.graphics.network.receive.Receiver;
-import mrserver.tempgui.options.interfaces.GraphicsManagementListener;
+import mrserver.gui.options.interfaces.GraphicsManagementListener;
 import mrservermisc.graphics.interfaces.Graphics;
 import mrservermisc.network.data.position.PositionDataPackage;
 

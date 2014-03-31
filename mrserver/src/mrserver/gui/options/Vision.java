@@ -1,4 +1,4 @@
-package mrserver.tempgui.options;
+package mrserver.gui.options;
 
 import javax.swing.JPanel;
 
@@ -21,7 +21,7 @@ import javax.swing.JButton;
 
 import mrserver.core.Core;
 import mrserver.core.vision.VisionManagement;
-import mrserver.tempgui.Main;
+import mrserver.gui.Main;
 
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;

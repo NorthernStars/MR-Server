@@ -1,4 +1,4 @@
-package mrserver.tempgui.options;
+package mrserver.gui.options;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -26,7 +26,7 @@ import mrserver.core.Core;
 import mrserver.core.botcontrol.BotControlManagement;
 import mrserver.core.graphics.GraphicsManagement;
 import mrserver.core.scenario.ScenarioManagement;
-import mrserver.tempgui.options.interfaces.GraphicsManagementListener;
+import mrserver.gui.options.interfaces.GraphicsManagementListener;
 
 public class Graphics extends JPanel implements GraphicsManagementListener{
 	private JTextField mOwnIP;

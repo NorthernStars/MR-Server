@@ -1,4 +1,4 @@
-package mrserver.tempgui;
+package mrserver.gui;
 
 import java.awt.EventQueue;
 
@@ -9,11 +9,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 
 import mrserver.core.scenario.ScenarioManagement;
-import mrserver.tempgui.options.Options;
+import mrserver.gui.options.Options;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
+
 import javax.swing.JPanel;
 
 public class Main {

@@ -1,4 +1,4 @@
-package mrserver.tempgui.options;
+package mrserver.gui.options;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -18,7 +18,7 @@ import javax.swing.ScrollPaneConstants;
 import mrserver.core.botai.BotAIManagement;
 import mrserver.core.botai.data.BotAI;
 import mrserver.core.botai.network.receive.Receiver;
-import mrserver.tempgui.options.interfaces.AIListener;
+import mrserver.gui.options.interfaces.AIListener;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;

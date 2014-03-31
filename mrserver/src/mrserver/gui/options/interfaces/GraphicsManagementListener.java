@@ -1,4 +1,4 @@
-package mrserver.tempgui.options.interfaces;
+package mrserver.gui.options.interfaces;
 
 import java.net.SocketAddress;
 
