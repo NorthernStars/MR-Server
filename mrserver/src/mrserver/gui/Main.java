@@ -173,33 +173,38 @@ public class Main {
 			public void actionPerformed(ActionEvent e) {
 				
 			    JFileChooser chooser = new JFileChooser();
+			    chooser.setCurrentDirectory( new File( System.getProperty("user.dir" ) ));
 			    chooser.setSelectedFile( new File( Core.getInstance().getServerConfig().getScenarioLibrary() ) );
 			    FileNameExtensionFilter filter = new FileNameExtensionFilter( "Scenario JARs", "jar");
 			    chooser.setFileFilter( filter );
-			    int returnVal = chooser.showOpenDialog( frmServercontrol );
-			    if(returnVal == JFileChooser.APPROVE_OPTION) {
-			       System.out.println("You chose to open this file: " + chooser.getSelectedFile().getName());
-			    }
-				
-				new Thread( new Runnable() {
+			    if( chooser.showOpenDialog( frmServercontrol ) == JFileChooser.APPROVE_OPTION ) {
+			    	
+			    	System.out.println(chooser.getSelectedFile().toString());
+			    	Core.getInstance().getServerConfig().setScenarioLibrary( chooser.getSelectedFile().toString() );
+			    	
+			    	new Thread( new Runnable() {
 
-					@Override
-					public void run() {
-		
-						ScenarioManagement.getInstance().loadScenario();
-						EventQueue.invokeLater(new Runnable() {
-							public void run() {
-								
-								frmServercontrol.getContentPane().add( ScenarioManagement.getInstance().getScenarioGUI(), BorderLayout.CENTER );
-								frmServercontrol.getContentPane().validate();
-							}
-						});
-					}
-				} ).start();
+						@Override
+						public void run() {
+			
+							ScenarioManagement.getInstance().loadScenario();
+							EventQueue.invokeLater(new Runnable() {
+								public void run() {
+									
+									frmServercontrol.getContentPane().add( ScenarioManagement.getInstance().getScenarioGUI(), BorderLayout.CENTER );
+									frmServercontrol.getContentPane().validate();
+									
+								}
+							});
+							
+						}
+					} ).start();
+			       
+			    }
 				
 			}
 		});
-		mnScenario.add(mntmLoad);
+		mnScenario.add( mntmLoad );
 		
 		JMenuItem mntmUnload = new JMenuItem("Unload");
 		mntmUnload.addActionListener(new ActionListener() {
@@ -217,6 +222,7 @@ public class Main {
 								frmServercontrol.getContentPane().removeAll();
 								frmServercontrol.revalidate();
 								frmServercontrol.repaint();
+								
 							}
 						});
 					}

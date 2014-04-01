@@ -81,7 +81,7 @@ public class ScenarioManagement {
            
         try {
 
-        	ScenarioManagement.getLogger().trace( "Loading scenario " + Core.getInstance().getServerConfig().getScenarioClass() + " from " + Core.getInstance().getServerConfig().getScenarioLibrary() );
+        	ScenarioManagement.getLogger().info( "Loading scenario " + Core.getInstance().getServerConfig().getScenarioClass() + " from " + Core.getInstance().getServerConfig().getScenarioLibrary() );
             URL vUniformResourceLocator = new File( Core.getInstance().getServerConfig().getScenarioLibrary() ).toURI().toURL();
             @SuppressWarnings("resource")
 			URLClassLoader vClassloader = new URLClassLoader( new URL[]{ vUniformResourceLocator } );
@@ -98,7 +98,7 @@ public class ScenarioManagement {
             
         } catch ( Exception vException ) {
             
-        	ScenarioManagement.getLogger().error( "Error loading AI " +Core.getInstance().getServerConfig().getScenarioClass() + " from " + Core.getInstance().getServerConfig().getScenarioLibrary() + " " + vException.getLocalizedMessage() );
+        	ScenarioManagement.getLogger().error( "Error loading AI " + Core.getInstance().getServerConfig().getScenarioClass() + " from " + Core.getInstance().getServerConfig().getScenarioLibrary() + " " + vException.getLocalizedMessage() );
         	ScenarioManagement.getLogger().catching( Level.ERROR, vException );
             
             return false;

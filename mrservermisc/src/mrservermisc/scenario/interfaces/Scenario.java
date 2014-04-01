@@ -2,6 +2,7 @@ package mrservermisc.scenario.interfaces;
 
 import java.util.List;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import mrservermisc.botcontrol.interfaces.BotControl;
@@ -86,5 +87,7 @@ public interface Scenario {
 	public void loadScenario();
 	
 	public JPanel getScenarioGUI();
+
+	public JFrame getScenarioOptions();
 
 }
