@@ -83,11 +83,7 @@ public interface Scenario {
 	 */
 	public boolean registerGraphics( Graphics aGraphics );
 	
-	public void startScenario();
-
-	public boolean suspendScenario();
-	
-	public boolean resumeScenario();
+	public void loadScenario();
 	
 	public JPanel getScenarioGUI();
 

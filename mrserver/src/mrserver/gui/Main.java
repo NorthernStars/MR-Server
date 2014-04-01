@@ -215,7 +215,8 @@ public class Main {
 							public void run() {
 								
 								frmServercontrol.getContentPane().removeAll();
-								frmServercontrol.getContentPane().validate();
+								frmServercontrol.revalidate();
+								frmServercontrol.repaint();
 							}
 						});
 					}

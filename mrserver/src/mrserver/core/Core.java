@@ -1,15 +1,11 @@
 package mrserver.core;
 
-import java.awt.EventQueue;
-
-import mrserver.core.botai.BotAIManagement;
 import mrserver.core.botcontrol.BotControlManagement;
 import mrserver.core.config.ServerConfig;
 import mrserver.core.config.commandline.CommandLineOptions;
 import mrserver.core.graphics.GraphicsManagement;
 import mrserver.core.scenario.ScenarioManagement;
 import mrserver.core.vision.VisionManagement;
-import mrserver.gui.Helper;
 import mrserver.gui.Main;
 
 import org.apache.logging.log4j.Level;

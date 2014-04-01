@@ -93,6 +93,7 @@ public class ScenarioManagement {
             ScenarioManagement.getLogger().info( "Loaded scenario " + Core.getInstance().getServerConfig().getScenarioClass() + " from " + Core.getInstance().getServerConfig().getScenarioLibrary() );
             registerGraphics( GraphicsManagement.getInstance() );
             registerBotControl( BotControlManagement.getInstance() );
+			mScenario.loadScenario();
             
             
         } catch ( Exception vException ) {
@@ -192,36 +193,6 @@ public class ScenarioManagement {
 		}
 		
 		return false;
-		
-	}
-
-	public void startScenario() {
-
-		if( mScenario != null ){
-			
-			mScenario.startScenario();
-			
-		}
-		
-	}
-
-	public void suspendScenario() {
-
-		if( mScenario != null ){
-			
-			mScenario.suspendScenario();
-			
-		}
-		
-	}
-
-	public void resumeScenario() {
-
-		if( mScenario != null ){
-			
-			mScenario.resumeScenario();
-			
-		}
 		
 	}
 

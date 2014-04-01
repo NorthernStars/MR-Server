@@ -78,7 +78,7 @@ public class ScenarioCore implements Scenario {
 		FromVision.getInstance().close();
 		ToBotAIs.getInstance().close();
 		ToGraphics.getInstance().close();
-		resumeScenario();
+		Core.getInstance().resume();
 		
 	}
 
@@ -131,22 +131,7 @@ public class ScenarioCore implements Scenario {
 	}
 
 	@Override
-	public void startScenario() {
-		Core.getInstance().startGame();
-	}
-
-	@Override
-	public boolean suspendScenario() {
-
-		return Core.getInstance().suspend();
-		
-	}
-
-	@Override
-	public boolean resumeScenario() {
-
-		return Core.getInstance().resume();
-		
+	public void loadScenario() {
 	}
 
 	@Override
