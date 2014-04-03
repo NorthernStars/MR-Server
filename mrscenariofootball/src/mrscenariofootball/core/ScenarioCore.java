@@ -3,6 +3,7 @@ package mrscenariofootball.core;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import net.jcip.annotations.GuardedBy;
@@ -145,6 +146,11 @@ public class ScenarioCore implements Scenario {
 
 		return mGUI;
 		
+	}
+	
+
+	public JFrame getScenarioOptions() {
+		return null;
 	}
 
 }

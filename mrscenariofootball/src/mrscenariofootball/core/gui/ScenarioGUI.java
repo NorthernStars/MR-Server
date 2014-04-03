@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 
 import mrscenariofootball.core.ScenarioCore;
 import mrscenariofootball.core.data.ScenarioInformation;
+import mrscenariofootball.game.Core;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -21,6 +22,11 @@ import java.awt.event.MouseEvent;
 import javax.swing.SwingConstants;
 
 import java.awt.Dimension;
+
+import javax.swing.JButton;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ScenarioGUI extends JPanel {
 
@@ -36,7 +42,7 @@ public class ScenarioGUI extends JPanel {
 		setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel = new JPanel();
-		add(panel, BorderLayout.NORTH);
+		add(panel, BorderLayout.SOUTH);
 		mPlayfield = new PlayField();
 		add( mPlayfield, BorderLayout.CENTER );
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
@@ -134,6 +140,47 @@ public class ScenarioGUI extends JPanel {
 		
 		JLabel lblNewLabel_1 = new JLabel(" Blue");
 		panel.add(lblNewLabel_1);
+		
+		JPanel panel_1 = new JPanel();
+		add(panel_1, BorderLayout.NORTH);
+		
+		JButton btnNewButton = new JButton("Start");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				new Thread( new Runnable() {
+
+					@Override
+					public void run() {
+		
+						Core.getInstance().startGame();
+						
+					}
+				} ).start();
+				
+			}
+		});
+		panel_1.add(btnNewButton);
+		
+		JButton btnNewButton_1 = new JButton("Pause");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Core.getInstance().suspend();
+				
+			}
+		});
+		panel_1.add(btnNewButton_1);
+		
+		JButton btnNewButton_2 = new JButton("Resume");
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Core.getInstance().resume();
+				
+			}
+		});
+		panel_1.add(btnNewButton_2);
 
 	}
 	
