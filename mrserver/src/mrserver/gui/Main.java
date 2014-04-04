@@ -18,7 +18,6 @@ import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
 import java.io.File;
 
-import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
@@ -249,6 +248,23 @@ public class Main {
 		mnScenario.add(separator_2);
 		
 		JMenuItem mntmOptions = new JMenuItem("Options");
+		mntmOptions.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						JFrame frame = ScenarioManagement.getInstance().getScenarioOptionsGUI();
+						if( frame != null ){
+							frame.setVisible(true);
+						}
+					}
+					
+				}).start();
+				
+			}
+		});
 		mntmOptions.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK));
 		mnScenario.add(mntmOptions);
 		frmServercontrol.getContentPane().setLayout(new BorderLayout(0, 0));

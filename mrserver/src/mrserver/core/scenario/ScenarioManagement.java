@@ -1,11 +1,9 @@
 package mrserver.core.scenario;
 
-import java.awt.Component;
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.List;
-
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import org.apache.logging.log4j.Level;
@@ -21,7 +19,6 @@ import mrservermisc.bots.interfaces.Bot;
 import mrservermisc.graphics.interfaces.Graphics;
 import mrservermisc.network.data.position.PositionDataPackage;
 import mrservermisc.scenario.interfaces.Scenario;
-import mrservermisc.vision.interfaces.Vision;
 
 /**
  * Managed das Szenario des Servers
@@ -215,6 +212,15 @@ public class ScenarioManagement {
 		}
 		return null;
 		
+	}
+	
+	public JFrame getScenarioOptionsGUI(){
+		
+		if( mScenario != null ){
+			return mScenario.getScenarioOptionsGUI();
+		}
+			
+		return null;
 	}
 
 }

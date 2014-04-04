@@ -88,6 +88,6 @@ public interface Scenario {
 	
 	public JPanel getScenarioGUI();
 
-	public JFrame getScenarioOptions();
+	public JFrame getScenarioOptionsGUI();
 
 }
