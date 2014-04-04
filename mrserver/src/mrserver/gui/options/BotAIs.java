@@ -24,6 +24,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.RowSpec;
+import java.awt.GridLayout;
 
 @SuppressWarnings("serial")
 public class BotAIs extends JPanel implements AIListener {
@@ -37,31 +42,37 @@ public class BotAIs extends JPanel implements AIListener {
 	 * Create the panel.
 	 */
 	public BotAIs() {
-		setMaximumSize(new Dimension(420, 375));
-		setMinimumSize(new Dimension(420, 275));
-		setPreferredSize(new Dimension(420, 375));
-		setSize(new Dimension(420, 375));
-		setLayout(null);
+		setLayout(new FormLayout(new ColumnSpec[] {
+				FormFactory.UNRELATED_GAP_COLSPEC,
+				ColumnSpec.decode("default:grow"),
+				FormFactory.UNRELATED_GAP_COLSPEC,
+				FormFactory.DEFAULT_COLSPEC,
+				FormFactory.UNRELATED_GAP_COLSPEC,
+				FormFactory.DEFAULT_COLSPEC,
+				FormFactory.RELATED_GAP_COLSPEC,},
+			new RowSpec[] {
+				FormFactory.UNRELATED_GAP_ROWSPEC,
+				RowSpec.decode("14px"),
+				RowSpec.decode("20px"),
+				FormFactory.UNRELATED_GAP_ROWSPEC,
+				RowSpec.decode("147px:grow"),
+				FormFactory.UNRELATED_GAP_ROWSPEC,}));
 		
 		JLabel label = new JLabel("ServerIPAddress");
-		label.setBounds(10, 11, 89, 14);
-		add(label);
+		add(label, "2, 2, left, top");
 		
 		mOwnIP = new JTextField();
 		mOwnIP.setEditable(false);
 		mOwnIP.setColumns(10);
-		mOwnIP.setBounds(10, 25, 200, 20);
-		add(mOwnIP);
+		add(mOwnIP, "2, 3, fill, top");
 		
 		JLabel label_1 = new JLabel("ServerPort");
-		label_1.setBounds(220, 11, 86, 14);
-		add(label_1);
+		add(label_1, "4, 2, fill, top");
 		
 		mOwnPortToBots = new JTextField();
 		mOwnPortToBots.setText("3311");
 		mOwnPortToBots.setColumns(10);
-		mOwnPortToBots.setBounds(220, 25, 86, 20);
-		add(mOwnPortToBots);
+		add(mOwnPortToBots, "4, 3, left, top");
 		
 		JButton button = new JButton("Open");
 		button.addActionListener(new ActionListener() {
@@ -91,17 +102,19 @@ public class BotAIs extends JPanel implements AIListener {
 				
 			}
 		});
-		button.setBounds(317, 11, 91, 34);
-		add(button);
+		add(button, "6, 2, 1, 2, fill, fill");
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setBounds(10, 56, 398, 147);
-		add(scrollPane);
+		add(scrollPane, "2, 5, 5, 1, fill, fill");
+		
+		JPanel panel = new JPanel();
+		scrollPane.setViewportView(panel);
+		panel.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		mServerPortPanel = new JPanel();
+		panel.add(mServerPortPanel);
 		mServerPortPanel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
-		scrollPane.setViewportView(mServerPortPanel);
 		GridBagLayout gbl_mServerPortPanel = new GridBagLayout();
 		gbl_mServerPortPanel.columnWidths = new int[]{0};
 		gbl_mServerPortPanel.rowHeights = new int[]{0};
@@ -109,14 +122,9 @@ public class BotAIs extends JPanel implements AIListener {
 		gbl_mServerPortPanel.rowWeights = new double[]{Double.MIN_VALUE};
 		mServerPortPanel.setLayout(gbl_mServerPortPanel);
 		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane_1.setBounds(10, 214, 398, 147);
-		add(scrollPane_1);
-		
 		mBotAIPanel = new JPanel();
+		panel.add(mBotAIPanel);
 		mBotAIPanel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
-		scrollPane_1.setViewportView(mBotAIPanel);
 		GridBagLayout gbl_mBotAIPanel = new GridBagLayout();
 		gbl_mBotAIPanel.columnWidths = new int[]{0};
 		gbl_mBotAIPanel.rowHeights = new int[]{0};
