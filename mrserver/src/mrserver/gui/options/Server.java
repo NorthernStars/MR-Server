@@ -7,6 +7,7 @@ import javax.swing.JButton;
 
 import mrserver.core.Core;
 
+@SuppressWarnings("serial")
 public class Server extends JPanel {
 	
 	private JTextField mServerName;

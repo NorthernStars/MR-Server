@@ -3,9 +3,7 @@ package mrserver.core.botai.network;
 import java.util.ArrayList;
 import java.util.List;
 
-import mrserver.core.Core;
 import mrserver.core.botai.BotAIManagement;
-import mrserver.core.botai.network.receive.Receiver;
 import mrservermisc.network.BasicUDPHostConnection;
 
 public class BotAIConnections {

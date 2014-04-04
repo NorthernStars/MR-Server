@@ -10,12 +10,12 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import mrserver.core.botai.BotAIManagement;
-import mrserver.core.botai.data.BotAI;
 import mrserver.core.botai.network.receive.Receiver;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+@SuppressWarnings("serial")
 public class ServerPortPanel extends JPanel {
 	
 	private Receiver mReceiver;

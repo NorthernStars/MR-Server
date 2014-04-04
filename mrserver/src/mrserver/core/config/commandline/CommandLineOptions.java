@@ -104,6 +104,7 @@ public class CommandLineOptions extends Options{
      * @return true ob der Server direkt starten oder auf einen Startbefehl warten soll
      */
     
+	@SuppressWarnings("unchecked")
 	public boolean parseCommandLineArguments( String[] aArguments ) {
 
         CommandLineOptions.getLogger().info( "Parsing commandline: " + Arrays.toString( aArguments ) );
@@ -113,7 +114,7 @@ public class CommandLineOptions extends Options{
             parseOptions( aArguments );
             
             // alle übergebenen Optionen implementieren das Interface ParseOption
-            for( @SuppressWarnings("unchecked") ParseOption aOption : (Collection<ParseOption>) getOptions() ){
+            for( ParseOption aOption : (Collection<ParseOption>) getOptions() ){
             	
             	try {
             		

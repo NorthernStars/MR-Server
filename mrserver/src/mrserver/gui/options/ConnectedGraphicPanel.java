@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 
+@SuppressWarnings("serial")
 public class ConnectedGraphicPanel extends JPanel {
 	
 	InetSocketAddress mGraphic;

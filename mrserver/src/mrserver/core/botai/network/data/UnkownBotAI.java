@@ -3,7 +3,6 @@ package mrserver.core.botai.network.data;
 import java.net.DatagramPacket;
 
 import mrserver.core.botai.network.BotAiHost;
-import mrservermisc.network.BasicUDPHostConnection;
 
 public class UnkownBotAI {
 	

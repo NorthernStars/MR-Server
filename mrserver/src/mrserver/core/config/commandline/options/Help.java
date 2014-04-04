@@ -1,6 +1,5 @@
 package mrserver.core.config.commandline.options;
 
-import mrserver.core.Core;
 import mrserver.core.config.commandline.options.parse.ParseOption;
 
 import org.apache.commons.cli.CommandLine;

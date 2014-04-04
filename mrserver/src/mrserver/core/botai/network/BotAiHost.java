@@ -1,7 +1,5 @@
 package mrserver.core.botai.network;
 
-import java.net.DatagramSocket;
-
 import mrservermisc.network.BasicUDPHostConnection;
 
 public class BotAiHost extends BasicUDPHostConnection{

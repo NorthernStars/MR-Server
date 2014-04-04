@@ -5,12 +5,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import mrserver.core.Core;
-import mrserver.core.scenario.ScenarioManagement;
 import mrserver.core.vision.network.VisionConnection;
-import mrservermisc.network.data.position.PositionDataPackage;
 import mrservermisc.network.data.position.VisionMode;
 import mrservermisc.network.data.visionmode.ChangeVisionMode;
-import mrservermisc.vision.interfaces.Vision;
 
 /**
  * Managed die Verbindung und den Datenaustausch zum Visionmodul

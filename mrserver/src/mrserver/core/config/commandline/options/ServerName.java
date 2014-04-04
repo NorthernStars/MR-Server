@@ -1,11 +1,8 @@
 package mrserver.core.config.commandline.options;
 
 import mrserver.core.Core;
-import mrserver.core.config.ServerConfig;
 import mrserver.core.config.commandline.CommandLineOptions;
 import mrserver.core.config.commandline.options.parse.ParseOption;
-import mrserver.core.config.file.ConfigFileReader;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 

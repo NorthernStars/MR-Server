@@ -2,18 +2,10 @@ package mrserver.gui.options;
 
 import javax.swing.JPanel;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import javax.swing.BoxLayout;
-
-import java.awt.Component;
-
-import javax.swing.SwingConstants;
-
-import java.awt.Dimension;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -21,17 +13,14 @@ import javax.swing.JButton;
 
 import mrserver.core.Core;
 import mrserver.core.vision.VisionManagement;
-import mrserver.gui.Main;
-
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.plaf.basic.BasicScrollPaneUI.VSBChangeListener;
-
 import mrservermisc.network.data.position.VisionMode;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+@SuppressWarnings("serial")
 public class Vision extends JPanel {
 	private JTextField mVisionIPAddress;
 	private JTextField mVisionPort;

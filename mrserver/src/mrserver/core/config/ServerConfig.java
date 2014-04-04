@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.apache.logging.log4j.Level;
 
-import mrserver.core.Core;
 import mrserver.core.config.commandline.CommandLineOptions;
 
 /**

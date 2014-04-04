@@ -23,11 +23,11 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import mrserver.core.Core;
-import mrserver.core.botcontrol.BotControlManagement;
 import mrserver.core.graphics.GraphicsManagement;
 import mrserver.core.scenario.ScenarioManagement;
 import mrserver.gui.options.interfaces.GraphicsManagementListener;
 
+@SuppressWarnings("serial")
 public class Graphics extends JPanel implements GraphicsManagementListener{
 	private JTextField mOwnIP;
 	private JTextField mOwnPortForGraphics;

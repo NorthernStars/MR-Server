@@ -4,13 +4,9 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import mrserver.core.Core;
 import mrserver.core.botcontrol.network.BotControlConnection;
-import mrserver.core.vision.VisionIncomingPacketsManagement;
 import mrserver.core.vision.VisionManagement;
-import mrserver.core.vision.network.VisionConnection;
 import mrservermisc.botcontrol.interfaces.BotControl;
-import mrservermisc.network.BasicUDPServerConnection;
 
 /**
  * Managed die Verbindung und den Datenaustausch zum Visionmodul

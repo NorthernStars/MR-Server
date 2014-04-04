@@ -8,7 +8,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import mrserver.core.Core;
 import mrserver.core.graphics.GraphicsManagement;
 import mrserver.core.graphics.network.GraphicsConnection;
-import mrservermisc.network.data.position.PositionDataPackage;
 import mrservermisc.network.handshake.server.ConnectionAcknowlege;
 import mrservermisc.network.handshake.server.ConnectionEstablished;
 import mrservermisc.network.handshake.server.ConnectionRequest;

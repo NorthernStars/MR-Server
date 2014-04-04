@@ -5,8 +5,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import mrserver.core.botai.BotAIManagement;
 import mrserver.core.botai.network.BotAiHost;
-import mrservermisc.network.BasicUDPHostConnection;
-
 import org.apache.logging.log4j.Level;
 
 public class Receiver extends Thread {

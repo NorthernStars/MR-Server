@@ -9,7 +9,6 @@ import mrserver.core.botai.BotAIManagement;
 import mrserver.core.botai.data.BotAI;
 import mrserver.core.botai.network.BotAiHost;
 import mrserver.core.botai.network.data.UnkownBotAI;
-import mrservermisc.network.BasicUDPHostConnection;
 
 public class Worker implements Runnable{
 

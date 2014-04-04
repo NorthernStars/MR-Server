@@ -1,7 +1,5 @@
 package mrserver.core.config.commandline.options;
 
-import java.util.Arrays;
-
 import mrserver.core.Core;
 import mrserver.core.config.commandline.CommandLineOptions;
 import mrserver.core.config.commandline.options.parse.ParseOption;

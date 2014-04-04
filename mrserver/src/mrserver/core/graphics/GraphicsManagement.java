@@ -2,21 +2,14 @@ package mrserver.core.graphics;
 
 
 import java.net.SocketAddress;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
-import mrserver.core.Core;
 import mrserver.core.graphics.data.GraphicModul;
 import mrserver.core.graphics.network.GraphicsConnection;
 import mrserver.core.graphics.network.receive.Creator;
 import mrserver.core.graphics.network.receive.Receiver;
 import mrserver.gui.options.interfaces.GraphicsManagementListener;
 import mrservermisc.graphics.interfaces.Graphics;
-import mrservermisc.network.data.position.PositionDataPackage;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

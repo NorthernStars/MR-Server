@@ -8,7 +8,6 @@ import mrserver.core.botai.network.BotAiHost;
 import mrserver.core.botai.network.data.UnkownBotAI;
 import mrserver.core.scenario.ScenarioManagement;
 import mrservermisc.bots.interfaces.Bot;
-import mrservermisc.network.BasicUDPHostConnection;
 import mrservermisc.network.handshake.client.ClientType;
 import mrservermisc.network.handshake.client.ConnectionRequest;
 import mrservermisc.network.handshake.client.MovementMode;

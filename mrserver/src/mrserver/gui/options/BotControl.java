@@ -15,6 +15,7 @@ import java.awt.EventQueue;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+@SuppressWarnings("serial")
 public class BotControl extends JPanel {
 	private JTextField mBotControlIPAddress;
 	private JTextField mBotControlPort;

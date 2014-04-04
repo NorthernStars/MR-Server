@@ -25,6 +25,7 @@ import java.awt.event.ActionEvent;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+@SuppressWarnings("serial")
 public class BotAIs extends JPanel implements AIListener {
 	private JTextField mOwnIP;
 	private JTextField mOwnPortToBots;

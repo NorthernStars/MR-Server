@@ -11,12 +11,10 @@ import javax.swing.JLabel;
 
 import mrserver.core.botai.BotAIManagement;
 import mrserver.core.botai.data.BotAI;
-import mrserver.core.graphics.GraphicsManagement;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.net.SocketAddress;
 
+@SuppressWarnings("serial")
 public class BotAIPanel extends JPanel {
 	private BotAI mBotAI;
 
