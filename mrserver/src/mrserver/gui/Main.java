@@ -11,6 +11,7 @@ import javax.swing.JSeparator;
 
 import mrserver.core.Core;
 import mrserver.core.scenario.ScenarioManagement;
+import mrserver.gui.menus.LoadScenario;
 import mrserver.gui.options.Options;
 
 import java.awt.event.ActionListener;
@@ -20,6 +21,7 @@ import java.io.File;
 
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.KeyStroke;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
 
@@ -183,35 +185,7 @@ public class Main {
 		mntmLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-			    JFileChooser chooser = new JFileChooser();
-			    chooser.setCurrentDirectory( new File( System.getProperty("user.dir" ) ));
-			    chooser.setSelectedFile( new File( Core.getInstance().getServerConfig().getScenarioLibrary() ) );
-			    FileNameExtensionFilter filter = new FileNameExtensionFilter( "Scenario JARs", "jar");
-			    chooser.setFileFilter( filter );
-			    if( chooser.showOpenDialog( frmServercontrol ) == JFileChooser.APPROVE_OPTION ) {
-			    	
-			    	System.out.println(chooser.getSelectedFile().toString());
-			    	Core.getInstance().getServerConfig().setScenarioLibrary( chooser.getSelectedFile().toString() );
-			    	
-			    	new Thread( new Runnable() {
-
-						@Override
-						public void run() {
-			
-							ScenarioManagement.getInstance().loadScenario();
-							EventQueue.invokeLater(new Runnable() {
-								public void run() {
-									
-									frmServercontrol.getContentPane().add( ScenarioManagement.getInstance().getScenarioGUI(), BorderLayout.CENTER );
-									frmServercontrol.getContentPane().validate();
-									
-								}
-							});
-							
-						}
-					} ).start();
-			       
-			    }
+			    new LoadScenario( frmServercontrol ).setVisible( true );
 				
 			}
 		});
