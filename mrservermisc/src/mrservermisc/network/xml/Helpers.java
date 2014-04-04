@@ -7,7 +7,6 @@ import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -22,7 +21,9 @@ import org.apache.logging.log4j.Level;
 
 public class Helpers {
 
+	@SuppressWarnings("rawtypes")
 	private static ConcurrentHashMap<Class, Marshaller> MARSHALLER = new ConcurrentHashMap<Class, Marshaller>();
+	@SuppressWarnings("rawtypes")
 	private static ConcurrentHashMap<Class, Unmarshaller> UNMARSHALLER = new ConcurrentHashMap<Class, Unmarshaller>();
 	
 	public static <T> T unmarshallXMLString( String aXMLConnectionAcknowlege, Class<T> aClass ){

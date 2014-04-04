@@ -3,9 +3,7 @@ package mrservermisc.network.data.position;
 import java.util.Arrays;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
-import javax.xml.bind.annotation.XmlTransient;
 
 @XmlSeeAlso({PositionObjectBot.class, PositionObjectRectangle.class})
 public abstract class PositionObject {

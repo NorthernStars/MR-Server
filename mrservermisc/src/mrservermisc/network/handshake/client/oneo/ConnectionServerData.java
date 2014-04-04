@@ -4,7 +4,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import mrservermisc.network.handshake.client.ClientType;
-import mrservermisc.network.handshake.client.ConnectionRequest;
 import mrservermisc.network.handshake.client.MovementMode;
 import mrservermisc.network.handshake.client.ProtocolVersion;
 import mrservermisc.network.xml.Helpers;

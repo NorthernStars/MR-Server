@@ -1,7 +1,5 @@
 package mrservermisc.scenario.interfaces;
 
-import java.util.List;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -9,7 +7,6 @@ import mrservermisc.botcontrol.interfaces.BotControl;
 import mrservermisc.bots.interfaces.Bot;
 import mrservermisc.graphics.interfaces.Graphics;
 import mrservermisc.network.data.position.PositionDataPackage;
-import mrservermisc.vision.interfaces.Vision;
 
 
 /**
