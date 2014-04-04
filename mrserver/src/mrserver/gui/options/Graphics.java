@@ -26,6 +26,7 @@ import mrserver.core.Core;
 import mrserver.core.graphics.GraphicsManagement;
 import mrserver.core.scenario.ScenarioManagement;
 import mrserver.gui.options.interfaces.GraphicsManagementListener;
+import java.awt.BorderLayout;
 
 @SuppressWarnings("serial")
 public class Graphics extends JPanel implements GraphicsManagementListener{
@@ -44,56 +45,11 @@ public class Graphics extends JPanel implements GraphicsManagementListener{
 		setMinimumSize(new Dimension(420, 210));
 		setSize(new Dimension(420, 210));
 		setPreferredSize(new Dimension(420, 210));
-		setLayout(null);
-		
-		JLabel lblServeripaddress = new JLabel("ServerIPAddress");
-		lblServeripaddress.setBounds(10, 11, 89, 14);
-		add(lblServeripaddress);
-		
-		mOwnIP = new JTextField();
-		mOwnIP.setEditable(false);
-		mOwnIP.setColumns(10);
-		mOwnIP.setBounds(10, 25, 200, 20);
-		add(mOwnIP);
-		
-		JLabel lblServerport = new JLabel("ServerPort");
-		lblServerport.setBounds(220, 11, 86, 14);
-		add(lblServerport);
-		
-		mOwnPortForGraphics = new JTextField();
-		mOwnPortForGraphics.setColumns(10);
-		mOwnPortForGraphics.setBounds(220, 25, 86, 20);
-		add(mOwnPortForGraphics);
-		
-		mBtnOpen = new JButton("Open");
-		mBtnOpen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				save();
-				new Thread( new Runnable() {
-
-					@Override
-					public void run() {
-		
-						GraphicsManagement.getInstance().startGraphicsManagement();
-			            ScenarioManagement.getInstance().registerGraphics( GraphicsManagement.getInstance() );
-						EventQueue.invokeLater(new Runnable() {
-							public void run() {
-								reload();
-							}
-						});
-					}
-				} ).start();
-
-			}
-		});
-		mBtnOpen.setBounds(317, 11, 91, 34);
-		add(mBtnOpen);
+		setLayout(new BorderLayout(0, 0));
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setBounds(10, 56, 398, 147);
-		add(scrollPane);
+		add(scrollPane, BorderLayout.CENTER);
 		
 		mConnetedGraphicsPanel = new JPanel();
 		scrollPane.setViewportView(mConnetedGraphicsPanel);
@@ -105,34 +61,84 @@ public class Graphics extends JPanel implements GraphicsManagementListener{
 		gbl_panel.rowWeights = new double[]{Double.MIN_VALUE};
 		mConnetedGraphicsPanel.setLayout(gbl_panel);
 		
-		mBtnClose = new JButton("Close");
-		mBtnClose.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				new Thread( new Runnable() {
-
-					@Override
-					public void run() {
-		
-						GraphicsManagement.getInstance().close();
-						EventQueue.invokeLater(new Runnable() {
-							public void run() {
-								reload();
-							}
-						});
-					}
-				} ).start();
-
-			}
-		});
-		mBtnClose.setEnabled(false);
-		mBtnClose.setBounds(317, 12, 91, 33);
-		add(mBtnClose);
-		
         mPanelFiller.setMinimumSize( new Dimension(0,0) );
         mPanelFiller.setPreferredSize( new Dimension(0,0) );
         
         GraphicsManagement.getInstance().registerListener(this);
+        
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(10, 60));
+        panel.setMinimumSize(new Dimension(10, 50));
+        add(panel, BorderLayout.NORTH);
+        panel.setLayout(null);
+        
+        JLabel lblServeripaddress = new JLabel("ServerIPAddress");
+        lblServeripaddress.setBounds(10, 9, 89, 14);
+        panel.add(lblServeripaddress);
+        
+        mOwnIP = new JTextField();
+        mOwnIP.setBounds(10, 24, 200, 20);
+        panel.add(mOwnIP);
+        mOwnIP.setEditable(false);
+        mOwnIP.setColumns(10);
+        
+        JLabel lblServerport = new JLabel("ServerPort");
+        lblServerport.setBounds(220, 9, 86, 14);
+        panel.add(lblServerport);
+        
+        mOwnPortForGraphics = new JTextField();
+        mOwnPortForGraphics.setBounds(220, 24, 86, 20);
+        panel.add(mOwnPortForGraphics);
+        mOwnPortForGraphics.setColumns(10);
+        
+        mBtnOpen = new JButton("Open");
+        mBtnOpen.setBounds(319, 18, 91, 34);
+        panel.add(mBtnOpen);
+        
+        mBtnClose = new JButton("Close");
+        mBtnClose.setBounds(319, 18, 91, 33);
+        panel.add(mBtnClose);
+        mBtnClose.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+
+        		new Thread( new Runnable() {
+
+        			@Override
+        			public void run() {
+        
+        				GraphicsManagement.getInstance().close();
+        				EventQueue.invokeLater(new Runnable() {
+        					public void run() {
+        						reload();
+        					}
+        				});
+        			}
+        		} ).start();
+
+        	}
+        });
+        mBtnClose.setEnabled(false);
+        mBtnOpen.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+
+        		save();
+        		new Thread( new Runnable() {
+
+        			@Override
+        			public void run() {
+        
+        				GraphicsManagement.getInstance().startGraphicsManagement();
+        	            ScenarioManagement.getInstance().registerGraphics( GraphicsManagement.getInstance() );
+        				EventQueue.invokeLater(new Runnable() {
+        					public void run() {
+        						reload();
+        					}
+        				});
+        			}
+        		} ).start();
+
+        	}
+        });
 
 	}
 	
@@ -182,5 +188,4 @@ public class Graphics extends JPanel implements GraphicsManagementListener{
 		});
 		
 	}
-    
 }

@@ -24,11 +24,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.factories.FormFactory;
-import com.jgoodies.forms.layout.RowSpec;
-import java.awt.GridLayout;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import javax.swing.BoxLayout;
 
 @SuppressWarnings("serial")
 public class BotAIs extends JPanel implements AIListener {
@@ -42,89 +40,19 @@ public class BotAIs extends JPanel implements AIListener {
 	 * Create the panel.
 	 */
 	public BotAIs() {
-		setLayout(new FormLayout(new ColumnSpec[] {
-				FormFactory.UNRELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),
-				FormFactory.UNRELATED_GAP_COLSPEC,
-				FormFactory.DEFAULT_COLSPEC,
-				FormFactory.UNRELATED_GAP_COLSPEC,
-				FormFactory.DEFAULT_COLSPEC,
-				FormFactory.RELATED_GAP_COLSPEC,},
-			new RowSpec[] {
-				FormFactory.UNRELATED_GAP_ROWSPEC,
-				RowSpec.decode("14px"),
-				RowSpec.decode("20px"),
-				FormFactory.UNRELATED_GAP_ROWSPEC,
-				RowSpec.decode("147px:grow"),
-				FormFactory.UNRELATED_GAP_ROWSPEC,}));
+		setMaximumSize(new Dimension(420, 375));
+		setMinimumSize(new Dimension(420, 275));
+		setPreferredSize(new Dimension(420, 375));
+		setSize(new Dimension(420, 375));
+		setLayout(new BorderLayout(0, 0));
 		
-		JLabel label = new JLabel("ServerIPAddress");
-		add(label, "2, 2, left, top");
-		
-		mOwnIP = new JTextField();
-		mOwnIP.setEditable(false);
-		mOwnIP.setColumns(10);
-		add(mOwnIP, "2, 3, fill, top");
-		
-		JLabel label_1 = new JLabel("ServerPort");
-		add(label_1, "4, 2, fill, top");
-		
-		mOwnPortToBots = new JTextField();
-		mOwnPortToBots.setText("3311");
-		mOwnPortToBots.setColumns(10);
-		add(mOwnPortToBots, "4, 3, left, top");
-		
-		JButton button = new JButton("Open");
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-								
-				save();
-				new Thread( new Runnable() {
-
-					@Override
-					public void run() {
-		
-						final Receiver vReceiver = BotAIManagement.getInstance().addBotAIPort( Integer.parseInt( mOwnPortToBots.getText() ) );
-						if( vReceiver != null ){
-							
-							EventQueue.invokeLater(new Runnable() {
-								public void run() {
-									
-									addServerPortPanel( new ServerPortPanel( vReceiver ) );
-									reload();
-									
-								}
-							});
-							
-						}
-					}
-				} ).start();
-				
-			}
-		});
-		add(button, "6, 2, 1, 2, fill, fill");
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		add(scrollPane, "2, 5, 5, 1, fill, fill");
-		
-		JPanel panel = new JPanel();
-		scrollPane.setViewportView(panel);
-		panel.setLayout(new GridLayout(0, 1, 0, 0));
-		
-		mServerPortPanel = new JPanel();
-		panel.add(mServerPortPanel);
-		mServerPortPanel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
-		GridBagLayout gbl_mServerPortPanel = new GridBagLayout();
-		gbl_mServerPortPanel.columnWidths = new int[]{0};
-		gbl_mServerPortPanel.rowHeights = new int[]{0};
-		gbl_mServerPortPanel.columnWeights = new double[]{Double.MIN_VALUE};
-		gbl_mServerPortPanel.rowWeights = new double[]{Double.MIN_VALUE};
-		mServerPortPanel.setLayout(gbl_mServerPortPanel);
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		add(scrollPane_1);
 		
 		mBotAIPanel = new JPanel();
-		panel.add(mBotAIPanel);
 		mBotAIPanel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		scrollPane_1.setViewportView(mBotAIPanel);
 		GridBagLayout gbl_mBotAIPanel = new GridBagLayout();
 		gbl_mBotAIPanel.columnWidths = new int[]{0};
 		gbl_mBotAIPanel.rowHeights = new int[]{0};
@@ -136,24 +64,80 @@ public class BotAIs extends JPanel implements AIListener {
         mPanelFiller.setPreferredSize( new Dimension(0,0) );
         
         BotAIManagement.getInstance().registerBotAIListener( this );
+        
+        JPanel panel = new JPanel();
+        add(panel, BorderLayout.NORTH);
+        panel.setLayout(new BorderLayout(0, 0));
+        
+        JPanel panel_1 = new JPanel();
+        panel_1.setPreferredSize(new Dimension(10, 60));
+        panel.add(panel_1, BorderLayout.NORTH);
+        panel_1.setLayout(null);
+        
+        JLabel label = new JLabel("ServerIPAddress");
+        label.setBounds(17, 9, 81, 14);
+        panel_1.add(label);
+        
+        mOwnIP = new JTextField();
+        mOwnIP.setBounds(17, 29, 140, 20);
+        panel_1.add(mOwnIP);
+        mOwnIP.setEditable(false);
+        mOwnIP.setColumns(10);
+        
+        JLabel label_1 = new JLabel("ServerPort");
+        label_1.setBounds(167, 9, 52, 14);
+        panel_1.add(label_1);
+        
+        mOwnPortToBots = new JTextField();
+        mOwnPortToBots.setBounds(167, 29, 86, 20);
+        panel_1.add(mOwnPortToBots);
+        mOwnPortToBots.setText("3311");
+        mOwnPortToBots.setColumns(10);
+        
+        JButton button = new JButton("Open");
+        button.setBounds(263, 11, 81, 38);
+        panel_1.add(button);
+        
+        mServerPortPanel = new JPanel();
+        panel.add(mServerPortPanel, BorderLayout.CENTER);
+        mServerPortPanel.setPreferredSize(new Dimension(10, 50));
+        mServerPortPanel.setMinimumSize(new Dimension(10, 50));
+        mServerPortPanel.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+        mServerPortPanel.setLayout(new BoxLayout(mServerPortPanel, BoxLayout.Y_AXIS));
+        button.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        						
+        		save();
+        		new Thread( new Runnable() {
+
+        			@Override
+        			public void run() {
+        
+        				final Receiver vReceiver = BotAIManagement.getInstance().addBotAIPort( Integer.parseInt( mOwnPortToBots.getText() ) );
+        				if( vReceiver != null ){
+        					
+        					EventQueue.invokeLater(new Runnable() {
+        						public void run() {
+        							
+        							addServerPortPanel( new ServerPortPanel( vReceiver ) );
+        							reload();
+        							
+        						}
+        					});
+        					
+        				}
+        			}
+        		} ).start();
+        		
+        	}
+        });
 
 	}
 
     public void addServerPortPanel( ServerPortPanel aServerPort ) {
 
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.gridy = GridBagConstraints.RELATIVE;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.anchor = GridBagConstraints.FIRST_LINE_START;
-        c.weighty = 0.0;
         
-        mServerPortPanel.remove( mPanelFiller );
-        mServerPortPanel.add( aServerPort, c );
-        
-        c.weighty = 1.0;
-        mServerPortPanel.add( mPanelFiller, c );
-        
+        mServerPortPanel.add( aServerPort );
         validate();
         
     }
@@ -180,6 +164,14 @@ public class BotAIs extends JPanel implements AIListener {
     void save(){
 				
 	}
+    
+    @Override
+    public void validate() {
+    	
+    	mServerPortPanel.setPreferredSize( new Dimension( 10, mServerPortPanel.getComponentCount() * 30 ));
+    	super.validate();
+    	
+    };
 	
 	void reload(){
 		
