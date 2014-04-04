@@ -1,8 +1,5 @@
 package mrscenariofootball.core.data.worlddata.server;
 
-import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
-
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
@@ -33,7 +30,13 @@ public enum ReferencePointName {
     @XmlEnumValue("top_right_corner") BlueFieldCornerTop( 15, 0.96, 0.92 ),
     @XmlEnumValue("top_right_goal") BluePenaltyAreaFrontTop( 16, 0.8082, 0.731 ),
     @XmlEnumValue("top_right_pole") BlueGoalCornerTop( 17, 0.96, 0.5882 ),
-    @XmlEnumValue("top_right_small_area") BlueGoalAreaFrontTop( 18, 0.9094, 0.5882 );
+    @XmlEnumValue("top_right_small_area") BlueGoalAreaFrontTop( 18, 0.9094, 0.5882 ),
+    
+    // Additional positions for penalty area
+    @XmlEnumValue("top_right_back_goal") BluePenaltyAreaBackTop( 19, 0.96, 0.731 ),
+    @XmlEnumValue("bottom_right_back_goal") BluePenaltyAreaBackBottom( 20, 0.96, 0.269 ),
+    @XmlEnumValue("top_left_back_goal") YellowPenaltyAreaBackTop( 21, 0.04, 0.731 ),
+    @XmlEnumValue("bottom_left_back_goal") YellowPenaltyAreaBackBottom( 22, 0.04, 0.269 );
     
     private final int mId;
 	private ServerPoint mRelativePosition;
