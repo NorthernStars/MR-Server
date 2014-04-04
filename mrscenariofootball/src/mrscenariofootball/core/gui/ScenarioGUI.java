@@ -40,6 +40,7 @@ public class ScenarioGUI extends JPanel {
 	 * Create the panel.
 	 */
 	public ScenarioGUI() {
+		super();
 		setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel = new JPanel();

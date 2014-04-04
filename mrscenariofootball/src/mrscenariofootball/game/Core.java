@@ -146,7 +146,7 @@ public class Core {
 		}
 	}
 	
-	private void setKickoff( Team aTeam ){
+	public void setKickoff( Team aTeam ){
 	
 		mKicks.clear();
 		

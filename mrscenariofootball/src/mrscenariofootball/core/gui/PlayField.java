@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
 import mrscenariofootball.core.data.ScenarioInformation;
+import mrscenariofootball.core.data.ScenarioSettings;
 import mrscenariofootball.core.data.worlddata.server.Player;
 import mrscenariofootball.core.data.worlddata.server.ReferencePoint;
 import mrscenariofootball.core.data.worlddata.server.ReferencePointName;
@@ -37,7 +38,6 @@ import javax.swing.SwingConstants;
 @SuppressWarnings("serial")
 public class PlayField extends JPanel {
 
-	@SuppressWarnings("unused")
 	private BufferedImage mBackgroundImage;
 	private BufferedImage mBallImage, mBlueBotImage, mYellowBotImage, mNoneBotImage;
     private JPopupMenu mPlayfieldPopupMenu;
@@ -91,6 +91,7 @@ public class PlayField extends JPanel {
 	    	removeAll();
 	    	
 	        WorldData vWorld = ScenarioInformation.getInstance().getWorldData().copy();
+	        ScenarioSettings settings = ScenarioSettings.getInstance();
 			int width, height;
 			JLabel lblNewLabel;
 			
@@ -99,8 +100,17 @@ public class PlayField extends JPanel {
 			
 			// draw background image
 			//g2d.drawImage( mBackgroundImage, 0, 0, width, -height, this);
-			int bgImageWidth = mBackgroundImage.getWidth(this);
-            int bgImageHeight = mBackgroundImage.getHeight(this);
+			if( settings.showFieldBackground() ){
+				int bgImageWidth = mBackgroundImage.getWidth(this);
+	            int bgImageHeight = mBackgroundImage.getHeight(this);
+	           
+	            
+	            for( int x=0; x<width; x+=bgImageWidth ){
+	            	for( int y=0; y<height; y+=bgImageHeight ){
+	            		g2d.drawImage( mBackgroundImage, x, -y-bgImageHeight, this);
+	            	}
+	            }
+			}
             
 			
 			// Create map of reference points

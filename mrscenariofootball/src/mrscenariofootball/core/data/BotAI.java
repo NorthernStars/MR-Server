@@ -1,6 +1,5 @@
 package mrscenariofootball.core.data;
 
-import mrscenariofootball.core.ScenarioCore;
 import mrscenariofootball.core.data.worlddata.client.ClientWorldData;
 import mrscenariofootball.core.data.worlddata.server.WorldData;
 import mrservermisc.bots.interfaces.Bot;

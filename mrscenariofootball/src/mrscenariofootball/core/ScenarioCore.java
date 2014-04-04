@@ -1,27 +1,15 @@
 package mrscenariofootball.core;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import net.jcip.annotations.GuardedBy;
-
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import mrscenariofootball.core.data.BotAI;
 import mrscenariofootball.core.data.ScenarioInformation;
-import mrscenariofootball.core.data.action.Command;
-import mrscenariofootball.core.data.worlddata.server.BallPosition;
-import mrscenariofootball.core.data.worlddata.server.Player;
-import mrscenariofootball.core.data.worlddata.server.ReferencePointName;
-import mrscenariofootball.core.data.worlddata.server.ServerPoint;
-import mrscenariofootball.core.data.worlddata.server.WorldData;
-import mrscenariofootball.core.gui.PlayField;
 import mrscenariofootball.core.gui.ScenarioGUI;
+import mrscenariofootball.core.gui.ScenarioOptionsGUI;
 import mrscenariofootball.core.managements.FromVision;
 import mrscenariofootball.core.managements.ToBotAIs;
 import mrscenariofootball.core.managements.ToGraphics;
@@ -72,6 +60,7 @@ public class ScenarioCore implements Scenario {
     }
 
 	private ScenarioGUI mGUI = new ScenarioGUI();
+	private ScenarioOptionsGUI mOptionsGUI = new ScenarioOptionsGUI();
 	
 	@Override
 	public void close() {
@@ -136,21 +125,17 @@ public class ScenarioCore implements Scenario {
 	}
 
 	@Override
-	public JPanel getScenarioGUI() {
-		
-		return mGUI;
-		
+	public JPanel getScenarioGUI() {		
+		return mGUI;		
 	}
 
 	public ScenarioGUI getGUI() {
-
-		return mGUI;
-		
+		return mGUI;		
 	}
 	
-
-	public JFrame getScenarioOptions() {
-		return null;
+	@Override
+	public JFrame getScenarioOptionsGUI() {
+		return mOptionsGUI;
 	}
 
 }

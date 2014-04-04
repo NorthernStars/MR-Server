@@ -13,6 +13,7 @@ import mrscenariofootball.core.data.worlddata.server.BallPosition;
 import mrscenariofootball.core.data.worlddata.server.ReferencePointName;
 import mrscenariofootball.core.data.worlddata.server.ServerPoint;
 
+@SuppressWarnings("serial")
 public class PlayfieldPopup extends JPopupMenu {
 	
 	double mXPosition, mYPosition, mXMax, mYMax;

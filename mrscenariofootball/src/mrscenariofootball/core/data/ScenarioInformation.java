@@ -35,6 +35,7 @@ public class ScenarioInformation {
 	
 	@GuardedBy("this") private WorldData mWorldData;
 	
+	private String mScenarioName = "Soccer";
 	private double mXFactor = 1, 
 			mYFactor = 0.75, 
 			mMaxValue = 1000;
@@ -154,6 +155,13 @@ public class ScenarioInformation {
 		}
 		
 		
+	}
+
+	/**
+	 * @return the mScenarioName
+	 */
+	public String getmScenarioName() {
+		return mScenarioName;
 	}
 	
 }
