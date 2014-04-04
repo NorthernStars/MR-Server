@@ -28,6 +28,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+@SuppressWarnings("serial")
 public class ScenarioGUI extends JPanel {
 
 	private PlayField mPlayfield;
@@ -145,6 +146,7 @@ public class ScenarioGUI extends JPanel {
 		add(panel_1, BorderLayout.NORTH);
 		
 		JButton btnNewButton = new JButton("Start");
+		btnNewButton.setMnemonic('S');
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -163,6 +165,7 @@ public class ScenarioGUI extends JPanel {
 		panel_1.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("Pause");
+		btnNewButton_1.setMnemonic('P');
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -173,6 +176,7 @@ public class ScenarioGUI extends JPanel {
 		panel_1.add(btnNewButton_1);
 		
 		JButton btnNewButton_2 = new JButton("Resume");
+		btnNewButton_2.setMnemonic('R');
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
