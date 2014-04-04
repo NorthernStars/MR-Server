@@ -75,7 +75,7 @@ public class ScenarioManagement {
 	 * @return true wenn das Laden erfolgreich war, false wenn nicht
 	 */
 	public boolean loadScenario() {
-           
+
         try {
 
         	ScenarioManagement.getLogger().info( "Loading scenario " + Core.getInstance().getServerConfig().getScenarioClass() + " from " + Core.getInstance().getServerConfig().getScenarioLibrary() );

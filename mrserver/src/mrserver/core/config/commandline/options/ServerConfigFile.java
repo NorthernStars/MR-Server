@@ -1,7 +1,5 @@
 package mrserver.core.config.commandline.options;
 
-import mrserver.core.Core;
-import mrserver.core.config.ServerConfig;
 import mrserver.core.config.commandline.CommandLineOptions;
 import mrserver.core.config.commandline.options.parse.ParseOption;
 import mrserver.core.config.file.ConfigFileReader;
@@ -19,6 +17,7 @@ import org.apache.commons.cli.Option;
 @SuppressWarnings("serial")
 public class ServerConfigFile extends Option implements ParseOption {
 
+	private final static String defaultServerConfigFile = "defaultserver.config";
 	private final static String mOption = "cf";
 	private final static String mLongOption = "configfile";
 	private final static String mDiscription = "The name and path of the serverconfigfile\n";
@@ -45,8 +44,15 @@ public class ServerConfigFile extends Option implements ParseOption {
             return true;
             
         }
-		Core.getInstance().setServerConfig( new ServerConfig() );
-		return false;
+		else{
+			
+			CommandLineOptions.getLogger().debug( "Try reading default " + mLongOption + " " + defaultServerConfigFile  );
+			ConfigFileReader.readConfigFile( defaultServerConfigFile );
+            return false;
+			
+		}
+//		Core.getInstance().setServerConfig( new ServerConfig() );
+//		return false;
 	}
 
 }
