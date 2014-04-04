@@ -20,6 +20,9 @@ import java.io.File;
 
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.KeyStroke;
+import java.awt.event.KeyEvent;
+import java.awt.event.InputEvent;
 
 public class Main {
 
@@ -62,9 +65,11 @@ public class Main {
 		frmServercontrol.setJMenuBar(menuBar);
 		
 		JMenu mnServer = new JMenu("Server");
+		mnServer.setMnemonic('S');
 		menuBar.add(mnServer);
 		
 		JMenuItem mntmVision = new JMenuItem("Vision");
+		mntmVision.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK));
 		mntmVision.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -82,6 +87,7 @@ public class Main {
 		mnServer.add(mntmVision);
 		
 		JMenuItem mntmBotcontrol = new JMenuItem("BotControl");
+		mntmBotcontrol.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK));
 		mntmBotcontrol.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -102,6 +108,7 @@ public class Main {
 		mnServer.add(separator);
 		
 		JMenuItem mntmGraphics = new JMenuItem("Graphics");
+		mntmGraphics.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_G, InputEvent.CTRL_MASK));
 		mntmGraphics.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -119,6 +126,7 @@ public class Main {
 		mnServer.add(mntmGraphics);
 		
 		JMenuItem mntmBotais = new JMenuItem("BotAIs");
+		mntmBotais.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, InputEvent.CTRL_MASK));
 		mntmBotais.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -139,6 +147,7 @@ public class Main {
 		mnServer.add(separator_1);
 		
 		JMenuItem mntmOptions_1 = new JMenuItem("Options");
+		mntmOptions_1.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK));
 		mntmOptions_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -157,6 +166,7 @@ public class Main {
 		mnServer.add(separator_3);
 		
 		JMenuItem mntmQuit = new JMenuItem("Quit");
+		mntmQuit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
 		mntmQuit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frmServercontrol.dispose();
@@ -166,9 +176,11 @@ public class Main {
 		mnServer.add(mntmQuit);
 		
 		JMenu mnScenario = new JMenu("Scenario");
+		mnScenario.setMnemonic('c');
 		menuBar.add(mnScenario);
 		
 		JMenuItem mntmLoad = new JMenuItem("Load");
+		mntmLoad.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.CTRL_MASK));
 		mntmLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -207,6 +219,7 @@ public class Main {
 		mnScenario.add( mntmLoad );
 		
 		JMenuItem mntmUnload = new JMenuItem("Unload");
+		mntmUnload.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.CTRL_MASK));
 		mntmUnload.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -236,6 +249,7 @@ public class Main {
 		mnScenario.add(separator_2);
 		
 		JMenuItem mntmOptions = new JMenuItem("Options");
+		mntmOptions.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK));
 		mnScenario.add(mntmOptions);
 		frmServercontrol.getContentPane().setLayout(new BorderLayout(0, 0));
 		
