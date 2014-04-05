@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 
 import mrscenariofootball.core.ScenarioCore;
 import mrscenariofootball.core.data.ScenarioInformation;
+import mrscenariofootball.core.gui.menus.SetPlayMode;
 import mrscenariofootball.game.Core;
 
 import java.awt.event.MouseAdapter;
@@ -161,7 +162,7 @@ public class ScenarioGUI extends JPanel {
 		panel_1.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel_2 = new JPanel();
-		panel_2.setPreferredSize(new Dimension(190, 25));
+		panel_2.setPreferredSize(new Dimension(350, 25));
 		panel_1.add(panel_2, BorderLayout.WEST);
 		panel_2.setLayout(null);
 		
@@ -186,6 +187,17 @@ public class ScenarioGUI extends JPanel {
 		mBtnReset.setEnabled(false);
 		mBtnReset.setBounds(1, 1, 90, 23);
 		panel_2.add(mBtnReset);
+		
+		JButton vBtnSetPlayMode = new JButton("Set PlayMode");
+		vBtnSetPlayMode.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				new SetPlayMode().setVisible(true);
+				
+			}
+		});
+		vBtnSetPlayMode.setBounds(190, 1, 150, 23);
+		panel_2.add(vBtnSetPlayMode);
 		mBtnResume.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
