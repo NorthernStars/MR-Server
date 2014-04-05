@@ -79,4 +79,8 @@ public class BotAI {
 				+ mWorldDataToSend + "]";
 	}
 
+	public Bot getRemoteAI() {
+		return mRemoteAI;
+	}
+
 }

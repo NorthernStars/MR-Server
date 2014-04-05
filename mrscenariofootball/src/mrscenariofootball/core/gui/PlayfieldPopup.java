@@ -13,6 +13,7 @@ import mrscenariofootball.core.data.ScenarioInformation;
 import mrscenariofootball.core.data.worlddata.server.BallPosition;
 import mrscenariofootball.core.data.worlddata.server.ReferencePointName;
 import mrscenariofootball.core.data.worlddata.server.ServerPoint;
+import mrscenariofootball.core.gui.menus.BotSelector;
 import mrscenariofootball.core.gui.menus.PositionSelector;
 
 import javax.swing.JSeparator;
@@ -45,8 +46,7 @@ public class PlayfieldPopup extends JPopupMenu {
         mntmNewMenuItem_1.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		
-        		PositionSelector vSelector = new PositionSelector( mInvoker );
-        		vSelector.setVisible( true );
+        		new PositionSelector( mInvoker ).setVisible( true );
         		
         	}
         });
@@ -56,6 +56,11 @@ public class PlayfieldPopup extends JPopupMenu {
         add(separator);
         
         JMenuItem mntmNewMenuItem = new JMenuItem("Set Bot");
+        mntmNewMenuItem.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		new BotSelector( mInvoker, (mXPosition / mXMax) * ScenarioInformation.getInstance().getXFactor(), (1 - (mYPosition / mYMax)) * ScenarioInformation.getInstance().getYFactor() ).setVisible( true );
+        	}
+        });
         add(mntmNewMenuItem);
 		
 	}
