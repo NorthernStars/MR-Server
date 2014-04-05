@@ -80,7 +80,7 @@ public class Core {
 		PlayMode vCurrentPlaymode;
 		
 		long vTickTime;
-		double vOneTick = 0.05, vTimeCounter = 0; // one cycle in seconds
+		double vTimeCounter = 0;
 		
 		while( true ){
 			
@@ -109,7 +109,7 @@ public class Core {
 			
 			if( !mSuspended.get() && vCurrentPlaymode.isTimeRunning() ){
 
-				ScenarioInformation.getInstance().addTimePlayed( vOneTick );
+				ScenarioInformation.getInstance().addTickPlayed();
 				
 			} else if( !mSuspended.get() && mAutomaticGame.get() ) {
 				
@@ -117,7 +117,7 @@ public class Core {
 						vCurrentPlaymode == PlayMode.KickOffBlue ||
 						vCurrentPlaymode == PlayMode.KickOffYellow ){
 					
-					vTimeCounter += vOneTick;
+					vTimeCounter += ScenarioInformation.getInstance().getGameTickTime();
 					
 					if( vTimeCounter >= 10 ){
 						
@@ -139,11 +139,11 @@ public class Core {
 				ToBotAIs.putWorldDatainSendingQueue( vWorldData.copy() );
 				ToGraphics.putWorldDatainSendingQueue( vWorldData.copy() );
 				
-				ScenarioCore.getInstance().getGUI().update();
+				ScenarioCore.getInstance().getGUI().update(); // do better...
 				
 			}
 			
-			while( System.nanoTime() - vTickTime <= vOneTick * 1000000000 ){
+			while( System.nanoTime() - vTickTime <= ScenarioInformation.getInstance().getGameTickTime() * 1000000000 ){
 			
 				try {
 					Thread.sleep( 5 );
@@ -441,6 +441,12 @@ public class Core {
 	public boolean isSimulation() {
 
 		return mSimulation.get();
+		
+	}
+	
+	public void setSimulation( boolean aSimulation ){
+		
+		mSimulation.set( aSimulation );
 		
 	}
 	

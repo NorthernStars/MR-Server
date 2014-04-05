@@ -38,7 +38,9 @@ public class ScenarioInformation {
 	private String mScenarioName = "Mixed-Reality Football";
 	private double mXFactor = 1, 
 			mYFactor = 0.75, 
-			mMaxValue = 1000;
+			mMaxValue = 1000,
+			mGameTickTime = 0.05;
+	
 	
 	private Graphics mGraphics;
 	private BotControl mBotControl;
@@ -95,6 +97,12 @@ public class ScenarioInformation {
 	public synchronized void addTimePlayed( double aTimeToAdd ) {
 		
 		mWorldData.setPlayTime( mWorldData.getPlayTime() + aTimeToAdd );
+		
+	}
+
+	public synchronized void addTickPlayed() {
+		
+		mWorldData.setPlayTime( mWorldData.getPlayTime() + mGameTickTime );
 		
 	}
 
@@ -162,6 +170,26 @@ public class ScenarioInformation {
 	 */
 	public String getmScenarioName() {
 		return mScenarioName;
+	}
+
+	public double getGameTickTime() {
+		return mGameTickTime;
+	}
+
+	public synchronized void setGameTickTime( double aGameTickTime ) {
+		mGameTickTime = aGameTickTime;
+	}
+
+	public void setYFactor( double aYFactor ) {
+		mYFactor = aYFactor;
+	}
+
+	public double getMaxValue() {
+		return mMaxValue;
+	}
+
+	public void setMaxValue( double aMaxValue ) {
+		mMaxValue = aMaxValue;
 	}
 	
 }
