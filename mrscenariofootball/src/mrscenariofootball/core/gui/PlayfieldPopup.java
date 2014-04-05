@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
 import mrscenariofootball.core.ScenarioCore;
@@ -12,6 +13,9 @@ import mrscenariofootball.core.data.ScenarioInformation;
 import mrscenariofootball.core.data.worlddata.server.BallPosition;
 import mrscenariofootball.core.data.worlddata.server.ReferencePointName;
 import mrscenariofootball.core.data.worlddata.server.ServerPoint;
+import mrscenariofootball.core.gui.menus.PositionSelector;
+
+import javax.swing.JSeparator;
 
 @SuppressWarnings("serial")
 public class PlayfieldPopup extends JPopupMenu {
@@ -36,6 +40,23 @@ public class PlayfieldPopup extends JPopupMenu {
             }
         });
         add(vSetBallPosition);
+        
+        JMenuItem mntmNewMenuItem_1 = new JMenuItem("Set BallPosition to ...");
+        mntmNewMenuItem_1.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		
+        		PositionSelector vSelector = new PositionSelector( mInvoker );
+        		vSelector.setVisible( true );
+        		
+        	}
+        });
+        add(mntmNewMenuItem_1);
+        
+        JSeparator separator = new JSeparator();
+        add(separator);
+        
+        JMenuItem mntmNewMenuItem = new JMenuItem("Set Bot");
+        add(mntmNewMenuItem);
 		
 	}
 	

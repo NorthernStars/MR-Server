@@ -23,7 +23,7 @@ public class SetPlayMode extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textField;
-	private JComboBox comboBox;
+	private JComboBox<PlayMode> comboBox;
 
 	public SetPlayMode() {
 		setBounds(100, 100, 331, 131);
@@ -32,8 +32,8 @@ public class SetPlayMode extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 		
-		comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(PlayMode.values()));
+		comboBox = new JComboBox<PlayMode>();
+		comboBox.setModel(new DefaultComboBoxModel<PlayMode>(PlayMode.values()));
 		comboBox.setBounds(10, 11, 300, 22);
 		contentPanel.add(comboBox);
 		
@@ -42,6 +42,7 @@ public class SetPlayMode extends JDialog {
 		contentPanel.add(lblTimeInPlaymode);
 		
 		textField = new JTextField();
+		textField.setEnabled(false);
 		textField.setBounds(220, 41, 90, 20);
 		contentPanel.add(textField);
 		textField.setColumns(10);
