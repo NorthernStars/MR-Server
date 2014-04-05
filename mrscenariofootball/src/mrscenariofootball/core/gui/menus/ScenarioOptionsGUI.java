@@ -1,4 +1,4 @@
-package mrscenariofootball.core.gui;
+package mrscenariofootball.core.gui.menus;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;

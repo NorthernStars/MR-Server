@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 import mrscenariofootball.core.data.BotAI;
 import mrscenariofootball.core.data.ScenarioInformation;
 import mrscenariofootball.core.gui.ScenarioGUI;
-import mrscenariofootball.core.gui.ScenarioOptionsGUI;
+import mrscenariofootball.core.gui.menus.ScenarioOptionsGUI;
 import mrscenariofootball.core.managements.FromVision;
 import mrscenariofootball.core.managements.ToBotAIs;
 import mrscenariofootball.core.managements.ToGraphics;

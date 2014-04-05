@@ -35,7 +35,7 @@ public class ScenarioInformation {
 	
 	@GuardedBy("this") private WorldData mWorldData;
 	
-	private String mScenarioName = "Soccer";
+	private String mScenarioName = "Mixed-Reality Football";
 	private double mXFactor = 1, 
 			mYFactor = 0.75, 
 			mMaxValue = 1000;

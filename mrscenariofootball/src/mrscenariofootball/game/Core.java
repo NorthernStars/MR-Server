@@ -38,7 +38,14 @@ public class Core {
         
     }
     
-    public Core() {}
+    public Core() {
+    	
+    	mSuspended = new AtomicBoolean( false );
+    	mSimulation = new AtomicBoolean( true );
+    	mAutomaticGame = new AtomicBoolean( true );
+    	mGameStarted = new AtomicBoolean( false );
+    	
+    }
     
     public static Core getInstance() {
         
@@ -52,9 +59,10 @@ public class Core {
         
     }
 
-	private AtomicBoolean mSuspended = new AtomicBoolean( false );
-	private AtomicBoolean mSimulation = new AtomicBoolean( true );
-	private AtomicBoolean mAutomaticGame = new AtomicBoolean( true );
+	private AtomicBoolean mSuspended;
+	private AtomicBoolean mSimulation;
+	private AtomicBoolean mAutomaticGame;
+	private AtomicBoolean mGameStarted;
 	
 	private List<KickEcho> mKicks = new ArrayList<KickEcho>( 100 );
 
@@ -62,6 +70,8 @@ public class Core {
 	public void startGame() {
 		
 		startManagements();
+		
+		mGameStarted.set(true);
 		
 		Core.getLogger().info( "Game started." );
 		
@@ -431,6 +441,18 @@ public class Core {
 	public boolean isSimulation() {
 
 		return mSimulation.get();
+		
+	}
+	
+	public boolean isSuspended(){
+		
+		return mSuspended.get();
+		
+	}
+	
+	public boolean isStarted(){
+		
+		return mGameStarted.get();
 		
 	}
 	
