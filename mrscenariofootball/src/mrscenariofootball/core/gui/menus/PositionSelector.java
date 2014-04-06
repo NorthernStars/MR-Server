@@ -24,6 +24,7 @@ import mrscenariofootball.game.Core;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Dimension;
 
 public class PositionSelector extends JDialog {
 
@@ -34,6 +35,7 @@ public class PositionSelector extends JDialog {
 	private Component mInvoker;
 
 	public PositionSelector( Component aInvoker ) {
+		setResizable(false);
 		mInvoker = aInvoker;
 		
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -41,15 +43,16 @@ public class PositionSelector extends JDialog {
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(null);
 		{
 			comboBox = new JComboBox<ReferencePointName>();
+			comboBox.setPreferredSize(new Dimension(300, 22));
+			comboBox.setMinimumSize(new Dimension(300, 22));
 			DefaultComboBoxModel<ReferencePointName> vModel = new DefaultComboBoxModel<ReferencePointName>( ReferencePointName.values() );
 			vModel.removeElement( ReferencePointName.Ball );
 			vModel.removeElement( ReferencePointName.NoFixedName );
 			vModel.removeElement( ReferencePointName.Player );
+			contentPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 			comboBox.setModel( vModel );
-			comboBox.setBounds(10, 10, 300, 22);
 			contentPanel.add(comboBox);
 		}
 		{
