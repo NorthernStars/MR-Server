@@ -68,8 +68,7 @@ public class ScenarioGUI extends JPanel {
 					ScenarioInformation.getInstance().getWorldData().setPlayTime( vNewDate.getTime()/1000.0 );
 					update();
 				} catch (ParseException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					Core.getLogger().trace("Could not set time");
 				}
 				
 			}
