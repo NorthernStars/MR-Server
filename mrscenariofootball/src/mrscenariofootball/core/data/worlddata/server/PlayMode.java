@@ -67,10 +67,12 @@ public enum PlayMode {
 	public static PlayMode getFollowingMode( PlayMode aPlayMode ){
 		
 		if( mFollowingMode == null ){
+			
 			mFollowingMode = new HashMap<PlayMode,PlayMode>();
 
 			mFollowingMode.put( KickOff, PlayOn );
 			mFollowingMode.put( KickOffBlue, PlayOn );
+			mFollowingMode.put( KickOffYellow, PlayOn );
 			mFollowingMode.put( PlayOn, TimeOver );
 			mFollowingMode.put( CornerKickBlue, PlayOn );
 			mFollowingMode.put( CornerKickYellow, PlayOn );
