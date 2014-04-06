@@ -10,14 +10,18 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
+import mrscenariofootball.core.ScenarioCore;
 import mrscenariofootball.core.data.ScenarioInformation;
 import mrscenariofootball.core.data.worlddata.server.PlayMode;
+import mrscenariofootball.game.Core;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class SetPlayMode extends JDialog {
 
@@ -33,6 +37,13 @@ public class SetPlayMode extends JDialog {
 		contentPanel.setLayout(null);
 		
 		comboBox = new JComboBox<PlayMode>();
+		comboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				textField.setText( Double.toString( ScenarioInformation.getInstance().getPlayModeTimeToRun( (PlayMode) comboBox.getSelectedItem() ) ) );
+				
+			}
+		});
 		comboBox.setModel(new DefaultComboBoxModel<PlayMode>(PlayMode.values()));
 		comboBox.setBounds(10, 11, 300, 22);
 		contentPanel.add(comboBox);
@@ -42,10 +53,10 @@ public class SetPlayMode extends JDialog {
 		contentPanel.add(lblTimeInPlaymode);
 		
 		textField = new JTextField();
-		textField.setEnabled(false);
 		textField.setBounds(220, 41, 90, 20);
 		contentPanel.add(textField);
 		textField.setColumns(10);
+		textField.setText( Double.toString( ScenarioInformation.getInstance().getPlayModeTimeToRun( (PlayMode) comboBox.getSelectedItem() ) ) );
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -54,7 +65,20 @@ public class SetPlayMode extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						
+						try{
+							
+							ScenarioInformation.getInstance().setPlayModeTimeToRun( (PlayMode) comboBox.getSelectedItem(), Double.parseDouble( textField.getText() ) );
+							
+						} catch ( NullPointerException | NumberFormatException vException ){
+							
+							ScenarioCore.getLogger().error( "Could not parse playmodetime {} ", vException );
+							ScenarioCore.getLogger().catching(vException);
+							
+						}
+						
 						ScenarioInformation.getInstance().getWorldData().setPlayMode( (PlayMode) comboBox.getSelectedItem() );
+						Core.getInstance().setPlayMode();
 						dispose();
 					}
 				});

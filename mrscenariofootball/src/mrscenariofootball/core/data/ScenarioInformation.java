@@ -204,4 +204,10 @@ public class ScenarioInformation {
 		return mTimesToRun.get( aCurrentPlaymode );
 	}
 	
+	public synchronized void setPlayModeTimeToRun( PlayMode aPlaymode, double aTime ) {
+		
+		mTimesToRun.put( aPlaymode, aTime );
+		
+	}
+	
 }
