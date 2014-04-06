@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 
 import mrscenariofootball.core.ScenarioCore;
 import mrscenariofootball.core.data.ScenarioInformation;
+import mrscenariofootball.core.data.worlddata.server.WorldData;
 import mrscenariofootball.game.Core;
 
 import java.awt.event.MouseAdapter;
@@ -35,6 +36,8 @@ public class ScenarioGUI extends JPanel {
 	private JLabel mTime;
 	private JLabel mLblYellowScore;
 	private JLabel mLblBlueScore;
+	private JLabel lblTeamnameBlue;
+	private JLabel lblTeamnameYellow;
 
 	/**
 	 * Create the panel.
@@ -63,10 +66,12 @@ public class ScenarioGUI extends JPanel {
 	                    null,
 	                    mTime.getText());
 				try {
-					Date vNewDate = (Date) new SimpleDateFormat( "mm:ss:SSS" ).parseObject( vNewTime );
-					ScenarioCore.getLogger().info( "Set date to {}", new SimpleDateFormat( "mm:ss:SS" ).format( vNewDate ) );
-					ScenarioInformation.getInstance().getWorldData().setPlayTime( vNewDate.getTime()/1000.0 );
-					update();
+					if( vNewTime != null ){
+						Date vNewDate = (Date) new SimpleDateFormat( "mm:ss:SSS" ).parseObject( vNewTime );
+						ScenarioCore.getLogger().info( "Set date to {}", new SimpleDateFormat( "mm:ss:SS" ).format( vNewDate ) );
+						ScenarioInformation.getInstance().getWorldData().setPlayTime( vNewDate.getTime()/1000.0 );
+						update();
+					}
 				} catch (ParseException e1) {
 					Core.getLogger().trace("Could not set time");
 				}
@@ -75,12 +80,12 @@ public class ScenarioGUI extends JPanel {
 		});
 		panel.add(mTime);
 		
-		JLabel lblNewLabel = new JLabel("Yellow ");
-		lblNewLabel.setMaximumSize(new Dimension(100, 15));
-		lblNewLabel.setMinimumSize(new Dimension(100, 15));
-		lblNewLabel.setPreferredSize(new Dimension(100, 15));
-		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		panel.add(lblNewLabel);
+		lblTeamnameYellow = new JLabel("Yellow ");
+		lblTeamnameYellow.setMaximumSize(new Dimension(100, 15));
+		lblTeamnameYellow.setMinimumSize(new Dimension(100, 15));
+		lblTeamnameYellow.setPreferredSize(new Dimension(100, 15));
+		lblTeamnameYellow.setHorizontalAlignment(SwingConstants.RIGHT);
+		panel.add(lblTeamnameYellow);
 		
 		mLblYellowScore = new JLabel("0");
 		mLblYellowScore.addMouseListener(new MouseAdapter() {
@@ -96,13 +101,14 @@ public class ScenarioGUI extends JPanel {
 	                    null,
 	                    mLblYellowScore.getText());
 				try {
-					int vYellowScore = Integer.parseInt( vNewScore );
-					ScenarioCore.getLogger().info( "Set yellow score to to {}",  vYellowScore );
-					ScenarioInformation.getInstance().getWorldData().getScore().setScoreYellowTeam( vYellowScore );
-					update();
+					if( vNewScore != null ){
+						int vYellowScore = Integer.parseInt( vNewScore );
+						ScenarioCore.getLogger().info( "Set yellow score to to {}",  vYellowScore );
+						ScenarioInformation.getInstance().getWorldData().getScore().setScoreYellowTeam( vYellowScore );
+						update();
+					}
 				} catch ( Exception e1 ) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					Core.getLogger().trace("Could not set score");
 				}
 				
 			}
@@ -139,8 +145,8 @@ public class ScenarioGUI extends JPanel {
 		});
 		panel.add(mLblBlueScore);
 		
-		JLabel lblNewLabel_1 = new JLabel(" Blue");
-		panel.add(lblNewLabel_1);
+		lblTeamnameBlue = new JLabel(" Blue");
+		panel.add(lblTeamnameBlue);
 		
 		JPanel panel_1 = new JPanel();
 		add(panel_1, BorderLayout.NORTH);
@@ -193,9 +199,14 @@ public class ScenarioGUI extends JPanel {
     	EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				
+				WorldData vWorldData = ScenarioInformation.getInstance().getWorldData();
 				mTime.setText( new SimpleDateFormat( "mm:ss:SS" ).format( new Date( (long) (ScenarioInformation.getInstance().getWorldData().getPlayTime() * 1000) ) ) );
-				mLblBlueScore.setText( Integer.toString( ScenarioInformation.getInstance().getWorldData().getScore().getScoreBlueTeam() ) );
-				mLblYellowScore.setText( Integer.toString( ScenarioInformation.getInstance().getWorldData().getScore().getScoreYellowTeam() ) );
+				mLblBlueScore.setText( Integer.toString( vWorldData.getScore().getScoreBlueTeam() ) );
+				mLblYellowScore.setText( Integer.toString( vWorldData.getScore().getScoreYellowTeam() ) );
+				
+				// TODO: Settings teamnames
+				lblTeamnameBlue.setText( "Blue" );
+				lblTeamnameYellow.setText( "Yellow" );
 				validate();
 				
 			}
