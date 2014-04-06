@@ -1,6 +1,7 @@
 package mrscenariofootball.core.data;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -45,6 +46,8 @@ public class ScenarioInformation {
 	private Graphics mGraphics;
 	private BotControl mBotControl;
 	@GuardedBy("this") private ConcurrentHashMap<Integer, BotAI> mBotAIs = new ConcurrentHashMap<Integer, BotAI>();
+	
+	private HashMap<PlayMode, Double> mTimesToRun = new HashMap<PlayMode, Double>();
 	
 	private ScenarioInformation() {
 
@@ -190,6 +193,15 @@ public class ScenarioInformation {
 
 	public void setMaxValue( double aMaxValue ) {
 		mMaxValue = aMaxValue;
+	}
+
+	public double getPlayModeTimeToRun( PlayMode aCurrentPlaymode ) {
+		
+		if( mTimesToRun.get( aCurrentPlaymode ) == null ){
+			return aCurrentPlaymode.getDefaultTimeToRun();
+		}
+		
+		return mTimesToRun.get( aCurrentPlaymode );
 	}
 	
 }

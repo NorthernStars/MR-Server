@@ -249,7 +249,7 @@ public class ScenarioGUI extends JPanel {
 				mBtnResume.setEnabled( Core.getInstance().isStarted() && Core.getInstance().isSuspended() );
 				mBtnResume.setVisible( Core.getInstance().isSuspended() );
 				
-				mLblPlayModeStatus.setText( ScenarioInformation.getInstance().getWorldData().getPlayMode().toString() /*+ "(Time left?)" */+ ( Core.getInstance().isStarted()? Core.getInstance().isSuspended()? " (Paused)" : " (Running)" : " (Not Started)" ) );
+				mLblPlayModeStatus.setText( ScenarioInformation.getInstance().getWorldData().getPlayMode().toString() + " (" + new SimpleDateFormat( "mm:ss:SSS" ).format( new Date( (long) ( Core.getInstance().getTimeLeftForCurrentPlayMode() * 1000) ) ) + (Core.getInstance().isAutomaticGame()?" (Automatic Game)":"") + " )" + ( Core.getInstance().isStarted()? Core.getInstance().isSuspended()? " (Paused)" : " (Running)" : " (Not Started)" ) );
 				
 				mTime.setText( new SimpleDateFormat( "mm:ss:SSS" ).format( new Date( (long) (ScenarioInformation.getInstance().getWorldData().getPlayTime() * 1000) ) ) );
 				

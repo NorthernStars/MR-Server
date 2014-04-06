@@ -2,6 +2,7 @@ package mrscenariofootball.game;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -65,6 +66,7 @@ public class Core {
 	private AtomicBoolean mGameStarted;
 	
 	private List<KickEcho> mKicks = new ArrayList<KickEcho>( 100 );
+	private HashMap<PlayMode, Double> mTimesToRun = new HashMap<PlayMode, Double>();
 
 	// Main game loop
 	public void startGame() {
@@ -86,6 +88,9 @@ public class Core {
 			
 			vTickTime = System.nanoTime();
 			vCurrentPlaymode = ScenarioInformation.getInstance().getWorldData().getPlayMode();
+			if( mTimesToRun.get( vCurrentPlaymode ) == null ){
+				mTimesToRun.put( vCurrentPlaymode, ScenarioInformation.getInstance().getPlayModeTimeToRun( vCurrentPlaymode ) );
+			}
 			
 			if( !mSuspended.get() && vCurrentPlaymode.canBotsMove() ){
 
@@ -107,23 +112,37 @@ public class Core {
 				
 			}
 			
-			if( !mSuspended.get() && vCurrentPlaymode.isTimeRunning() ){
+			if( !mSuspended.get() ){
+				
+				if( vCurrentPlaymode.isTimeRunning() ){
+				
+					ScenarioInformation.getInstance().addTickPlayed();
+				
+				}
 
-				ScenarioInformation.getInstance().addTickPlayed();
+				mTimesToRun.put(vCurrentPlaymode, mTimesToRun.get(vCurrentPlaymode) - ScenarioInformation.getInstance().getGameTickTime() );
 				
-			} else if( !mSuspended.get() && mAutomaticGame.get() ) {
+			}
+			if( !mSuspended.get() ) {
 				
-				if( 	vCurrentPlaymode == PlayMode.KickOff ||
-						vCurrentPlaymode == PlayMode.KickOffBlue ||
-						vCurrentPlaymode == PlayMode.KickOffYellow ){
-					
-					vTimeCounter += ScenarioInformation.getInstance().getGameTickTime();
-					
-					if( vTimeCounter >= 10 ){
+				if( mTimesToRun.get( vCurrentPlaymode ) <= 0.0 ) {
+					if( mAutomaticGame.get() ){
+				
+						if( PlayMode.getFollowingMode( vCurrentPlaymode ) == vCurrentPlaymode ){
+							
+							suspend();
+							
+						} else {
+							
+							ScenarioInformation.getInstance().getWorldData().setPlayMode( PlayMode.getFollowingMode( vCurrentPlaymode ) );
+							mTimesToRun.remove(vCurrentPlaymode);
+							
+						}
 						
-						ScenarioInformation.getInstance().getWorldData().setPlayMode( PlayMode.PlayOn );
-						vTimeCounter = 0;
 						
+					} else {
+						
+						suspend();
 					}
 					
 				}
@@ -465,6 +484,30 @@ public class Core {
 	public synchronized void stopBall(){
 		
 		mKicks.clear();
+		
+	}
+
+	public boolean isAutomaticGame() {
+		return mAutomaticGame.get();
+	}
+
+	public void setAutomaticGame( boolean aAutomaticGame ) {
+		mAutomaticGame.set( aAutomaticGame );
+	}
+	
+	public double getTimeLeftForCurrentPlayMode(){
+		
+		if( mTimesToRun.get( ScenarioInformation.getInstance().getWorldData().getPlayMode() ) == null ){
+			return 0.0;
+		}
+		
+		return mTimesToRun.get( ScenarioInformation.getInstance().getWorldData().getPlayMode() );
+		
+	}
+	
+	public void setPlayMode(){
+		
+		mTimesToRun.put( ScenarioInformation.getInstance().getWorldData().getPlayMode(), ScenarioInformation.getInstance().getPlayModeTimeToRun( ScenarioInformation.getInstance().getWorldData().getPlayMode() ) );
 		
 	}
 	

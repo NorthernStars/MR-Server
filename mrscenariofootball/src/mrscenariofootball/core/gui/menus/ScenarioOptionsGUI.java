@@ -35,6 +35,7 @@ public class ScenarioOptionsGUI extends JFrame {
 	private JTextField mTextFieldFieldWidth;
 	private JTextField mTextFieldBotMaxMovement;
 	private JCheckBox chckbxSimulation;
+	private JCheckBox chckbxAutomaticGame;
 
 	/**
 	 * Create the frame.
@@ -48,6 +49,7 @@ public class ScenarioOptionsGUI extends JFrame {
 		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
+		contentPane.setLayout(new BorderLayout(0, 0));
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		contentPane.add(tabbedPane);
@@ -143,6 +145,12 @@ public class ScenarioOptionsGUI extends JFrame {
 		
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab("PlayModes", null, panel_1, null);
+		panel_1.setLayout(null);
+		
+		chckbxAutomaticGame = new JCheckBox("Automatic Game");
+		chckbxAutomaticGame.setSelected( Core.getInstance().isAutomaticGame() );
+		chckbxAutomaticGame.setBounds(6, 7, 413, 23);
+		panel_1.add(chckbxAutomaticGame);
 		
 		JPanel panel_2 = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panel_2.getLayout();
@@ -184,6 +192,7 @@ public class ScenarioOptionsGUI extends JFrame {
 			ScenarioInformation.getInstance().setMaxValue( Double.parseDouble( mTextFieldFieldWidth.getText() ) );
 			
 			Core.getInstance().setSimulation( chckbxSimulation.isSelected() );
+			Core.getInstance().setAutomaticGame( chckbxAutomaticGame.isSelected() );
 			
 		} catch ( NullPointerException | NumberFormatException vException ){
 			
