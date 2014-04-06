@@ -20,6 +20,7 @@ import mrservermisc.bots.interfaces.Bot;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Dimension;
 
 public class BotSelector extends JDialog {
 
@@ -43,6 +44,7 @@ public class BotSelector extends JDialog {
 	private double mY;
 
 	public BotSelector( Component aInvoker, double aX, double aY ) {
+		setResizable(false);
 		
 		mInvoker = aInvoker;
 		mX = aX;
@@ -52,10 +54,10 @@ public class BotSelector extends JDialog {
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(null);
+		contentPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		{
 			comboBoxBots = new JComboBox<FormatedBotAI>();
-			comboBoxBots.setBounds(10, 10, 308, 22);
+			comboBoxBots.setPreferredSize(new Dimension(300, 22));
 			contentPanel.add(comboBoxBots);
 			
 			DefaultComboBoxModel<FormatedBotAI> vModel = new DefaultComboBoxModel<FormatedBotAI>();
