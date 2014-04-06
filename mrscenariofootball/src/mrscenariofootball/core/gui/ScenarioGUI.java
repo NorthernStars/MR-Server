@@ -26,6 +26,8 @@ import java.awt.Dimension;
 
 import javax.swing.JButton;
 
+import org.apache.logging.log4j.Level;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -96,14 +98,22 @@ public class ScenarioGUI extends JPanel {
 	                    null,
 	                    null,
 	                    mLblBlueScore.getText());
-				try {
-					int vBlueScore = Integer.parseInt( vNewScore );
-					ScenarioCore.getLogger().info( "Set blue score to to {}",  vBlueScore );
-					ScenarioInformation.getInstance().getWorldData().getScore().setScoreBlueTeam( vBlueScore );
-					update();
-				} catch ( Exception e1 ) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				if( vNewScore != null ){
+					
+					try {
+						
+						int vBlueScore = Integer.parseInt( vNewScore );
+						ScenarioCore.getLogger().info( "Set blue score to to {}",  vBlueScore );
+						ScenarioInformation.getInstance().getWorldData().getScore().setScoreBlueTeam( vBlueScore );
+						update();
+						
+					} catch ( Exception vException ) {
+
+			            Core.getLogger().error( "Could not parse blue score: {}", vException.getLocalizedMessage() );
+			            Core.getLogger().catching( Level.ERROR, vException );
+			            
+			        }
+			
 				}
 				
 			}
@@ -120,14 +130,23 @@ public class ScenarioGUI extends JPanel {
 	                    null,
 	                    null,
 	                    mLblYellowScore.getText());
-				try {
-					int vYellowScore = Integer.parseInt( vNewScore );
-					ScenarioCore.getLogger().info( "Set yellow score to to {}",  vYellowScore );
-					ScenarioInformation.getInstance().getWorldData().getScore().setScoreYellowTeam( vYellowScore );
-					update();
-				} catch ( Exception e1 ) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				
+				if( vNewScore != null ){
+					
+					try {
+					
+						int vYellowScore = Integer.parseInt( vNewScore );
+						ScenarioCore.getLogger().info( "Set yellow score to to {}",  vYellowScore );
+						ScenarioInformation.getInstance().getWorldData().getScore().setScoreYellowTeam( vYellowScore );
+						update();
+					
+					} catch ( Exception vException ) {
+	
+			            Core.getLogger().error( "Could not parse yellow score: {}", vException.getLocalizedMessage() );
+			            Core.getLogger().catching( Level.ERROR, vException );
+			            
+			        }
+					
 				}
 				
 			}
@@ -144,14 +163,23 @@ public class ScenarioGUI extends JPanel {
 	                    null,
 	                    null,
 	                    mTime.getText());
-				try {
-					Date vNewDate = (Date) new SimpleDateFormat( "mm:ss:SSS" ).parseObject( vNewTime );
-					ScenarioCore.getLogger().info( "Set date to {}", new SimpleDateFormat( "mm:ss:SS" ).format( vNewDate ) );
-					ScenarioInformation.getInstance().getWorldData().setPlayTime( vNewDate.getTime()/1000.0 );
-					update();
-				} catch (ParseException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				
+				if( vNewTime != null ){
+					
+					try {
+					
+						Date vNewDate = (Date) new SimpleDateFormat( "mm:ss:SSS" ).parseObject( vNewTime );
+						ScenarioCore.getLogger().info( "Set date to {}", new SimpleDateFormat( "mm:ss:SS" ).format( vNewDate ) );
+						ScenarioInformation.getInstance().getWorldData().setPlayTime( vNewDate.getTime()/1000.0 );
+						update();
+					
+					} catch ( Exception vException ) {
+	
+			            Core.getLogger().error( "Could not parse time: {}", vException.getLocalizedMessage() );
+			            Core.getLogger().catching( Level.ERROR, vException );
+			            
+			        }
+					
 				}
 				
 			}
