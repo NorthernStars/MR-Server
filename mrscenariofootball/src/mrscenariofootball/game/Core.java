@@ -462,4 +462,10 @@ public class Core {
 		
 	}
 	
+	public synchronized void stopBall(){
+		
+		mKicks.clear();
+		
+	}
+	
 }

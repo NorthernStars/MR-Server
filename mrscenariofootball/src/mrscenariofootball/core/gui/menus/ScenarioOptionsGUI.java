@@ -6,8 +6,6 @@ import javax.swing.border.EmptyBorder;
 
 import mrscenariofootball.core.ScenarioCore;
 import mrscenariofootball.core.data.ScenarioInformation;
-import mrscenariofootball.core.data.ScenarioSettings;
-import mrscenariofootball.core.data.worlddata.server.Team;
 import mrscenariofootball.game.Core;
 
 import javax.swing.JCheckBox;
@@ -21,7 +19,6 @@ import javax.swing.JTabbedPane;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 
-import javax.swing.BoxLayout;
 import javax.swing.JTextField;
 
 import java.awt.Component;
@@ -51,16 +48,6 @@ public class ScenarioOptionsGUI extends JFrame {
 		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		
-		chckbxShowBackgroundImage = new JCheckBox("Show background image");
-		chckbxShowBackgroundImage.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				ScenarioSettings settings = ScenarioSettings.getInstance();
-				settings.setShowFieldBackground(chckbxShowBackgroundImage.isSelected());
-			}
-		});
-		contentPane.setLayout(new BorderLayout(0, 0));
-		contentPane.add(chckbxShowBackgroundImage);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		contentPane.add(tabbedPane);

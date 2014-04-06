@@ -20,6 +20,7 @@ import javax.swing.DefaultComboBoxModel;
 
 import mrscenariofootball.core.data.worlddata.server.ReferencePointName;
 import mrscenariofootball.core.gui.PlayField;
+import mrscenariofootball.game.Core;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -68,6 +69,7 @@ public class PositionSelector extends JDialog {
 		    								     mSelectedPoint.getRelativePosition().getY() * ScenarioInformation.getInstance().getYFactor()));
 		            	
 		            	ScenarioInformation.getInstance().setBall( vNewPosition );
+		            	Core.getInstance().stopBall();
 		            	ScenarioCore.getLogger().info( "Ball set to position: {}", vNewPosition );
 		            	((PlayField) mInvoker).update();
 		            	

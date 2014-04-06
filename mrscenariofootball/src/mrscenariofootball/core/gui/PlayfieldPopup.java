@@ -15,6 +15,7 @@ import mrscenariofootball.core.data.worlddata.server.ReferencePointName;
 import mrscenariofootball.core.data.worlddata.server.ServerPoint;
 import mrscenariofootball.core.gui.menus.BotSelector;
 import mrscenariofootball.core.gui.menus.PositionSelector;
+import mrscenariofootball.game.Core;
 
 import javax.swing.JSeparator;
 
@@ -37,6 +38,7 @@ public class PlayfieldPopup extends JPopupMenu {
             	
             	ScenarioInformation.getInstance().setBall( vNewPosition );
             	ScenarioCore.getLogger().info( "Ball set to position: {}", vNewPosition );
+            	Core.getInstance().stopBall();
             	((PlayField) mInvoker).update();
             }
         });
