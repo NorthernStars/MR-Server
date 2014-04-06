@@ -44,6 +44,7 @@ public class BotSelector extends JDialog {
 	private double mY;
 
 	public BotSelector( Component aInvoker, double aX, double aY ) {
+		setTitle("Select bot");
 		setResizable(false);
 		
 		mInvoker = aInvoker;

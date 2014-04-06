@@ -35,6 +35,7 @@ public class PositionSelector extends JDialog {
 	private Component mInvoker;
 
 	public PositionSelector( Component aInvoker ) {
+		setTitle("Select position to place ball");
 		setResizable(false);
 		mInvoker = aInvoker;
 		

@@ -22,6 +22,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import java.awt.Dimension;
 
 public class SetPlayMode extends JDialog {
 
@@ -30,13 +31,15 @@ public class SetPlayMode extends JDialog {
 	private JComboBox<PlayMode> comboBox;
 
 	public SetPlayMode() {
+		setTitle("Select PlayMode");
+		setResizable(false);
 		setBounds(100, 100, 331, 131);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		contentPanel.setLayout(null);
 		
 		comboBox = new JComboBox<PlayMode>();
+		comboBox.setPreferredSize(new Dimension(300, 22));
 		comboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -44,17 +47,20 @@ public class SetPlayMode extends JDialog {
 				
 			}
 		});
+		contentPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		comboBox.setModel(new DefaultComboBoxModel<PlayMode>(PlayMode.values()));
-		comboBox.setBounds(10, 11, 300, 22);
 		contentPanel.add(comboBox);
 		
+		JPanel panel = new JPanel();
+		contentPanel.add(panel);
+		
 		JLabel lblTimeInPlaymode = new JLabel("Time in PlayMode in s");
-		lblTimeInPlaymode.setBounds(10, 44, 200, 14);
-		contentPanel.add(lblTimeInPlaymode);
+		lblTimeInPlaymode.setPreferredSize(new Dimension(205, 14));
+		panel.add(lblTimeInPlaymode);
 		
 		textField = new JTextField();
-		textField.setBounds(220, 41, 90, 20);
-		contentPanel.add(textField);
+		textField.setPreferredSize(new Dimension(30, 20));
+		panel.add(textField);
 		textField.setColumns(10);
 		textField.setText( Double.toString( ScenarioInformation.getInstance().getPlayModeTimeToRun( (PlayMode) comboBox.getSelectedItem() ) ) );
 		{
