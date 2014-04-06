@@ -17,7 +17,6 @@ import org.apache.commons.cli.Option;
 @SuppressWarnings("serial")
 public class ServerConfigFile extends Option implements ParseOption {
 
-	private final static String defaultServerConfigFile = "defaultserver.config";
 	private final static String mOption = "cf";
 	private final static String mLongOption = "configfile";
 	private final static String mDiscription = "The name and path of the serverconfigfile\n";
@@ -46,8 +45,6 @@ public class ServerConfigFile extends Option implements ParseOption {
         }
 		else{
 			
-			CommandLineOptions.getLogger().debug( "Try reading default " + mLongOption + " " + defaultServerConfigFile  );
-			ConfigFileReader.readConfigFile( defaultServerConfigFile );
             return false;
 			
 		}
