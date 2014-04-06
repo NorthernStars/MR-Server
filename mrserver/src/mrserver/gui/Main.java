@@ -2,14 +2,12 @@ package mrserver.gui;
 
 import java.awt.EventQueue;
 
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 
-import mrserver.core.Core;
 import mrserver.core.scenario.ScenarioManagement;
 import mrserver.gui.menus.LoadScenario;
 import mrserver.gui.options.Options;
@@ -17,9 +15,7 @@ import mrserver.gui.options.Options;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
-import java.io.File;
 
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.KeyStroke;
 
 import java.awt.event.KeyEvent;

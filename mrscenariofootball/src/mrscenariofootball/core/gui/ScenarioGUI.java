@@ -4,11 +4,9 @@ import javax.swing.JPanel;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 

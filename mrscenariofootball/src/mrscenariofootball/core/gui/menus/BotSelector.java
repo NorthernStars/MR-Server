@@ -14,7 +14,6 @@ import javax.swing.JComboBox;
 import mrscenariofootball.core.data.BotAI;
 import mrscenariofootball.core.data.ScenarioInformation;
 import mrscenariofootball.core.data.worlddata.server.Player;
-import mrscenariofootball.core.data.worlddata.server.ReferencePointName;
 import mrscenariofootball.core.gui.PlayField;
 import mrservermisc.bots.interfaces.Bot;
 

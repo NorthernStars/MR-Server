@@ -13,7 +13,6 @@ import javax.swing.JComboBox;
 import mrscenariofootball.core.ScenarioCore;
 import mrscenariofootball.core.data.ScenarioInformation;
 import mrscenariofootball.core.data.worlddata.server.BallPosition;
-import mrscenariofootball.core.data.worlddata.server.ReferencePoint;
 import mrscenariofootball.core.data.worlddata.server.ServerPoint;
 
 import javax.swing.DefaultComboBoxModel;

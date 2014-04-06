@@ -25,7 +25,6 @@ import java.awt.event.ActionEvent;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import javax.swing.BoxLayout;
 
 @SuppressWarnings("serial")
