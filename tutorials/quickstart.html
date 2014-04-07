@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>NorthernStars Mixed-Reality Framework by NorthernStars</title>
+
+    <link rel="stylesheet" href="../stylesheets/styles.css">
+    <link rel="stylesheet" href="../stylesheets/pygment_trac.css">
+    <script src="../javascripts/scale.fix.js"></script>
+    <script src="../javascripts/main.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body onload="checkJavaSyntax()">
+    <div class="wrapper">
+      <header>
+        <h1 class="header">MR-Server</h1>
+        <p class="header">NorthernStars Mixed-Reality Gameserver</p>
+
+		<hr />
+		<p class="header">MR-Server:</p>
+        <ul>
+          	<li class="download"><a class="buttons" href="">Download ZIP</a></li>
+          	<li class="download"><a class="buttons" href="">Download TAR</a></li>
+        </ul>
+        
+        <hr />
+        <ul>
+        	<li><a class="buttons github" href="https://github.com/NorthernStars/MR-FWNS/releases" target="_blank">View Releases</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/NorthernStars">NorthernStars</a></p>
+
+
+      </header>
+      <section>
+      	<h2>Quick-Start Guide</h2>
+      	<p>
+      		This guide shows you how to start the MR-Server and a new simulated soccer game.
+      		It also explains how to set up connections for your Mixed-Reality AI.
+      	</p>
+      	
+      	<h4>1. Download </h4>
+      	<p>
+      		All you need is to download the MR-Server from the side menue or from the <a href="https://github.com/NorthernStars/mrserver/releases" target="_blank">github release page</a>.
+      		After downloading the MR-Server archive, unpack it.
+      		You also have to create a Mixed-Reality AI.
+      		If you don't have one, simply use our <a href="http://northernstars.github.io/MR-FWNS/" target="_blank">Mixed-Reality Framework</a>.
+      	</p>
+      	
+      	<h4>2. Creating shortcut for MR-Server</h4>
+      	<p>
+      		The MR-Server uses a default configuration file called <i>defaultserver.config</i>.
+      		This config file includes data about the connection settings.
+      		For simulation you don't have to edit it, but pass it as argument to MR-Server.
+      	</p>
+      	
+      	<p>
+      		Create a shortcut or link (depending on your os) to the file <i>mrserver-runnable.jar</i> and add the following arguments<br />
+      		<code>-cf defaultserver.config</code><br />
+      	</p>
+      	
+      	<h4>3. Starting MR-Server</h4>
+      	<p>
+      		Now start the MR-Server using the shortcut you created.
+      	</p>
+      	
+      	<h4>4. Loading scenario</h4>
+      	<p>
+      		First you have to load a scenario. Here we'll use the default soccer scenario.
+      		So click on <i>Scenario</i> > <i>Load</i> in the top menue of the MR-Server, to load a scenario.<br />
+      		<img src="img/screenshot-server-load-szenario-01.png" />
+      	</p>
+      	<p>
+      		A dialog called <i>Load Scenario</i> opens, where you can choose a scenario file and specifiy the cor class of the scenario that the server should load.<br />
+      		In this short guide you can use the default settings (they are specified inside the <i>defaultserver.config</i>) and click <i>OK</i>.<br />
+      		<img src="img/screenshot-server-load-szenario-02.png" />
+      	</p>
+      	<p>
+      		Now a soccer field should appear:<br />
+      		<img src="img/screenshot-server-soccer-szenario-01.png" />
+      	</p>
+      	
+      	<p><a class="back" href="javascript: history.back()">Back</a></p>
+	  </section>
+      <footer>
+        <p><small>Hosted on <a href="http://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		
+  </body>
+</html>
