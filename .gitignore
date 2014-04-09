@@ -9,3 +9,4 @@
 
 !*.xml
 !*/src/**/*.*
+!MR-Server*
