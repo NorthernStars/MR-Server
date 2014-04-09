@@ -139,7 +139,7 @@ public class ScenarioOptionsGUI extends JFrame {
 		panel_8.add(lblMaxBotMovement);
 		
 		mTextFieldBotMaxMovement = new JTextField();
-		mTextFieldBotMaxMovement.setText("0.01");
+		mTextFieldBotMaxMovement.setText( Double.toString( ScenarioInformation.getInstance().getSimulationBotSpeed() ) );
 		mTextFieldBotMaxMovement.setColumns(10);
 		panel_8.add(mTextFieldBotMaxMovement);
 		
@@ -190,6 +190,7 @@ public class ScenarioOptionsGUI extends JFrame {
 			ScenarioInformation.getInstance().setGameTickTime( Double.parseDouble( mTextFieldGameTickTime.getText() ) );
 			ScenarioInformation.getInstance().setYFactor( Double.parseDouble( mTextFieldFieldHeight.getText() ) );
 			ScenarioInformation.getInstance().setMaxValue( Double.parseDouble( mTextFieldFieldWidth.getText() ) );
+			ScenarioInformation.getInstance().setSimulationBotSpeed( Double.parseDouble( mTextFieldBotMaxMovement.getText() ) );
 			
 			Core.getInstance().setSimulation( chckbxSimulation.isSelected() );
 			Core.getInstance().setAutomaticGame( chckbxAutomaticGame.isSelected() );

@@ -378,7 +378,7 @@ public class Core {
 			
 			double vSpeed, vRotation, vRightDegree, vLeftDegree, vAngleToOtherPlayer;
 			
-			vSpeed = ( aMovement.getLeftWheelVelocity() + aMovement.getRightWheelVelocity() ) / 20000.0; //TODO: remove magic number
+			vSpeed = ( aMovement.getLeftWheelVelocity() + aMovement.getRightWheelVelocity() ) / 200.0 * ScenarioInformation.getInstance().getSimulationBotSpeed(); //TODO: remove magic number
 
 			vRightDegree = Math.toDegrees( Math.atan2( 1.0, aMovement.getRightWheelVelocity() / 100.0 ) );
 			vLeftDegree = Math.toDegrees( Math.atan2( 1.0, aMovement.getLeftWheelVelocity() / 100.0 ) );

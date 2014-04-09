@@ -48,6 +48,8 @@ public class ScenarioInformation {
 	@GuardedBy("this") private ConcurrentHashMap<Integer, BotAI> mBotAIs = new ConcurrentHashMap<Integer, BotAI>();
 	
 	private HashMap<PlayMode, Double> mTimesToRun = new HashMap<PlayMode, Double>();
+
+	private double mSimulationBotSpeed = 0.01;
 	
 	private ScenarioInformation() {
 
@@ -208,6 +210,17 @@ public class ScenarioInformation {
 		
 		mTimesToRun.put( aPlaymode, aTime );
 		
+	}
+
+	public double getSimulationBotSpeed() {
+		// TODO Auto-generated method stub
+		return mSimulationBotSpeed;
+	}
+
+
+	public void setSimulationBotSpeed( double aSimulationBotSpeed ) {
+		// TODO Auto-generated method stub
+		mSimulationBotSpeed = aSimulationBotSpeed;
 	}
 	
 }
