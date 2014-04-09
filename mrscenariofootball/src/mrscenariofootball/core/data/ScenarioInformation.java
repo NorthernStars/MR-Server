@@ -49,7 +49,7 @@ public class ScenarioInformation {
 	
 	private HashMap<PlayMode, Double> mTimesToRun = new HashMap<PlayMode, Double>();
 
-	private double mSimulationBotSpeed = 0.01;
+	private double mSimulationBotSpeed = 0.006;
 	
 	private ScenarioInformation() {
 
