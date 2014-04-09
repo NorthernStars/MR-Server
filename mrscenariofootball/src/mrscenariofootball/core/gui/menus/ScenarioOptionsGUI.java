@@ -61,14 +61,16 @@ public class ScenarioOptionsGUI extends JFrame {
 		panelGeneral.setAlignmentY(Component.TOP_ALIGNMENT);
 		tabbedPane.addTab("General", null, panelGeneral, null);
 		GridBagLayout gbl_panelGeneral = new GridBagLayout();
-		gbl_panelGeneral.columnWidths = new int[]{0, 46, 0};
+		gbl_panelGeneral.columnWidths = new int[]{0, 46, 0, 0};
 		gbl_panelGeneral.rowHeights = new int[]{20, 20, 20, 20, 0};
-		gbl_panelGeneral.columnWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
+		gbl_panelGeneral.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
 		gbl_panelGeneral.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panelGeneral.setLayout(gbl_panelGeneral);
 		
 		JLabel lblNewLabel = new JLabel("Time per GameTick in s:");
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+		gbc_lblNewLabel.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel.gridx = 0;
 		gbc_lblNewLabel.gridy = 0;
@@ -78,7 +80,7 @@ public class ScenarioOptionsGUI extends JFrame {
 		mTextFieldGameTickTime = new JTextField();
 		GridBagConstraints gbc_mTextFieldGameTickTime = new GridBagConstraints();
 		gbc_mTextFieldGameTickTime.fill = GridBagConstraints.HORIZONTAL;
-		gbc_mTextFieldGameTickTime.insets = new Insets(0, 0, 5, 0);
+		gbc_mTextFieldGameTickTime.insets = new Insets(0, 0, 5, 5);
 		gbc_mTextFieldGameTickTime.gridx = 1;
 		gbc_mTextFieldGameTickTime.gridy = 0;
 		panelGeneral.add(mTextFieldGameTickTime, gbc_mTextFieldGameTickTime);
@@ -86,8 +88,11 @@ public class ScenarioOptionsGUI extends JFrame {
 		mTextFieldGameTickTime.setText( Double.toString( ScenarioInformation.getInstance().getGameTickTime() ) );
 		
 		JLabel lblNewLabel_1 = new JLabel("Max. Ball Movement per GameTick in % of PlayField:");
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel_1.setEnabled(false);
 		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
+		gbc_lblNewLabel_1.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblNewLabel_1.anchor = GridBagConstraints.EAST;
 		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_1.gridx = 0;
 		gbc_lblNewLabel_1.gridy = 1;
@@ -97,14 +102,17 @@ public class ScenarioOptionsGUI extends JFrame {
 		mTextFieldBallMovementMax.setEnabled(false);
 		GridBagConstraints gbc_mTextFieldBallMovementMax = new GridBagConstraints();
 		gbc_mTextFieldBallMovementMax.fill = GridBagConstraints.HORIZONTAL;
-		gbc_mTextFieldBallMovementMax.insets = new Insets(0, 0, 5, 0);
+		gbc_mTextFieldBallMovementMax.insets = new Insets(0, 0, 5, 5);
 		gbc_mTextFieldBallMovementMax.gridx = 1;
 		gbc_mTextFieldBallMovementMax.gridy = 1;
 		panelGeneral.add(mTextFieldBallMovementMax, gbc_mTextFieldBallMovementMax);
 		mTextFieldBallMovementMax.setColumns(10);
 		
 		JLabel lblMaxAbsoluteHeight = new JLabel("Height of PlayField in % of Width:");
+		lblMaxAbsoluteHeight.setHorizontalAlignment(SwingConstants.RIGHT);
 		GridBagConstraints gbc_lblMaxAbsoluteHeight = new GridBagConstraints();
+		gbc_lblMaxAbsoluteHeight.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblMaxAbsoluteHeight.anchor = GridBagConstraints.EAST;
 		gbc_lblMaxAbsoluteHeight.insets = new Insets(0, 0, 5, 5);
 		gbc_lblMaxAbsoluteHeight.gridx = 0;
 		gbc_lblMaxAbsoluteHeight.gridy = 2;
@@ -113,7 +121,7 @@ public class ScenarioOptionsGUI extends JFrame {
 		mTextFieldFieldHeight = new JTextField();
 		GridBagConstraints gbc_mTextFieldFieldHeight = new GridBagConstraints();
 		gbc_mTextFieldFieldHeight.fill = GridBagConstraints.HORIZONTAL;
-		gbc_mTextFieldFieldHeight.insets = new Insets(0, 0, 5, 0);
+		gbc_mTextFieldFieldHeight.insets = new Insets(0, 0, 5, 5);
 		gbc_mTextFieldFieldHeight.gridx = 1;
 		gbc_mTextFieldFieldHeight.gridy = 2;
 		panelGeneral.add(mTextFieldFieldHeight, gbc_mTextFieldFieldHeight);
@@ -121,7 +129,10 @@ public class ScenarioOptionsGUI extends JFrame {
 		mTextFieldFieldHeight.setText( Double.toString( ScenarioInformation.getInstance().getYFactor() ) );
 		
 		JLabel lblMaxAbsoluteWidht = new JLabel("Max. absolute Width of PlayField in Points:");
+		lblMaxAbsoluteWidht.setHorizontalAlignment(SwingConstants.RIGHT);
 		GridBagConstraints gbc_lblMaxAbsoluteWidht = new GridBagConstraints();
+		gbc_lblMaxAbsoluteWidht.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lblMaxAbsoluteWidht.anchor = GridBagConstraints.EAST;
 		gbc_lblMaxAbsoluteWidht.insets = new Insets(0, 0, 0, 5);
 		gbc_lblMaxAbsoluteWidht.gridx = 0;
 		gbc_lblMaxAbsoluteWidht.gridy = 3;
@@ -129,6 +140,7 @@ public class ScenarioOptionsGUI extends JFrame {
 		
 		mTextFieldFieldWidth = new JTextField();
 		GridBagConstraints gbc_mTextFieldFieldWidth = new GridBagConstraints();
+		gbc_mTextFieldFieldWidth.insets = new Insets(0, 0, 0, 5);
 		gbc_mTextFieldFieldWidth.fill = GridBagConstraints.HORIZONTAL;
 		gbc_mTextFieldFieldWidth.gridx = 1;
 		gbc_mTextFieldFieldWidth.gridy = 3;
@@ -139,9 +151,9 @@ public class ScenarioOptionsGUI extends JFrame {
 		JPanel panelSimulation = new JPanel();
 		tabbedPane.addTab("Simulation", null, panelSimulation, null);
 		GridBagLayout gbl_panelSimulation = new GridBagLayout();
-		gbl_panelSimulation.columnWidths = new int[]{0, 0, 0};
+		gbl_panelSimulation.columnWidths = new int[]{0, 0, 0, 0};
 		gbl_panelSimulation.rowHeights = new int[]{23, 0, 0};
-		gbl_panelSimulation.columnWeights = new double[]{1.0, 0.0, Double.MIN_VALUE};
+		gbl_panelSimulation.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
 		gbl_panelSimulation.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		panelSimulation.setLayout(gbl_panelSimulation);
 		
@@ -157,6 +169,7 @@ public class ScenarioOptionsGUI extends JFrame {
 		
 		JLabel lblMaxBotMovement = new JLabel("Max. Bot Movement per Tick in % of PlayField:");
 		GridBagConstraints gbc_lblMaxBotMovement = new GridBagConstraints();
+		gbc_lblMaxBotMovement.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblMaxBotMovement.insets = new Insets(0, 0, 0, 5);
 		gbc_lblMaxBotMovement.gridx = 0;
 		gbc_lblMaxBotMovement.gridy = 1;
@@ -165,6 +178,7 @@ public class ScenarioOptionsGUI extends JFrame {
 		
 		mTextFieldBotMaxMovement = new JTextField();
 		GridBagConstraints gbc_mTextFieldBotMaxMovement = new GridBagConstraints();
+		gbc_mTextFieldBotMaxMovement.insets = new Insets(0, 0, 0, 5);
 		gbc_mTextFieldBotMaxMovement.fill = GridBagConstraints.HORIZONTAL;
 		gbc_mTextFieldBotMaxMovement.gridx = 1;
 		gbc_mTextFieldBotMaxMovement.gridy = 1;
@@ -175,15 +189,16 @@ public class ScenarioOptionsGUI extends JFrame {
 		JPanel panelPlayModes = new JPanel();
 		tabbedPane.addTab("PlayModes", null, panelPlayModes, null);
 		GridBagLayout gbl_panelPlayModes = new GridBagLayout();
-		gbl_panelPlayModes.columnWidths = new int[]{413, 0};
+		gbl_panelPlayModes.columnWidths = new int[]{413, 0, 0};
 		gbl_panelPlayModes.rowHeights = new int[]{23, 0};
-		gbl_panelPlayModes.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbl_panelPlayModes.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		gbl_panelPlayModes.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		panelPlayModes.setLayout(gbl_panelPlayModes);
 		
 		chckbxAutomaticGame = new JCheckBox("Automatic Game");
 		chckbxAutomaticGame.setSelected( Core.getInstance().isAutomaticGame() );
 		GridBagConstraints gbc_chckbxAutomaticGame = new GridBagConstraints();
+		gbc_chckbxAutomaticGame.insets = new Insets(0, 0, 0, 5);
 		gbc_chckbxAutomaticGame.anchor = GridBagConstraints.NORTH;
 		gbc_chckbxAutomaticGame.fill = GridBagConstraints.HORIZONTAL;
 		gbc_chckbxAutomaticGame.gridx = 0;
