@@ -29,8 +29,35 @@ public class Kick{
 	}
 
 	public static Kick unmarshallXMLPositionDataPackageString( String aXMLKick ){
+		
+		Kick vKickStore = Helpers.unmarshallXMLString( aXMLKick, Kick.class );
+		vKickStore.verify();
+		
+		return vKickStore;
+		
+	}
+
+	public void verify() {
+		
+		if( mAngle > 180.0 ){
 			
-		return Helpers.unmarshallXMLString( aXMLKick, Kick.class );
+			mAngle = 180.0;
+			
+		} else if( mAngle < -180.0 ){
+			
+			mAngle = -180.0;
+			
+		}
+		
+		if( mForce > 1.0 ){
+			
+			mForce = 1.0f;
+			
+		} else if( mForce < 0.0 ){
+			
+			mForce = 0.0f;
+			
+		}
 		
 	}
 

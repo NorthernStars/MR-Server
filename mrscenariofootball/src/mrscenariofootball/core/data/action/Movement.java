@@ -31,7 +31,34 @@ public class Movement{
 
 	public static Movement unmarshallXMLPositionDataPackageString( String aXMLMovement ){
 			
-		return Helpers.unmarshallXMLString( aXMLMovement, Movement.class );
+		Movement vMovmentStore = Helpers.unmarshallXMLString( aXMLMovement, Movement.class );
+		vMovmentStore.verify();
+			
+		return vMovmentStore;
+		
+	}
+
+	public void verify() {
+		
+		if( mLeftWheelVelocity > 100 ){
+			
+			mLeftWheelVelocity = 100;
+			
+		} else if( mLeftWheelVelocity < -100 ){
+			
+			mLeftWheelVelocity = -100;
+			
+		}
+		
+		if( mRightWheelVelocity > 100 ){
+			
+			mRightWheelVelocity = 100;
+			
+		} else if( mRightWheelVelocity < -100 ){
+			
+			mRightWheelVelocity = -100;
+			
+		}
 		
 	}
 

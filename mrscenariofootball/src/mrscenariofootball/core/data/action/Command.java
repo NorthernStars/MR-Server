@@ -43,10 +43,12 @@ public class Command {
 	}
 
 	public Movement getMovement() {
+		mMovement.verify();
 		return mMovement;
 	}
 
 	public Kick getKick() {
+		mKick.verify();
 		return mKick;
 	}
 	
