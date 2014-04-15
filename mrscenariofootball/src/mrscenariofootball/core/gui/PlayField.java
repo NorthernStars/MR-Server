@@ -6,6 +6,8 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
@@ -35,11 +37,13 @@ import java.awt.Component;
 import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
-public class PlayField extends JPanel {
+public class PlayField extends JPanel implements ComponentListener {
 
 	private BufferedImage mBackgroundImage;
 	private BufferedImage mBallImage, mBlueBotImage, mYellowBotImage, mNoneBotImage;
     private JPopupMenu mPlayfieldPopupMenu;
+	private Map<ReferencePointName , ReferencePoint> mRefPointMap;
+	private boolean mPainted = false;
 
 	/**
 	 * Create the panel.
@@ -49,7 +53,7 @@ public class PlayField extends JPanel {
 		setLayout(null);
 		
 		mPlayfieldPopupMenu = new PlayfieldPopup();
-		
+		addComponentListener( this );
 		addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -74,12 +78,18 @@ public class PlayField extends JPanel {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		mRefPointMap = new HashMap<ReferencePointName, ReferencePoint>();
+		for( ReferencePoint vPoint : ScenarioInformation.getInstance().getWorldData().copy().getReferencePoints() ){
+			mRefPointMap.put(vPoint.getPointName(), vPoint);
+		}
+		
 	}
 
 	@Override
     public void paintComponent( Graphics g ) {
     	try{
-	    	super.paintComponent(g);       
+	    	//super.paintComponent(g);       
 
 			Graphics2D g2d = (Graphics2D) g;
 			
@@ -97,102 +107,106 @@ public class PlayField extends JPanel {
 			height = this.getHeight();
 			
 			// draw background image
-			//g2d.drawImage( mBackgroundImage, 0, 0, width, -height, this);
-            
-			// Create map of reference points
-			Map<ReferencePointName , ReferencePoint> vRefPointMap = new HashMap<ReferencePointName, ReferencePoint>();
-			for( ReferencePoint vPoint : vWorld.getReferencePoints() ){
-				vRefPointMap.put(vPoint.getPointName(), vPoint);
-			}
-			
-			// draw blue goal
-			if( vRefPointMap.containsKey(ReferencePointName.BlueGoalCornerTop)
-					&& vRefPointMap.containsKey(ReferencePointName.BlueGoalCornerBottom)){
-				ServerPoint vTop = vRefPointMap.get(ReferencePointName.BlueGoalCornerTop).getPosition();
-				ServerPoint vBottom = vRefPointMap.get(ReferencePointName.BlueGoalCornerBottom).getPosition();
-				double goalWidth = (1.0-vTop.getX()) * 0.75;
+			// g2d.drawImage( mBackgroundImage, 0, 0, width, -height, this);
+
+			if( !mPainted ){
 				
-				g2d.setColor( Color.BLUE );
-				g2d.fillRect( 	(int)(width * vTop.getX()),
-								(int)(-height * vTop.getY()),
-								(int)(width * goalWidth),
-								(int)(height * (vTop.getY() - vBottom.getY())));				
-			}
-			
-			// draw yellow goal
-			if( vRefPointMap.containsKey(ReferencePointName.YellowGoalCornerTop)
-					&& vRefPointMap.containsKey(ReferencePointName.YellowGoalCornerBottom)){
-				ServerPoint vTop = vRefPointMap.get(ReferencePointName.YellowGoalCornerTop).getPosition();
-				ServerPoint vBottom = vRefPointMap.get(ReferencePointName.YellowGoalCornerBottom).getPosition();
-				double goalWidth = vTop.getX() * 0.75;
+				super.paintComponent(g);
 				
-				g2d.setColor( Color.YELLOW );
-				g2d.fillRect( 	(int)(width * (vTop.getX() - goalWidth)),
-								(int)(-height * vTop.getY()),
-								(int)(width * goalWidth),
-								(int)(height * (vTop.getY() - vBottom.getY())));				
-			}
-			
-			// draw reference points
-			g2d.setColor( Color.WHITE );
-			float pointSize = height / 100;
-			int fontSize = (int)(pointSize);
-			for( ReferencePoint vPoint : vWorld.getReferencePoints() ){
+				// draw blue goal
+				if( mRefPointMap.containsKey(ReferencePointName.BlueGoalCornerTop)
+						&& mRefPointMap.containsKey(ReferencePointName.BlueGoalCornerBottom)){
+					ServerPoint vTop = mRefPointMap.get(ReferencePointName.BlueGoalCornerTop).getPosition();
+					ServerPoint vBottom = mRefPointMap.get(ReferencePointName.BlueGoalCornerBottom).getPosition();
+					double goalWidth = (1.0-vTop.getX()) * 0.75;
+					
+					g2d.setColor( Color.BLUE );
+					g2d.fillRect( 	(int)(width * vTop.getX()),
+									(int)(-height * vTop.getY()),
+									(int)(width * goalWidth),
+									(int)(height * (vTop.getY() - vBottom.getY())));				
+				}
 				
-				g2d.fillOval( (int)( width * vPoint.getPosition().getX() - pointSize * 0.5), 
-							(int)( -height * vPoint.getPosition().getY() - pointSize * 0.5 ), 
-							(int)( pointSize ), 
-							(int)( pointSize ) );
+	            g2d.fillRect( (int)100, (int)100, (int)100,(int)100 );
 				
-				lblNewLabel = new JLabel( vPoint.getPointName().getShortName() );
-				lblNewLabel.setForeground( Color.WHITE );
-				lblNewLabel.setFont( new Font(Font.SANS_SERIF, Font.PLAIN, fontSize) );
-				lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
-				lblNewLabel.setHorizontalTextPosition(SwingConstants.LEFT);
-				lblNewLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-				lblNewLabel.setBounds( 	(int)( width * vPoint.getPosition().getX() + pointSize * 0.5 ),
-										(int)( -height * vPoint.getPosition().getY() + pointSize * 0.5 ),
-										200, fontSize);
-				add(lblNewLabel);
+				// draw yellow goal
+				if( mRefPointMap.containsKey(ReferencePointName.YellowGoalCornerTop)
+						&& mRefPointMap.containsKey(ReferencePointName.YellowGoalCornerBottom)){
+					ServerPoint vTop = mRefPointMap.get(ReferencePointName.YellowGoalCornerTop).getPosition();
+					ServerPoint vBottom = mRefPointMap.get(ReferencePointName.YellowGoalCornerBottom).getPosition();
+					double goalWidth = vTop.getX() * 0.75;
+					
+					g2d.setColor( Color.YELLOW );
+					g2d.fillRect( 	(int)(width * (vTop.getX() - goalWidth)),
+									(int)(-height * vTop.getY()),
+									(int)(width * goalWidth),
+									(int)(height * (vTop.getY() - vBottom.getY())));				
+				}
 				
-			}
-			
-			// set list of lines to draw
-			List<ReferencePointName> vLinesToDraw = getLinesToDraw();
-			
-			// draw lines
-			float lineWidth = pointSize * 0.25f;
-			g2d.setColor( Color.WHITE );
-			g2d.setStroke( new BasicStroke(lineWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL) );
-			int i = 0;
-			while( i < vLinesToDraw.size()-1 ){
+				// draw reference points
+				g2d.setColor( Color.WHITE );
+				float pointSize = height / 100;
+				int fontSize = (int)(pointSize);
+				for( ReferencePoint vPoint : vWorld.getReferencePoints() ){
+					
+					g2d.fillOval( (int)( width * vPoint.getPosition().getX() - pointSize * 0.5), 
+								(int)( -height * vPoint.getPosition().getY() - pointSize * 0.5 ), 
+								(int)( pointSize ), 
+								(int)( pointSize ) );
+					
+					lblNewLabel = new JLabel( vPoint.getPointName().getShortName() );
+					lblNewLabel.setForeground( Color.WHITE );
+					lblNewLabel.setFont( new Font(Font.SANS_SERIF, Font.PLAIN, fontSize) );
+					lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
+					lblNewLabel.setHorizontalTextPosition(SwingConstants.LEFT);
+					lblNewLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+					lblNewLabel.setBounds( 	(int)( width * vPoint.getPosition().getX() + pointSize * 0.5 ),
+											(int)( -height * vPoint.getPosition().getY() + pointSize * 0.5 ),
+											200, fontSize);
+					add(lblNewLabel);
+					
+				}
 				
-				ReferencePoint vRefPoint1 = vRefPointMap.get(vLinesToDraw.get(i++));
-				ReferencePoint vRefPoint2 = vRefPointMap.get(vLinesToDraw.get(i++));
-				g2d.drawLine( (int)( width * vRefPoint1.getPosition().getX()),
-						(int)( -height * vRefPoint1.getPosition().getY()),
-						(int)( width * vRefPoint2.getPosition().getX()),
-						(int)( -height * vRefPoint2.getPosition().getY()) );
+				// set list of lines to draw
+				List<ReferencePointName> vLinesToDraw = getLinesToDraw();
 				
-			}
-			
-			// draw center circle
-			if( vRefPointMap.containsKey(ReferencePointName.BlueGoalCornerTop)
-					&& vRefPointMap.containsKey(ReferencePointName.BlueGoalCornerBottom)
-					&& vRefPointMap.containsKey(ReferencePointName.FieldCenter)){
-				
-				ServerPoint vTop = vRefPointMap.get(ReferencePointName.BlueGoalCornerTop).getPosition();
-				ServerPoint vBottom = vRefPointMap.get(ReferencePointName.BlueGoalCornerBottom).getPosition();
-				ServerPoint vCenter = vRefPointMap.get(ReferencePointName.FieldCenter).getPosition();
-				double centerCircleSize = (vTop.getY() - vBottom.getY()) * 0.75;
-				
+				// draw lines
+				float lineWidth = pointSize * 0.25f;
 				g2d.setColor( Color.WHITE );
 				g2d.setStroke( new BasicStroke(lineWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL) );
-				g2d.drawArc( (int)(width * (vCenter.getX() - centerCircleSize * 0.5)),
-							 (int)(-height * vCenter.getY() - height * centerCircleSize * 0.5),
-							 (int)(width * centerCircleSize),
-							 (int)(height * centerCircleSize),
-							 0, 360);
+				int i = 0;
+				while( i < vLinesToDraw.size()-1 ){
+					
+					ReferencePoint vRefPoint1 = mRefPointMap.get(vLinesToDraw.get(i++));
+					ReferencePoint vRefPoint2 = mRefPointMap.get(vLinesToDraw.get(i++));
+					g2d.drawLine( (int)( width * vRefPoint1.getPosition().getX()),
+							(int)( -height * vRefPoint1.getPosition().getY()),
+							(int)( width * vRefPoint2.getPosition().getX()),
+							(int)( -height * vRefPoint2.getPosition().getY()) );
+					
+				}
+				
+				// draw center circle
+				if( mRefPointMap.containsKey(ReferencePointName.BlueGoalCornerTop)
+						&& mRefPointMap.containsKey(ReferencePointName.BlueGoalCornerBottom)
+						&& mRefPointMap.containsKey(ReferencePointName.FieldCenter)){
+					
+					ServerPoint vTop = mRefPointMap.get(ReferencePointName.BlueGoalCornerTop).getPosition();
+					ServerPoint vBottom = mRefPointMap.get(ReferencePointName.BlueGoalCornerBottom).getPosition();
+					ServerPoint vCenter = mRefPointMap.get(ReferencePointName.FieldCenter).getPosition();
+					double centerCircleSize = (vTop.getY() - vBottom.getY()) * 0.75;
+					
+					g2d.setColor( Color.WHITE );
+					g2d.setStroke( new BasicStroke(lineWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL) );
+					g2d.drawArc( (int)(width * (vCenter.getX() - centerCircleSize * 0.5)),
+								 (int)(-height * vCenter.getY() - height * centerCircleSize * 0.5),
+								 (int)(width * centerCircleSize),
+								 (int)(height * centerCircleSize),
+								 0, 360);
+					
+				}
+				
+				mPainted = true;
 				
 			}
 			
@@ -223,7 +237,6 @@ public class PlayField extends JPanel {
 							(int)(width*vWorld.getBallPosition().getPosition().getX() - height/160),
 							(int)(-height*vWorld.getBallPosition().getPosition().getY() - height/160), 
 							(int)(height/80), (int)(height/80), this);
-			
 			
 	    } catch (Exception e) {
 			e.printStackTrace();
@@ -313,4 +326,31 @@ public class PlayField extends JPanel {
 		});
     	
     }
+
+	@Override
+	public void componentResized(ComponentEvent e) {
+		
+		mPainted = false;
+		
+	}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+    
+    
 }
