@@ -82,7 +82,7 @@ public class Core {
 		PlayMode vCurrentPlaymode;
 		
 		long vTickTime;
-		double vTimeCounter = 0;
+//		double vTimeCounter = 0;
 		
 		while( true ){
 			

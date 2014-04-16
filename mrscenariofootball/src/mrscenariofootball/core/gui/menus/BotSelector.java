@@ -14,13 +14,14 @@ import javax.swing.JComboBox;
 import mrscenariofootball.core.data.BotAI;
 import mrscenariofootball.core.data.ScenarioInformation;
 import mrscenariofootball.core.data.worlddata.server.Player;
-import mrscenariofootball.core.gui.PlayField;
+import mrscenariofootball.core.gui.PlayFieldForeground;
 import mrservermisc.bots.interfaces.Bot;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Dimension;
 
+@SuppressWarnings("serial")
 public class BotSelector extends JDialog {
 
 	private static class FormatedBotAI extends BotAI{
@@ -85,7 +86,7 @@ public class BotSelector extends JDialog {
 								if( vPlayer.getId() == ((FormatedBotAI) comboBoxBots.getSelectedItem()).getVtId() ){
 									
 									vPlayer.getPosition().setLocation( mX, mY );
-									((PlayField) mInvoker).update();
+									((PlayFieldForeground) mInvoker).update();
 									break;
 								}
 							

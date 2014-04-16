@@ -87,7 +87,7 @@ public class ScenarioOptionsGUI extends JFrame {
 		mTextFieldGameTickTime.setColumns(10);
 		mTextFieldGameTickTime.setText( Double.toString( ScenarioInformation.getInstance().getGameTickTime() ) );
 		
-		JLabel lblNewLabel_1 = new JLabel("Max. Ball Movement per GameTick in % of PlayField:");
+		JLabel lblNewLabel_1 = new JLabel("Max. Ball Movement per GameTick in % of PlayFieldBackground:");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel_1.setEnabled(false);
 		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
@@ -108,7 +108,7 @@ public class ScenarioOptionsGUI extends JFrame {
 		panelGeneral.add(mTextFieldBallMovementMax, gbc_mTextFieldBallMovementMax);
 		mTextFieldBallMovementMax.setColumns(10);
 		
-		JLabel lblMaxAbsoluteHeight = new JLabel("Height of PlayField in % of Width:");
+		JLabel lblMaxAbsoluteHeight = new JLabel("Height of PlayFieldBackground in % of Width:");
 		lblMaxAbsoluteHeight.setHorizontalAlignment(SwingConstants.RIGHT);
 		GridBagConstraints gbc_lblMaxAbsoluteHeight = new GridBagConstraints();
 		gbc_lblMaxAbsoluteHeight.fill = GridBagConstraints.HORIZONTAL;
@@ -128,7 +128,7 @@ public class ScenarioOptionsGUI extends JFrame {
 		mTextFieldFieldHeight.setColumns(10);
 		mTextFieldFieldHeight.setText( Double.toString( ScenarioInformation.getInstance().getYFactor() ) );
 		
-		JLabel lblMaxAbsoluteWidht = new JLabel("Max. absolute Width of PlayField in Points:");
+		JLabel lblMaxAbsoluteWidht = new JLabel("Max. absolute Width of PlayFieldBackground in Points:");
 		lblMaxAbsoluteWidht.setHorizontalAlignment(SwingConstants.RIGHT);
 		GridBagConstraints gbc_lblMaxAbsoluteWidht = new GridBagConstraints();
 		gbc_lblMaxAbsoluteWidht.fill = GridBagConstraints.HORIZONTAL;
@@ -167,7 +167,7 @@ public class ScenarioOptionsGUI extends JFrame {
 		gbc_chckbxSimulation.gridy = 0;
 		panelSimulation.add(chckbxSimulation, gbc_chckbxSimulation);
 		
-		JLabel lblMaxBotMovement = new JLabel("Max. Bot Movement per Tick in % of PlayField:");
+		JLabel lblMaxBotMovement = new JLabel("Max. Bot Movement per Tick in % of PlayFieldBackground:");
 		GridBagConstraints gbc_lblMaxBotMovement = new GridBagConstraints();
 		gbc_lblMaxBotMovement.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblMaxBotMovement.insets = new Insets(0, 0, 0, 5);

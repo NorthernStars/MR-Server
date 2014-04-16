@@ -18,13 +18,14 @@ import mrscenariofootball.core.data.worlddata.server.ServerPoint;
 import javax.swing.DefaultComboBoxModel;
 
 import mrscenariofootball.core.data.worlddata.server.ReferencePointName;
-import mrscenariofootball.core.gui.PlayField;
+import mrscenariofootball.core.gui.PlayFieldForeground;
 import mrscenariofootball.game.Core;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Dimension;
 
+@SuppressWarnings("serial")
 public class PositionSelector extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
@@ -74,7 +75,7 @@ public class PositionSelector extends JDialog {
 		            	ScenarioInformation.getInstance().setBall( vNewPosition );
 		            	Core.getInstance().stopBall();
 		            	ScenarioCore.getLogger().info( "Ball set to position: {}", vNewPosition );
-		            	((PlayField) mInvoker).update();
+		            	((PlayFieldForeground) mInvoker).update();
 		            	
 		            	dispose();
 		            	

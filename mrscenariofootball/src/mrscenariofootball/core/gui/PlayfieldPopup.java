@@ -38,7 +38,7 @@ public class PlayfieldPopup extends JPopupMenu {
             	ScenarioInformation.getInstance().setBall( vNewPosition );
             	ScenarioCore.getLogger().info( "Ball set to position: {}", vNewPosition );
             	Core.getInstance().stopBall();
-            	((PlayField) mInvoker).update();
+            	((PlayFieldForeground) mInvoker).update();
             }
         });
         add(vSetBallPosition);

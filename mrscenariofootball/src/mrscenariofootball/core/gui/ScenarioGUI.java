@@ -4,10 +4,12 @@ import javax.swing.JPanel;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Graphics;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 
 import mrscenariofootball.core.ScenarioCore;
@@ -32,7 +34,9 @@ import java.awt.event.ActionEvent;
 @SuppressWarnings("serial")
 public class ScenarioGUI extends JPanel {
 
-	private PlayField mPlayfield;
+	private PlayFieldBackground mPlayfieldBackground;
+	private PlayFieldForeground mPlayFieldForeground;
+	private JLayeredPane mHelperPanel;
 	private JLabel mTime;
 	private JLabel mLblYellowScore;
 	private JLabel mLblBlueScore;
@@ -44,7 +48,7 @@ public class ScenarioGUI extends JPanel {
 	private JPanel panel_3;
 
 	/**
-	 * Create the panel.
+	 * Create the mPlayFieldForeground.
 	 */
 	public ScenarioGUI() {
 		super();
@@ -52,10 +56,20 @@ public class ScenarioGUI extends JPanel {
 		
 		JPanel panel = new JPanel();
 		add(panel, BorderLayout.SOUTH);
-		mPlayfield = new PlayField();
-		add( mPlayfield, BorderLayout.CENTER );
 		panel.setLayout(new BorderLayout(0, 0));
 		
+		// create helper panel to store background and foreground
+		mHelperPanel = new JLayeredPane();
+		add(mHelperPanel, BorderLayout.CENTER);
+			
+		// create background and foreground
+		mPlayfieldBackground = new PlayFieldBackground();
+		mPlayFieldForeground = new PlayFieldForeground();				
+		
+		// adding foreground first!
+		mHelperPanel.add( mPlayfieldBackground, 1 );
+		mHelperPanel.add( mPlayFieldForeground, 0 );						
+				
 		mLblPlayModeStatus = new JLabel("PlayMode");
 		mLblPlayModeStatus.setHorizontalAlignment(SwingConstants.CENTER);
 		panel.add(mLblPlayModeStatus);
@@ -261,6 +275,21 @@ public class ScenarioGUI extends JPanel {
 
 	}
 	
+	@Override
+	protected void paintComponent(Graphics arg0) {
+		super.paintComponent(arg0);
+		int width = mHelperPanel.getWidth();
+		int height = mHelperPanel.getHeight();
+		
+		if( mPlayfieldBackground.getWidth() != width || mPlayfieldBackground.getHeight() != height
+				|| mPlayFieldForeground.getWidth() != width || mPlayFieldForeground.getHeight() != height ){
+			mPlayfieldBackground.setBounds(0, 0, width, height);
+			mPlayFieldForeground.setBounds(0, 0, width, height);
+		}
+		
+		updatePlayField();
+	}
+	
 	public void update(){
     	
     	EventQueue.invokeLater(new Runnable() {
@@ -286,7 +315,19 @@ public class ScenarioGUI extends JPanel {
 				
 			}
 		});
-    	mPlayfield.update();
+    	updatePlayField();
     	
     }
+	
+	private void updatePlayField(){
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				
+				mHelperPanel.repaint();
+				mHelperPanel.validate();
+				
+			}
+		});  
+		
+	}
 }
