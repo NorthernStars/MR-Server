@@ -37,11 +37,19 @@ import javax.swing.SwingConstants;
 @SuppressWarnings("serial")
 public class PlayField extends JPanel {
 
-	private BufferedImage mBackgroundImage;
 	private BufferedImage mBallImage, mBlueBotImage, mYellowBotImage, mNoneBotImage;
     private JPopupMenu mPlayfieldPopupMenu;
 	private List<ReferencePointName> mLinesToDraw;
 	private Map<ReferencePointName , ReferencePoint> mRefPointMap;
+	private double mHeightHolder, mGoalWidth, mCenterCircleSize;
+	private float mPointSize, mHalfPointSize, mLineWidth;
+	private ReferencePoint mRefPoint1, mRefPoint2;
+	private ServerPoint mTop, mBottom, mCenter;
+	private AffineTransform mTransformation;
+	private Graphics2D g2d;
+	private WorldData mWorld;
+	private int mWidth,  mHeight, mFontSize;
+	private JLabel mMultiUseLabel;
 
 	/**
 	 * Create the panel.
@@ -88,87 +96,83 @@ public class PlayField extends JPanel {
     public void paintComponent( Graphics g ) {
     	try{
 	    	super.paintComponent(g);       
+	    	removeAll();
+	    	
+			g2d = (Graphics2D) g;
 
-			Graphics2D g2d = (Graphics2D) g;
+			mWidth = this.getWidth();
+			mHeight = this.getHeight();
 			
-			g2d.translate( 0, this.getHeight() );
+			g2d.translate( 0, mHeight );
 			g2d.scale( 1.0 / ScenarioInformation.getInstance().getXFactor(),
 					   1.0 / ScenarioInformation.getInstance().getYFactor());
 			
-	    	removeAll();
-	    	
-	        WorldData vWorld = ScenarioInformation.getInstance().getWorldData().copy();
-			int width, height;
-			JLabel lblNewLabel;
-			
-			width = this.getWidth();
-			height = this.getHeight();
-			
+	        mWorld = ScenarioInformation.getInstance().getWorldData();
 			// draw blue goal
 			if( mRefPointMap.containsKey(ReferencePointName.BlueGoalCornerTop)
 					&& mRefPointMap.containsKey(ReferencePointName.BlueGoalCornerBottom)){
-				ServerPoint vTop = mRefPointMap.get(ReferencePointName.BlueGoalCornerTop).getPosition();
-				ServerPoint vBottom = mRefPointMap.get(ReferencePointName.BlueGoalCornerBottom).getPosition();
-				double goalWidth = (1.0-vTop.getX()) * 0.75;
+				mTop = mRefPointMap.get(ReferencePointName.BlueGoalCornerTop).getPosition();
+				mBottom = mRefPointMap.get(ReferencePointName.BlueGoalCornerBottom).getPosition();
+				mGoalWidth = (1.0-mTop.getX()) * 0.75;
 				
 				g2d.setColor( Color.BLUE );
-				g2d.fillRect( 	(int)(width * vTop.getX()),
-								(int)(-height * vTop.getY()),
-								(int)(width * goalWidth),
-								(int)(height * (vTop.getY() - vBottom.getY())));				
+				g2d.fillRect( 	(int)(mWidth * mTop.getX()),
+								(int)(-mHeight * mTop.getY()),
+								(int)(mWidth * mGoalWidth),
+								(int)(mHeight * (mTop.getY() - mBottom.getY())));				
 			}
 			
 			// draw yellow goal
 			if( mRefPointMap.containsKey(ReferencePointName.YellowGoalCornerTop)
 					&& mRefPointMap.containsKey(ReferencePointName.YellowGoalCornerBottom)){
-				ServerPoint vTop = mRefPointMap.get(ReferencePointName.YellowGoalCornerTop).getPosition();
-				ServerPoint vBottom = mRefPointMap.get(ReferencePointName.YellowGoalCornerBottom).getPosition();
-				double goalWidth = vTop.getX() * 0.75;
+				mTop = mRefPointMap.get(ReferencePointName.YellowGoalCornerTop).getPosition();
+				mBottom = mRefPointMap.get(ReferencePointName.YellowGoalCornerBottom).getPosition();
+				mGoalWidth = mTop.getX() * 0.75;
 				
 				g2d.setColor( Color.YELLOW );
-				g2d.fillRect( 	(int)(width * (vTop.getX() - goalWidth)),
-								(int)(-height * vTop.getY()),
-								(int)(width * goalWidth),
-								(int)(height * (vTop.getY() - vBottom.getY())));				
+				g2d.fillRect( 	(int)(mWidth * (mTop.getX() - mGoalWidth)),
+								(int)(-mHeight * mTop.getY()),
+								(int)(mWidth * mGoalWidth),
+								(int)(mHeight * (mTop.getY() - mBottom.getY())));				
 			}
 			
 			// draw reference points
 			g2d.setColor( Color.WHITE );
-			float pointSize = height / 100;
-			int fontSize = (int)(pointSize);
-			for( ReferencePoint vPoint : vWorld.getReferencePoints() ){
+			mPointSize = mHeight / 100;
+			mHalfPointSize = mPointSize * 0.5f;
+			mFontSize = (int)(mPointSize);
+			for( ReferencePoint vPoint : mWorld.getReferencePoints() ){
 				
-				g2d.fillOval( (int)( width * vPoint.getPosition().getX() - pointSize * 0.5), 
-							(int)( -height * vPoint.getPosition().getY() - pointSize * 0.5 ), 
-							(int)( pointSize ), 
-							(int)( pointSize ) );
+				g2d.fillOval( (int)( mWidth * vPoint.getPosition().getX() - mHalfPointSize ), 
+							(int)( -mHeight * vPoint.getPosition().getY() - mHalfPointSize ), 
+							(int)( mPointSize ), 
+							(int)( mPointSize ) );
 				
-				lblNewLabel = new JLabel( vPoint.getPointName().getShortName() );
-				lblNewLabel.setForeground( Color.WHITE );
-				lblNewLabel.setFont( new Font(Font.SANS_SERIF, Font.PLAIN, fontSize) );
-				lblNewLabel.setHorizontalAlignment(SwingConstants.LEFT);
-				lblNewLabel.setHorizontalTextPosition(SwingConstants.LEFT);
-				lblNewLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-				lblNewLabel.setBounds( 	(int)( width * vPoint.getPosition().getX() + pointSize * 0.5 ),
-										(int)( -height * vPoint.getPosition().getY() + pointSize * 0.5 ),
-										200, fontSize);
-				add(lblNewLabel);
+				mMultiUseLabel = new JLabel( vPoint.getPointName().getShortName() );
+				mMultiUseLabel.setForeground( Color.WHITE );
+				mMultiUseLabel.setFont( new Font(Font.SANS_SERIF, Font.PLAIN, mFontSize) );
+				mMultiUseLabel.setHorizontalAlignment(SwingConstants.LEFT);
+				mMultiUseLabel.setHorizontalTextPosition(SwingConstants.LEFT);
+				mMultiUseLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+				mMultiUseLabel.setBounds( 	(int)( mWidth * vPoint.getPosition().getX() + mHalfPointSize ),
+										(int)( -mHeight * vPoint.getPosition().getY() + mHalfPointSize ),
+										200, mFontSize);
+				add(mMultiUseLabel);
 				
 			}
 			
-			// draw lines
-			float lineWidth = pointSize * 0.25f;
+			mLineWidth = mPointSize * 0.25f;
 			g2d.setColor( Color.WHITE );
-			g2d.setStroke( new BasicStroke(lineWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL) );
+			g2d.setStroke( new BasicStroke(mLineWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL) );
 			int i = 0;
 			while( i < mLinesToDraw.size()-1 ){
 				
-				ReferencePoint vRefPoint1 = mRefPointMap.get(mLinesToDraw.get(i++));
-				ReferencePoint vRefPoint2 = mRefPointMap.get(mLinesToDraw.get(i++));
-				g2d.drawLine( (int)( width * vRefPoint1.getPosition().getX()),
-						(int)( -height * vRefPoint1.getPosition().getY()),
-						(int)( width * vRefPoint2.getPosition().getX()),
-						(int)( -height * vRefPoint2.getPosition().getY()) );
+				mRefPoint1 = mRefPointMap.get(mLinesToDraw.get(i++));
+				mRefPoint2 = mRefPointMap.get(mLinesToDraw.get(i++));
+				g2d.drawLine( (int)( mWidth * mRefPoint1.getPosition().getX()),
+						(int)( -mHeight * mRefPoint1.getPosition().getY()),
+						(int)( mWidth * mRefPoint2.getPosition().getX()),
+						(int)( -mHeight * mRefPoint2.getPosition().getY()) );
 				
 			}
 			
@@ -177,49 +181,48 @@ public class PlayField extends JPanel {
 					&& mRefPointMap.containsKey(ReferencePointName.BlueGoalCornerBottom)
 					&& mRefPointMap.containsKey(ReferencePointName.FieldCenter)){
 				
-				ServerPoint vTop = mRefPointMap.get(ReferencePointName.BlueGoalCornerTop).getPosition();
-				ServerPoint vBottom = mRefPointMap.get(ReferencePointName.BlueGoalCornerBottom).getPosition();
-				ServerPoint vCenter = mRefPointMap.get(ReferencePointName.FieldCenter).getPosition();
-				double centerCircleSize = (vTop.getY() - vBottom.getY()) * 0.75;
+				mTop = mRefPointMap.get(ReferencePointName.BlueGoalCornerTop).getPosition();
+				mBottom = mRefPointMap.get(ReferencePointName.BlueGoalCornerBottom).getPosition();
+				mCenter = mRefPointMap.get(ReferencePointName.FieldCenter).getPosition();
+				mCenterCircleSize = (mTop.getY() - mBottom.getY()) * 0.75;
 				
 				g2d.setColor( Color.WHITE );
-				g2d.setStroke( new BasicStroke(lineWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL) );
-				g2d.drawArc( (int)(width * (vCenter.getX() - centerCircleSize * 0.5)),
-							 (int)(-height * vCenter.getY() - height * centerCircleSize * 0.5),
-							 (int)(width * centerCircleSize),
-							 (int)(height * centerCircleSize),
+				g2d.setStroke( new BasicStroke(mLineWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL) );
+				g2d.drawArc( (int)(mWidth * (mCenter.getX() - mCenterCircleSize * 0.5)),
+							 (int)(-mHeight * mCenter.getY() - mHeight * mCenterCircleSize * 0.5),
+							 (int)(mWidth * mCenterCircleSize),
+							 (int)(mHeight * mCenterCircleSize),
 							 0, 360);
 				
 			}
 			
-			// draw player
-			AffineTransform mTransformation;
-			for( Player vPlayer : vWorld.getListOfPlayers() ){
+			mHeightHolder = mHeight / 40.0;
+			for( Player vPlayer : mWorld.getListOfPlayers() ){
 			
 				mTransformation = new AffineTransform();
-	            mTransformation.translate( 	width * vPlayer.getPosition().getX() - ( height / 40.0 ) / mBlueBotImage.getWidth() / 2,
-	            		 					-(height * vPlayer.getPosition().getY() - ( height / 40.0 ) / mBlueBotImage.getHeight() / 2 ));
+	            mTransformation.translate( 	mWidth * vPlayer.getPosition().getX() - ( mHeightHolder ) / mBlueBotImage.getWidth() / 2,
+	            		 					-(mHeight * vPlayer.getPosition().getY() - ( mHeightHolder ) / mBlueBotImage.getHeight() / 2 ));
 	            mTransformation.rotate( Math.toRadians( -vPlayer.getOrientationAngle() ) );
-	            mTransformation.scale( ( height / 40.0 ) / mBlueBotImage.getWidth(), ( height / 40.0 ) / mBlueBotImage.getHeight() );
-	            mTransformation.translate( -mBlueBotImage.getWidth() / 2, -mBlueBotImage.getHeight() / 2);
+	            mTransformation.scale( ( mHeightHolder ) / mBlueBotImage.getWidth(), ( mHeightHolder ) / mBlueBotImage.getHeight() );
 				g2d.drawImage( vPlayer.getTeam() == Team.Yellow ? mYellowBotImage : vPlayer.getTeam() == Team.Blue ? mBlueBotImage : mNoneBotImage, mTransformation, this );
 				
-				lblNewLabel = new JLabel( vPlayer.getNickname() + " (" + vPlayer.getId() + ")" );
-				lblNewLabel.setForeground( Color.WHITE );
-				lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-				lblNewLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-				lblNewLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-				lblNewLabel.setBounds( 	(int)( width * vPlayer.getPosition().getX() - 100 ),
-										(int)( -height * vPlayer.getPosition().getY() + 10 ), 200, 14);
-				add(lblNewLabel);
+				mMultiUseLabel = new JLabel( vPlayer.getNickname() + " (" + vPlayer.getId() + ")" );
+				mMultiUseLabel.setForeground( Color.WHITE );
+				mMultiUseLabel.setHorizontalAlignment(SwingConstants.CENTER);
+				mMultiUseLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+				mMultiUseLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+				mMultiUseLabel.setBounds( 	(int)( mWidth * vPlayer.getPosition().getX() - 100 ),
+										(int)( -mHeight * vPlayer.getPosition().getY() + 10 ), 200, 14);
+				add(mMultiUseLabel);
 				
 			}
 			
 			g2d.drawImage( 	mBallImage, 
-							(int)(width*vWorld.getBallPosition().getPosition().getX() - height/160),
-							(int)(-height*vWorld.getBallPosition().getPosition().getY() - height/160), 
-							(int)(height/80), (int)(height/80), this);
+							(int)(mWidth*mWorld.getBallPosition().getPosition().getX() - mHeight/160),
+							(int)(-mHeight*mWorld.getBallPosition().getPosition().getY() - mHeight/160), 
+							(int)(mHeight/80), (int)(mHeight/80), this);
 			
+			g2d.dispose();
 			
 	    } catch (Exception e) {
 			e.printStackTrace();
