@@ -4,8 +4,12 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
@@ -35,9 +39,9 @@ import java.awt.Component;
 import javax.swing.SwingConstants;
 
 @SuppressWarnings("serial")
-public class PlayField extends JPanel {
+public class PlayField extends JPanel implements ComponentListener{
 
-	private BufferedImage mBallImage, mBlueBotImage, mYellowBotImage, mNoneBotImage;
+	private BufferedImage mBallImage, mBlueBotImage, mYellowBotImage, mNoneBotImage, mBackGround;
     private JPopupMenu mPlayfieldPopupMenu;
 	private List<ReferencePointName> mLinesToDraw;
 	private Map<ReferencePointName , ReferencePoint> mRefPointMap;
@@ -50,6 +54,7 @@ public class PlayField extends JPanel {
 	private WorldData mWorld;
 	private int mWidth,  mHeight, mFontSize;
 	private JLabel mMultiUseLabel;
+	private Font mFont;
 
 	/**
 	 * Create the panel.
@@ -57,6 +62,8 @@ public class PlayField extends JPanel {
 	public PlayField() {
 		setBackground(new Color(34, 139, 34));
 		setLayout(null);
+		
+		addComponentListener(this);
 		
 		createLinesToDraw();
 		
@@ -90,113 +97,33 @@ public class PlayField extends JPanel {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 	}
 
 	@Override
     public void paintComponent( Graphics g ) {
     	try{
-	    	super.paintComponent(g);       
-	    	removeAll();
-	    	
-			g2d = (Graphics2D) g;
+    		
+    		g2d = (Graphics2D) g;
 
-			mWidth = this.getWidth();
-			mHeight = this.getHeight();
-			
-			g2d.translate( 0, mHeight );
-			g2d.scale( 1.0 / ScenarioInformation.getInstance().getXFactor(),
-					   1.0 / ScenarioInformation.getInstance().getYFactor());
-			
-	        mWorld = ScenarioInformation.getInstance().getWorldData();
-			// draw blue goal
-			if( mRefPointMap.containsKey(ReferencePointName.BlueGoalCornerTop)
-					&& mRefPointMap.containsKey(ReferencePointName.BlueGoalCornerBottom)){
-				mTop = mRefPointMap.get(ReferencePointName.BlueGoalCornerTop).getPosition();
-				mBottom = mRefPointMap.get(ReferencePointName.BlueGoalCornerBottom).getPosition();
-				mGoalWidth = (1.0-mTop.getX()) * 0.75;
-				
-				g2d.setColor( Color.BLUE );
-				g2d.fillRect( 	(int)(mWidth * mTop.getX()),
-								(int)(-mHeight * mTop.getY()),
-								(int)(mWidth * mGoalWidth),
-								(int)(mHeight * (mTop.getY() - mBottom.getY())));				
-			}
-			
-			// draw yellow goal
-			if( mRefPointMap.containsKey(ReferencePointName.YellowGoalCornerTop)
-					&& mRefPointMap.containsKey(ReferencePointName.YellowGoalCornerBottom)){
-				mTop = mRefPointMap.get(ReferencePointName.YellowGoalCornerTop).getPosition();
-				mBottom = mRefPointMap.get(ReferencePointName.YellowGoalCornerBottom).getPosition();
-				mGoalWidth = mTop.getX() * 0.75;
-				
-				g2d.setColor( Color.YELLOW );
-				g2d.fillRect( 	(int)(mWidth * (mTop.getX() - mGoalWidth)),
-								(int)(-mHeight * mTop.getY()),
-								(int)(mWidth * mGoalWidth),
-								(int)(mHeight * (mTop.getY() - mBottom.getY())));				
-			}
-			
-			// draw reference points
-			g2d.setColor( Color.WHITE );
-			mPointSize = mHeight / 100;
-			mHalfPointSize = mPointSize * 0.5f;
-			mFontSize = (int)(mPointSize);
-			for( ReferencePoint vPoint : mWorld.getReferencePoints() ){
-				
-				g2d.fillOval( (int)( mWidth * vPoint.getPosition().getX() - mHalfPointSize ), 
-							(int)( -mHeight * vPoint.getPosition().getY() - mHalfPointSize ), 
-							(int)( mPointSize ), 
-							(int)( mPointSize ) );
-				
-				mMultiUseLabel = new JLabel( vPoint.getPointName().getShortName() );
-				mMultiUseLabel.setForeground( Color.WHITE );
-				mMultiUseLabel.setFont( new Font(Font.SANS_SERIF, Font.PLAIN, mFontSize) );
-				mMultiUseLabel.setHorizontalAlignment(SwingConstants.LEFT);
-				mMultiUseLabel.setHorizontalTextPosition(SwingConstants.LEFT);
-				mMultiUseLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
-				mMultiUseLabel.setBounds( 	(int)( mWidth * vPoint.getPosition().getX() + mHalfPointSize ),
-										(int)( -mHeight * vPoint.getPosition().getY() + mHalfPointSize ),
-										200, mFontSize);
-				add(mMultiUseLabel);
-				
-			}
-			
-			mLineWidth = mPointSize * 0.25f;
-			g2d.setColor( Color.WHITE );
-			g2d.setStroke( new BasicStroke(mLineWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL) );
-			int i = 0;
-			while( i < mLinesToDraw.size()-1 ){
-				
-				mRefPoint1 = mRefPointMap.get(mLinesToDraw.get(i++));
-				mRefPoint2 = mRefPointMap.get(mLinesToDraw.get(i++));
-				g2d.drawLine( (int)( mWidth * mRefPoint1.getPosition().getX()),
-						(int)( -mHeight * mRefPoint1.getPosition().getY()),
-						(int)( mWidth * mRefPoint2.getPosition().getX()),
-						(int)( -mHeight * mRefPoint2.getPosition().getY()) );
-				
-			}
-			
-			// draw center circle
-			if( mRefPointMap.containsKey(ReferencePointName.BlueGoalCornerTop)
-					&& mRefPointMap.containsKey(ReferencePointName.BlueGoalCornerBottom)
-					&& mRefPointMap.containsKey(ReferencePointName.FieldCenter)){
-				
-				mTop = mRefPointMap.get(ReferencePointName.BlueGoalCornerTop).getPosition();
-				mBottom = mRefPointMap.get(ReferencePointName.BlueGoalCornerBottom).getPosition();
-				mCenter = mRefPointMap.get(ReferencePointName.FieldCenter).getPosition();
-				mCenterCircleSize = (mTop.getY() - mBottom.getY()) * 0.75;
-				
-				g2d.setColor( Color.WHITE );
-				g2d.setStroke( new BasicStroke(mLineWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL) );
-				g2d.drawArc( (int)(mWidth * (mCenter.getX() - mCenterCircleSize * 0.5)),
-							 (int)(-mHeight * mCenter.getY() - mHeight * mCenterCircleSize * 0.5),
-							 (int)(mWidth * mCenterCircleSize),
-							 (int)(mHeight * mCenterCircleSize),
-							 0, 360);
-				
-			}
-			
+    		mWidth = this.getWidth();
+    		mHeight = this.getHeight();
+    		
+    		if( mBackGround == null){
+    			createBackground();
+    		} else {
+    			g2d.drawImage( 	mBackGround, 0, 0, this);
+    		}
+    		
+    		g2d.translate( 0, mHeight );
+    		g2d.scale( 1.0 / ScenarioInformation.getInstance().getXFactor(),
+    				   1.0 / ScenarioInformation.getInstance().getYFactor());
+    		
+    		mWorld = ScenarioInformation.getInstance().getWorldData();
+    		
 			mHeightHolder = mHeight / 40.0;
+			mFont = new Font("Monospaced", Font.PLAIN, 14);
+		    g2d.setFont(mFont);
 			for( Player vPlayer : mWorld.getListOfPlayers() ){
 			
 				mTransformation = new AffineTransform();
@@ -206,14 +133,7 @@ public class PlayField extends JPanel {
 	            mTransformation.scale( ( mHeightHolder ) / mBlueBotImage.getWidth(), ( mHeightHolder ) / mBlueBotImage.getHeight() );
 				g2d.drawImage( vPlayer.getTeam() == Team.Yellow ? mYellowBotImage : vPlayer.getTeam() == Team.Blue ? mBlueBotImage : mNoneBotImage, mTransformation, this );
 				
-				mMultiUseLabel = new JLabel( vPlayer.getNickname() + " (" + vPlayer.getId() + ")" );
-				mMultiUseLabel.setForeground( Color.WHITE );
-				mMultiUseLabel.setHorizontalAlignment(SwingConstants.CENTER);
-				mMultiUseLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-				mMultiUseLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-				mMultiUseLabel.setBounds( 	(int)( mWidth * vPlayer.getPosition().getX() - 100 ),
-										(int)( -mHeight * vPlayer.getPosition().getY() + 10 ), 200, 14);
-				add(mMultiUseLabel);
+				g.drawString( vPlayer.getNickname() + " (" + vPlayer.getId() + ")" , (int)( mWidth * vPlayer.getPosition().getX() - 100 ), (int)( -mHeight * vPlayer.getPosition().getY() + 10 ) );
 				
 			}
 			
@@ -227,7 +147,115 @@ public class PlayField extends JPanel {
 	    } catch (Exception e) {
 			e.printStackTrace();
 		}		
-    }  
+    }
+
+	private void createBackground() {
+		
+		if( getWidth() == 0 || getHeight() == 0){
+			mBackGround = null;
+			return;
+		}
+		
+		mBackGround = new BufferedImage( getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB );
+		Graphics2D g = (Graphics2D) mBackGround.getGraphics();
+		if( g == null ){
+			mBackGround= null;
+			return;
+		}
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+	    
+		super.paintComponent(g); 
+
+		mWidth = this.getWidth();
+		mHeight = this.getHeight();
+		
+		g.translate( 0, mHeight );
+		g.scale( 1.0 / ScenarioInformation.getInstance().getXFactor(),
+				   1.0 / ScenarioInformation.getInstance().getYFactor());
+		
+		mWorld = ScenarioInformation.getInstance().getWorldData();
+		// draw blue goal
+		if( mRefPointMap.containsKey(ReferencePointName.BlueGoalCornerTop)
+				&& mRefPointMap.containsKey(ReferencePointName.BlueGoalCornerBottom)){
+			mTop = mRefPointMap.get(ReferencePointName.BlueGoalCornerTop).getPosition();
+			mBottom = mRefPointMap.get(ReferencePointName.BlueGoalCornerBottom).getPosition();
+			mGoalWidth = (1.0-mTop.getX()) * 0.75;
+			
+			g.setColor( Color.BLUE );
+			g.fillRect( 	(int)(mWidth * mTop.getX()),
+							(int)(-mHeight * mTop.getY()),
+							(int)(mWidth * mGoalWidth),
+							(int)(mHeight * (mTop.getY() - mBottom.getY())));				
+		}
+		
+		// draw yellow goal
+		if( mRefPointMap.containsKey(ReferencePointName.YellowGoalCornerTop)
+				&& mRefPointMap.containsKey(ReferencePointName.YellowGoalCornerBottom)){
+			mTop = mRefPointMap.get(ReferencePointName.YellowGoalCornerTop).getPosition();
+			mBottom = mRefPointMap.get(ReferencePointName.YellowGoalCornerBottom).getPosition();
+			mGoalWidth = mTop.getX() * 0.75;
+			
+			g.setColor( Color.YELLOW );
+			g.fillRect( 	(int)(mWidth * (mTop.getX() - mGoalWidth)),
+							(int)(-mHeight * mTop.getY()),
+							(int)(mWidth * mGoalWidth),
+							(int)(mHeight * (mTop.getY() - mBottom.getY())));				
+		}
+		
+		// draw reference points
+		g.setColor( Color.WHITE );
+		mPointSize = mHeight / 100;
+		mHalfPointSize = mPointSize * 0.5f;
+
+	    mFont = new Font("Monospaced", Font.PLAIN, (int)(mPointSize * 2));
+	    g.setFont(mFont);
+	    
+		for( ReferencePoint vPoint : mWorld.getReferencePoints() ){
+			
+			g.fillOval( (int)( mWidth * vPoint.getPosition().getX() - mHalfPointSize ), 
+						(int)( -mHeight * vPoint.getPosition().getY() - mHalfPointSize ), 
+						(int)( mPointSize ), 
+						(int)( mPointSize ) );
+			
+		    g.drawString(vPoint.getPointName().getShortName(), (int)( mWidth * vPoint.getPosition().getX() + mHalfPointSize ), (int)( -mHeight * vPoint.getPosition().getY() ) );
+						
+		}
+		
+		mLineWidth = mPointSize * 0.25f;
+		g.setColor( Color.WHITE );
+		g.setStroke( new BasicStroke(mLineWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL) );
+		int i = 0;
+		while( i < mLinesToDraw.size()-1 ){
+			
+			mRefPoint1 = mRefPointMap.get(mLinesToDraw.get(i++));
+			mRefPoint2 = mRefPointMap.get(mLinesToDraw.get(i++));
+			g.drawLine( (int)( mWidth * mRefPoint1.getPosition().getX()),
+					(int)( -mHeight * mRefPoint1.getPosition().getY()),
+					(int)( mWidth * mRefPoint2.getPosition().getX()),
+					(int)( -mHeight * mRefPoint2.getPosition().getY()) );
+			
+		}
+		
+		// draw center circle
+		if( mRefPointMap.containsKey(ReferencePointName.BlueGoalCornerTop)
+				&& mRefPointMap.containsKey(ReferencePointName.BlueGoalCornerBottom)
+				&& mRefPointMap.containsKey(ReferencePointName.FieldCenter)){
+			
+			mTop = mRefPointMap.get(ReferencePointName.BlueGoalCornerTop).getPosition();
+			mBottom = mRefPointMap.get(ReferencePointName.BlueGoalCornerBottom).getPosition();
+			mCenter = mRefPointMap.get(ReferencePointName.FieldCenter).getPosition();
+			mCenterCircleSize = (mTop.getY() - mBottom.getY()) * 0.75;
+			
+			g.setColor( Color.WHITE );
+			g.setStroke( new BasicStroke(mLineWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL) );
+			g.drawArc( (int)(mWidth * (mCenter.getX() - mCenterCircleSize * 0.5)),
+						 (int)(-mHeight * mCenter.getY() - mHeight * mCenterCircleSize * 0.5),
+						 (int)(mWidth * mCenterCircleSize),
+						 (int)(mHeight * mCenterCircleSize),
+						 0, 360);
+			
+		}
+	}  
     
     /**
      * Sets {@link List} of lines to draw
@@ -311,4 +339,29 @@ public class PlayField extends JPanel {
 		});
     	
     }
+
+	@Override
+	public void componentResized(ComponentEvent e) {
+		
+		createBackground();
+		
+	}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 }
