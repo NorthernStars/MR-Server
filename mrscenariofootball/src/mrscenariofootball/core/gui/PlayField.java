@@ -293,7 +293,7 @@ public class PlayField extends JPanel {
     	vLinesToDraw.add( ReferencePointName.YellowPenaltyAreaBackBottom ); 
     	
 //    	vLinesToDraw.add( ReferencePointName. );
-//    	vLinesToDraw.add( ReferencePointName. );    	
+//    	vLinesToDraw.add( ReferencePointName. );  dinge
     	
     	return vLinesToDraw;
     }
