@@ -40,6 +40,8 @@ public class PlayField extends JPanel {
 	private BufferedImage mBackgroundImage;
 	private BufferedImage mBallImage, mBlueBotImage, mYellowBotImage, mNoneBotImage;
     private JPopupMenu mPlayfieldPopupMenu;
+	private List<ReferencePointName> mLinesToDraw;
+	private Map<ReferencePointName , ReferencePoint> mRefPointMap;
 
 	/**
 	 * Create the panel.
@@ -48,7 +50,14 @@ public class PlayField extends JPanel {
 		setBackground(new Color(34, 139, 34));
 		setLayout(null);
 		
+		createLinesToDraw();
+		
 		mPlayfieldPopupMenu = new PlayfieldPopup();
+
+		mRefPointMap = new HashMap<ReferencePointName, ReferencePoint>();
+		for( ReferencePoint vPoint : ScenarioInformation.getInstance().getWorldData().getReferencePoints() ){
+			mRefPointMap.put(vPoint.getPointName(), vPoint);
+		}
 		
 		addMouseListener(new MouseAdapter() {
 
@@ -66,7 +75,6 @@ public class PlayField extends JPanel {
 		
 		
 		try {
-			mBackgroundImage = ImageIO.read( PlayField.class.getResource( "/mrscenariofootball/core/gui/grass.jpg" ));
 			mBallImage = ImageIO.read( PlayField.class.getResource( "/mrscenariofootball/core/gui/ball.png" ));
 			mBlueBotImage = ImageIO.read( PlayField.class.getResource( "/mrscenariofootball/core/gui/playerblue.gif" ));
 			mYellowBotImage = ImageIO.read( PlayField.class.getResource( "/mrscenariofootball/core/gui/playeryellow.gif" ));
@@ -96,20 +104,11 @@ public class PlayField extends JPanel {
 			width = this.getWidth();
 			height = this.getHeight();
 			
-			// draw background image
-			//g2d.drawImage( mBackgroundImage, 0, 0, width, -height, this);
-            
-			// Create map of reference points
-			Map<ReferencePointName , ReferencePoint> vRefPointMap = new HashMap<ReferencePointName, ReferencePoint>();
-			for( ReferencePoint vPoint : vWorld.getReferencePoints() ){
-				vRefPointMap.put(vPoint.getPointName(), vPoint);
-			}
-			
 			// draw blue goal
-			if( vRefPointMap.containsKey(ReferencePointName.BlueGoalCornerTop)
-					&& vRefPointMap.containsKey(ReferencePointName.BlueGoalCornerBottom)){
-				ServerPoint vTop = vRefPointMap.get(ReferencePointName.BlueGoalCornerTop).getPosition();
-				ServerPoint vBottom = vRefPointMap.get(ReferencePointName.BlueGoalCornerBottom).getPosition();
+			if( mRefPointMap.containsKey(ReferencePointName.BlueGoalCornerTop)
+					&& mRefPointMap.containsKey(ReferencePointName.BlueGoalCornerBottom)){
+				ServerPoint vTop = mRefPointMap.get(ReferencePointName.BlueGoalCornerTop).getPosition();
+				ServerPoint vBottom = mRefPointMap.get(ReferencePointName.BlueGoalCornerBottom).getPosition();
 				double goalWidth = (1.0-vTop.getX()) * 0.75;
 				
 				g2d.setColor( Color.BLUE );
@@ -120,10 +119,10 @@ public class PlayField extends JPanel {
 			}
 			
 			// draw yellow goal
-			if( vRefPointMap.containsKey(ReferencePointName.YellowGoalCornerTop)
-					&& vRefPointMap.containsKey(ReferencePointName.YellowGoalCornerBottom)){
-				ServerPoint vTop = vRefPointMap.get(ReferencePointName.YellowGoalCornerTop).getPosition();
-				ServerPoint vBottom = vRefPointMap.get(ReferencePointName.YellowGoalCornerBottom).getPosition();
+			if( mRefPointMap.containsKey(ReferencePointName.YellowGoalCornerTop)
+					&& mRefPointMap.containsKey(ReferencePointName.YellowGoalCornerBottom)){
+				ServerPoint vTop = mRefPointMap.get(ReferencePointName.YellowGoalCornerTop).getPosition();
+				ServerPoint vBottom = mRefPointMap.get(ReferencePointName.YellowGoalCornerBottom).getPosition();
 				double goalWidth = vTop.getX() * 0.75;
 				
 				g2d.setColor( Color.YELLOW );
@@ -157,18 +156,15 @@ public class PlayField extends JPanel {
 				
 			}
 			
-			// set list of lines to draw
-			List<ReferencePointName> vLinesToDraw = getLinesToDraw();
-			
 			// draw lines
 			float lineWidth = pointSize * 0.25f;
 			g2d.setColor( Color.WHITE );
 			g2d.setStroke( new BasicStroke(lineWidth, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL) );
 			int i = 0;
-			while( i < vLinesToDraw.size()-1 ){
+			while( i < mLinesToDraw.size()-1 ){
 				
-				ReferencePoint vRefPoint1 = vRefPointMap.get(vLinesToDraw.get(i++));
-				ReferencePoint vRefPoint2 = vRefPointMap.get(vLinesToDraw.get(i++));
+				ReferencePoint vRefPoint1 = mRefPointMap.get(mLinesToDraw.get(i++));
+				ReferencePoint vRefPoint2 = mRefPointMap.get(mLinesToDraw.get(i++));
 				g2d.drawLine( (int)( width * vRefPoint1.getPosition().getX()),
 						(int)( -height * vRefPoint1.getPosition().getY()),
 						(int)( width * vRefPoint2.getPosition().getX()),
@@ -177,13 +173,13 @@ public class PlayField extends JPanel {
 			}
 			
 			// draw center circle
-			if( vRefPointMap.containsKey(ReferencePointName.BlueGoalCornerTop)
-					&& vRefPointMap.containsKey(ReferencePointName.BlueGoalCornerBottom)
-					&& vRefPointMap.containsKey(ReferencePointName.FieldCenter)){
+			if( mRefPointMap.containsKey(ReferencePointName.BlueGoalCornerTop)
+					&& mRefPointMap.containsKey(ReferencePointName.BlueGoalCornerBottom)
+					&& mRefPointMap.containsKey(ReferencePointName.FieldCenter)){
 				
-				ServerPoint vTop = vRefPointMap.get(ReferencePointName.BlueGoalCornerTop).getPosition();
-				ServerPoint vBottom = vRefPointMap.get(ReferencePointName.BlueGoalCornerBottom).getPosition();
-				ServerPoint vCenter = vRefPointMap.get(ReferencePointName.FieldCenter).getPosition();
+				ServerPoint vTop = mRefPointMap.get(ReferencePointName.BlueGoalCornerTop).getPosition();
+				ServerPoint vBottom = mRefPointMap.get(ReferencePointName.BlueGoalCornerBottom).getPosition();
+				ServerPoint vCenter = mRefPointMap.get(ReferencePointName.FieldCenter).getPosition();
 				double centerCircleSize = (vTop.getY() - vBottom.getY()) * 0.75;
 				
 				g2d.setColor( Color.WHITE );
@@ -235,67 +231,66 @@ public class PlayField extends JPanel {
      * @return {@link List} of {@link ReferencePointName}.
      * Every pair of two points are start and end point of line.
      */
-    private List<ReferencePointName> getLinesToDraw(){
-    	List<ReferencePointName> vLinesToDraw = new ArrayList<ReferencePointName>();
+    private void createLinesToDraw(){
+    	mLinesToDraw = new ArrayList<ReferencePointName>();
     	
-    	vLinesToDraw.add( ReferencePointName.BlueFieldCornerBottom );
-    	vLinesToDraw.add( ReferencePointName.BlueFieldCornerTop );
+    	mLinesToDraw.add( ReferencePointName.BlueFieldCornerBottom );
+    	mLinesToDraw.add( ReferencePointName.BlueFieldCornerTop );
     	
-    	vLinesToDraw.add( ReferencePointName.BlueFieldCornerTop );
-    	vLinesToDraw.add( ReferencePointName.YellowFieldCornerTop );
+    	mLinesToDraw.add( ReferencePointName.BlueFieldCornerTop );
+    	mLinesToDraw.add( ReferencePointName.YellowFieldCornerTop );
     	
-    	vLinesToDraw.add( ReferencePointName.YellowFieldCornerTop );
-    	vLinesToDraw.add( ReferencePointName.YellowFieldCornerBottom );
+    	mLinesToDraw.add( ReferencePointName.YellowFieldCornerTop );
+    	mLinesToDraw.add( ReferencePointName.YellowFieldCornerBottom );
     	
-    	vLinesToDraw.add( ReferencePointName.YellowFieldCornerBottom );
-    	vLinesToDraw.add( ReferencePointName.BlueFieldCornerBottom ); 
+    	mLinesToDraw.add( ReferencePointName.YellowFieldCornerBottom );
+    	mLinesToDraw.add( ReferencePointName.BlueFieldCornerBottom ); 
     	
-    	vLinesToDraw.add( ReferencePointName.CenterLineTop );
-    	vLinesToDraw.add( ReferencePointName.CenterLineBottom );
+    	mLinesToDraw.add( ReferencePointName.CenterLineTop );
+    	mLinesToDraw.add( ReferencePointName.CenterLineBottom );
     	
-    	vLinesToDraw.add( ReferencePointName.YellowGoalCornerTop );
-    	vLinesToDraw.add( ReferencePointName.YellowGoalAreaFrontTop ); 
+    	mLinesToDraw.add( ReferencePointName.YellowGoalCornerTop );
+    	mLinesToDraw.add( ReferencePointName.YellowGoalAreaFrontTop ); 
     	
-    	vLinesToDraw.add( ReferencePointName.YellowGoalAreaFrontTop );
-    	vLinesToDraw.add( ReferencePointName.YellowGoalAreaFrontBottom ); 
+    	mLinesToDraw.add( ReferencePointName.YellowGoalAreaFrontTop );
+    	mLinesToDraw.add( ReferencePointName.YellowGoalAreaFrontBottom ); 
     	
-    	vLinesToDraw.add( ReferencePointName.YellowGoalAreaFrontBottom );
-    	vLinesToDraw.add( ReferencePointName.YellowGoalCornerBottom ); 
+    	mLinesToDraw.add( ReferencePointName.YellowGoalAreaFrontBottom );
+    	mLinesToDraw.add( ReferencePointName.YellowGoalCornerBottom ); 
     	
-    	vLinesToDraw.add( ReferencePointName.BlueGoalCornerTop );
-    	vLinesToDraw.add( ReferencePointName.BlueGoalAreaFrontTop ); 
+    	mLinesToDraw.add( ReferencePointName.BlueGoalCornerTop );
+    	mLinesToDraw.add( ReferencePointName.BlueGoalAreaFrontTop ); 
     	
-    	vLinesToDraw.add( ReferencePointName.BlueGoalAreaFrontTop );
-    	vLinesToDraw.add( ReferencePointName.BlueGoalAreaFrontBottom ); 
+    	mLinesToDraw.add( ReferencePointName.BlueGoalAreaFrontTop );
+    	mLinesToDraw.add( ReferencePointName.BlueGoalAreaFrontBottom ); 
     	
-    	vLinesToDraw.add( ReferencePointName.BlueGoalAreaFrontBottom );
-    	vLinesToDraw.add( ReferencePointName.BlueGoalCornerBottom );
+    	mLinesToDraw.add( ReferencePointName.BlueGoalAreaFrontBottom );
+    	mLinesToDraw.add( ReferencePointName.BlueGoalCornerBottom );
     	
-    	vLinesToDraw.add( ReferencePointName.BluePenaltyAreaBackTop );
-    	vLinesToDraw.add( ReferencePointName.BluePenaltyAreaFrontTop );
+    	mLinesToDraw.add( ReferencePointName.BluePenaltyAreaBackTop );
+    	mLinesToDraw.add( ReferencePointName.BluePenaltyAreaFrontTop );
     	
-    	vLinesToDraw.add( ReferencePointName.BluePenaltyAreaFrontTop );
-    	vLinesToDraw.add( ReferencePointName.BluePenaltyAreaFrontBottom ); 
+    	mLinesToDraw.add( ReferencePointName.BluePenaltyAreaFrontTop );
+    	mLinesToDraw.add( ReferencePointName.BluePenaltyAreaFrontBottom ); 
     	
-    	vLinesToDraw.add( ReferencePointName.BluePenaltyAreaFrontBottom );
-    	vLinesToDraw.add( ReferencePointName.BluePenaltyAreaBackBottom );
+    	mLinesToDraw.add( ReferencePointName.BluePenaltyAreaFrontBottom );
+    	mLinesToDraw.add( ReferencePointName.BluePenaltyAreaBackBottom );
     	
-    	vLinesToDraw.add( ReferencePointName.YellowGoalAreaFrontBottom );
-    	vLinesToDraw.add( ReferencePointName.YellowGoalCornerBottom );
+    	mLinesToDraw.add( ReferencePointName.YellowGoalAreaFrontBottom );
+    	mLinesToDraw.add( ReferencePointName.YellowGoalCornerBottom );
     	
-    	vLinesToDraw.add( ReferencePointName.YellowPenaltyAreaBackTop );
-    	vLinesToDraw.add( ReferencePointName.YellowPenaltyAreaFrontTop );
+    	mLinesToDraw.add( ReferencePointName.YellowPenaltyAreaBackTop );
+    	mLinesToDraw.add( ReferencePointName.YellowPenaltyAreaFrontTop );
     	
-    	vLinesToDraw.add( ReferencePointName.YellowPenaltyAreaFrontTop );
-    	vLinesToDraw.add( ReferencePointName.YellowPenaltyAreaFrontBottom ); 
+    	mLinesToDraw.add( ReferencePointName.YellowPenaltyAreaFrontTop );
+    	mLinesToDraw.add( ReferencePointName.YellowPenaltyAreaFrontBottom ); 
     	
-    	vLinesToDraw.add( ReferencePointName.YellowPenaltyAreaFrontBottom );
-    	vLinesToDraw.add( ReferencePointName.YellowPenaltyAreaBackBottom ); 
+    	mLinesToDraw.add( ReferencePointName.YellowPenaltyAreaFrontBottom );
+    	mLinesToDraw.add( ReferencePointName.YellowPenaltyAreaBackBottom ); 
     	
 //    	vLinesToDraw.add( ReferencePointName. );
 //    	vLinesToDraw.add( ReferencePointName. );  dinge
     	
-    	return vLinesToDraw;
     }
     
     /**
