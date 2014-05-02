@@ -35,7 +35,7 @@
 	<!-- Compiles the java code (including the usage of library for JUnit) -->
 	<target name="compile" depends="clean, makedir">
 		<javac srcdir="${src.dir}" destdir="${build.dir}" encoding="UTF-8"
-			classpathref="build.classpath">
+			classpathref="build.classpath" debug="true" debuglevel="lines,vars,source">
 		</javac>
 
 	</target>
