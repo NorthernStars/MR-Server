@@ -111,9 +111,8 @@ public class PlayField extends JPanel implements ComponentListener{
     		
     		if( mBackGround == null){
     			createBackground();
-    		} else {
-    			g2d.drawImage( 	mBackGround, 0, 0, this);
     		}
+    		g2d.drawImage( 	mBackGround, 0, 0, this);
     		
     		g2d.translate( 0, mHeight );
     		g2d.scale( 1.0 / ScenarioInformation.getInstance().getXFactor(),
