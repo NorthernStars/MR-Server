@@ -180,6 +180,14 @@ public class WorldData {
 		}
 		
 	}
+
+	public void setMapReferencePoints( Map<ReferencePointName, ReferencePoint> aReferencePoints ) {
+		
+		mReferencePoints = aReferencePoints;
+		
+		
+	}
+	
 	@XmlTransient
 	public Map<ReferencePointName, ReferencePoint> getMapOfReferencePoints(){
 		

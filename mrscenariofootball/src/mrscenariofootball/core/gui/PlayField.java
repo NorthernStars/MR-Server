@@ -55,6 +55,7 @@ public class PlayField extends JPanel implements ComponentListener{
 	private int mWidth,  mHeight, mFontSize;
 	private JLabel mMultiUseLabel;
 	private Font mFont;
+	private double mWidthHolder;
 
 	/**
 	 * Create the panel.
@@ -119,20 +120,27 @@ public class PlayField extends JPanel implements ComponentListener{
     				   1.0 / ScenarioInformation.getInstance().getYFactor());
     		
     		mWorld = ScenarioInformation.getInstance().getWorldData();
-    		
-			mHeightHolder = mHeight / 40.0;
-			mFont = new Font("Monospaced", Font.PLAIN, 14);
-		    g2d.setFont(mFont);
+
+			System.out.println(mHeight + " " + mHeightHolder + " " + mBlueBotImage.getHeight());
 			for( Player vPlayer : mWorld.getListOfPlayers() ){
 			
 				mTransformation = new AffineTransform();
-	            mTransformation.translate( 	mWidth * vPlayer.getPosition().getX() - ( mHeightHolder ) / mBlueBotImage.getWidth() / 2,
-	            		 					-(mHeight * vPlayer.getPosition().getY() - ( mHeightHolder ) / mBlueBotImage.getHeight() / 2 ));
-	            mTransformation.rotate( Math.toRadians( -vPlayer.getOrientationAngle() ) );
-	            mTransformation.scale( ( mHeightHolder ) / mBlueBotImage.getWidth(), ( mHeightHolder ) / mBlueBotImage.getHeight() );
+	            mTransformation.translate( 	mWidth * vPlayer.getPosition().getX() - mWidthHolder * mBlueBotImage.getWidth() / 2,
+	            		 					-mHeight * vPlayer.getPosition().getY() - mHeightHolder * mBlueBotImage.getHeight() / 2 );
+	            mTransformation.rotate( Math.toRadians( -vPlayer.getOrientationAngle() ), mBlueBotImage.getWidth() / 2, mBlueBotImage.getHeight() / 2 );
+	            mTransformation.scale( mWidthHolder, mHeightHolder );
 				g2d.drawImage( vPlayer.getTeam() == Team.Yellow ? mYellowBotImage : vPlayer.getTeam() == Team.Blue ? mBlueBotImage : mNoneBotImage, mTransformation, this );
+
+				g.fillOval( (int)( mWidth * vPlayer.getPosition().getX() - mHalfPointSize ), 
+						(int)( -mHeight * vPlayer.getPosition().getY() - mHalfPointSize ), 
+						(int)( mPointSize ), 
+						(int)( mPointSize ) );
+				g.drawOval( (int)( mWidth * vPlayer.getPosition().getX() - 0.013 * mWidth ), 
+						(int)( -mHeight * vPlayer.getPosition().getY() - 0.013 * mHeight), 
+						(int)( 0.026 * mWidth ), 
+						(int)( 0.026 * mHeight ) );
 				
-				g.drawString( vPlayer.getNickname() + " (" + vPlayer.getId() + ")" , (int)( mWidth * vPlayer.getPosition().getX() - 100 ), (int)( -mHeight * vPlayer.getPosition().getY() + 10 ) );
+				//g.drawString( vPlayer.getNickname() + " (" + vPlayer.getId() + ")", (int)( mWidth * vPlayer.getPosition().getX() ), (int)( -mHeight * vPlayer.getPosition().getY() ) );
 				
 			}
 			
@@ -161,12 +169,13 @@ public class PlayField extends JPanel implements ComponentListener{
 			mBackGround= null;
 			return;
 		}
+
+		mWidthHolder = (double) mHeight / ( mBlueBotImage.getWidth() * 40.0 );
+		mHeightHolder = (double) mHeight / ( mBlueBotImage.getHeight() * 40.0 );
+		
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	    
 		super.paintComponent(g); 
-
-		mWidth = this.getWidth();
-		mHeight = this.getHeight();
 		
 		g.translate( 0, mHeight );
 		g.scale( 1.0 / ScenarioInformation.getInstance().getXFactor(),
@@ -206,7 +215,7 @@ public class PlayField extends JPanel implements ComponentListener{
 		mPointSize = mHeight / 100;
 		mHalfPointSize = mPointSize * 0.5f;
 
-	    mFont = new Font("Monospaced", Font.PLAIN, (int)(mPointSize * 2));
+	    mFont = new Font(Font.MONOSPACED, Font.PLAIN, (int)(mPointSize * 1.5));
 	    g.setFont(mFont);
 	    
 		for( ReferencePoint vPoint : mWorld.getReferencePoints() ){
@@ -216,7 +225,7 @@ public class PlayField extends JPanel implements ComponentListener{
 						(int)( mPointSize ), 
 						(int)( mPointSize ) );
 			
-		    g.drawString(vPoint.getPointName().getShortName(), (int)( mWidth * vPoint.getPosition().getX() + mHalfPointSize ), (int)( -mHeight * vPoint.getPosition().getY() ) );
+		    g.drawString(vPoint.getPointName().getShortName(), (int)( mWidth * vPoint.getPosition().getX() + mHalfPointSize ), (int)( -mHeight * vPoint.getPosition().getY() + 1.5 * mPointSize ) );
 						
 		}
 		

@@ -187,6 +187,7 @@ public class ScenarioInformation {
 
 	public void setYFactor( double aYFactor ) {
 		mYFactor = aYFactor;
+		mWorldData.setMapReferencePoints( ReferencePoint.getDefaultMap( mXFactor, mYFactor ) );
 	}
 
 	public double getMaxValue() {

@@ -43,7 +43,7 @@ private static final BlockingQueue<UnkownBotAI> UNKOWNSENDERDATAGRAMS = new Arra
 
 	public boolean startManagement() {
 		
-		BotAIManagement.getLogger().debug( "Starting to process unkown botais" );
+		BotAIManagement.getLogger().debug( "Starting to process unknown botais" );
 		
 		if( !isAlive() ) {
 			
