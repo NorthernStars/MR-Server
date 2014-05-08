@@ -28,15 +28,15 @@ public class WorldData {
 	@XmlElement(name="ball")
 	BallPosition mBallPosition;
 
-	@XmlElement(name="players")
-	List<Player> mListOfPlayers;
+	@XmlTransient
+	Map<Integer, Player> mListOfPlayers;
 
     @XmlTransient
     Map<ReferencePointName, ReferencePoint> mReferencePoints;
 	
     public WorldData(){
     	mReferencePoints = new HashMap<ReferencePointName, ReferencePoint>();
-    	mListOfPlayers = new ArrayList<Player>();
+    	mListOfPlayers = new HashMap<Integer, Player>();
     }
     
 	public WorldData(
@@ -45,7 +45,7 @@ public class WorldData {
 			Score aScore,
 			int aMaxNumberOfAgents, 
 			BallPosition aBallPosition,
-			List<Player> aListOfPlayers,
+			Map<Integer, Player> aListOfPlayers,
 			Map<ReferencePointName, ReferencePoint> aReferencePoints ) {
 		
 		mPlayTime = aPlayTime;
@@ -67,10 +67,10 @@ public class WorldData {
 		mScore = new Score( aWorldData.getScore() );
 		mMaxNumberOfAgents = aWorldData.getMaxNumberOfAgents();
 		mBallPosition = new BallPosition( aWorldData.getBallPosition() );
-		mListOfPlayers = new ArrayList<Player>( aWorldData.getListOfPlayers().size() + 10 );
+		mListOfPlayers = new HashMap<Integer, Player>();
 		for( Player vPlayer : aWorldData.getListOfPlayers() ){
 			
-			mListOfPlayers.add( new Player( vPlayer ) );
+			mListOfPlayers.put( vPlayer.getId(), new Player( vPlayer ) );
 			
 		}
 		
@@ -159,13 +159,19 @@ public class WorldData {
 	public void setBallPosition( BallPosition aBallPosition ) {
 		mBallPosition = aBallPosition;
 	}
-	@XmlTransient
+	
+	@XmlElement(name="players")
 	public List<Player> getListOfPlayers() {
-		return mListOfPlayers;
+		return new ArrayList<Player>( mListOfPlayers.values() );
 	}
 
 	public void setListOfPlayers( List<Player> aListOfPlayers ) {
-		mListOfPlayers = aListOfPlayers;
+		mListOfPlayers = new HashMap<Integer, Player>();
+		for( Player vPlayer : aListOfPlayers ){
+			
+			mListOfPlayers.put( vPlayer.getId(), new Player( vPlayer ) );
+			
+		}
 	}
 	
 	@XmlElement(name="flag")
@@ -195,6 +201,20 @@ public class WorldData {
 	public Map<ReferencePointName, ReferencePoint> getMapOfReferencePoints(){
 		
 		return mReferencePoints;
+		
+	}
+	
+	@XmlTransient
+	public void addPlayer( int aId, Player aPlayer ){
+		
+		mListOfPlayers.put(aId, aPlayer);
+		
+	}
+	
+	@XmlTransient
+	public void clearPlayers(){
+		
+		mListOfPlayers.clear();
 		
 	}
 

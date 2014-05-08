@@ -65,7 +65,7 @@ public class ScenarioInformation {
 								new ServerPoint( 
 								ReferencePointName.FieldCenter.getRelativePosition().getX() * mXFactor, 
 								ReferencePointName.FieldCenter.getRelativePosition().getY() * mYFactor) ),
-				new ArrayList<Player>(),
+				new HashMap<Integer,Player>(),
 				ReferencePoint.getDefaultMap( mXFactor, mYFactor ) );
 		
 		ScenarioCore.getLogger().debug( "Created Worlddata: " + mWorldData );
@@ -250,5 +250,7 @@ public class ScenarioInformation {
 	public void setLeftWheelError( double aLeftWheelError ) {
 		mLeftWheelError = aLeftWheelError;
 	}
+	
+	
 	
 }

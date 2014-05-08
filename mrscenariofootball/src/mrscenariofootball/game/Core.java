@@ -24,6 +24,7 @@ import mrscenariofootball.core.managements.ToBotAIs;
 import mrscenariofootball.core.managements.ToGraphics;
 import mrservermisc.network.data.position.PositionObjectBot;
 import mrservermisc.network.data.position.PositionObjectType;
+import mrservermisc.scenario.interfaces.Scenario;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -159,6 +160,12 @@ public class Core {
 				ToGraphics.putWorldDatainSendingQueue( vWorldData.copy() );
 				
 				ScenarioCore.getInstance().getGUI().update(); // do better...
+				
+				if( !isSimulation() ){
+					
+					ScenarioInformation.getInstance().getWorldData().clearPlayers();
+					
+				}
 				
 			}
 			
@@ -425,7 +432,8 @@ public class Core {
 				
 			}
 			
-			ScenarioInformation.getInstance().getWorldData().getListOfPlayers().add( 
+			ScenarioInformation.getInstance().getWorldData().addPlayer(
+					aBotAI.getVtId(),
 					new Player( new PositionObjectBot( PositionObjectType.BOT, aBotAI.getVtId(), "", 
 							new double[]{ Math.random(), Math.random()}, null, 0.0 ) , 
 							aBotAI ) );

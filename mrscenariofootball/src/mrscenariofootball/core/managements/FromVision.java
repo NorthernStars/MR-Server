@@ -106,7 +106,6 @@ public class FromVision extends Thread {
 	public void run(){
 
 		PositionDataPackage vPositionData;
-		WorldData vWorldData  = ScenarioInformation.getInstance().getWorldData().copy();
 		
 		while( mManagePositionDataFromVision.get() ){
               
@@ -115,10 +114,6 @@ public class FromVision extends Thread {
 				vPositionData = NEWPOSITIONDATA.poll( 100, TimeUnit.MILLISECONDS );
 				ScenarioCore.getLogger().trace( "New positiondata {}", vPositionData );
 				if( vPositionData != null && !Core.getInstance().isSimulation() ){
-						
-					vWorldData = ScenarioInformation.getInstance().getWorldData().copy();
-
-					vWorldData.getListOfPlayers().clear();
 					
 					if( vPositionData.mListOfObjects != null ){
 						
@@ -126,17 +121,13 @@ public class FromVision extends Thread {
 							
 							if( vObject instanceof PositionObjectBot ){
 							
-								vWorldData.getListOfPlayers().add( new Player( ( PositionObjectBot ) vObject , ScenarioInformation.getInstance().getBotAIs().get( vObject.getId() ) ) );
+								ScenarioInformation.getInstance().getWorldData().addPlayer( vObject.getId(), new Player( ( PositionObjectBot ) vObject , ScenarioInformation.getInstance().getBotAIs().get( vObject.getId() ) ) );
 								
 							}
 							
 						}
 						
 					}
-					
-					ScenarioCore.getLogger().trace( "Created {}", vWorldData );
-					
-					ScenarioInformation.getInstance().setPlayers( vWorldData.getListOfPlayers() );
 					
 					
 				}
