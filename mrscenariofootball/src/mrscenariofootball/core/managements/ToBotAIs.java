@@ -11,6 +11,7 @@ import mrscenariofootball.core.data.ScenarioInformation;
 import mrscenariofootball.core.data.worlddata.client.ClientWorldData;
 import mrscenariofootball.core.data.worlddata.server.Player;
 import mrscenariofootball.core.data.worlddata.server.WorldData;
+import mrscenariofootball.game.Core;
 
 import org.apache.logging.log4j.Level;
 
@@ -119,7 +120,7 @@ public class ToBotAIs extends Thread {
 							
 							vFoundBotAI = ScenarioInformation.getInstance().getBotAIs().get( vFoundRealBot.getId() );
 							
-							if( vFoundBotAI != null ){
+							if( vFoundBotAI != null && !( Core.getInstance().isSimulation() && Math.random() < ScenarioInformation.getInstance().getChanceToNoIdentification() ) ){
 								
 								vFoundBotAI.setWorldDataToSend( new ClientWorldData( vWorldData, vFoundRealBot ) );
 																

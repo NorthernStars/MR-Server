@@ -39,6 +39,9 @@ public class ScenarioOptionsGUI extends JFrame {
 	private JTextField mTextFieldBotMaxMovement;
 	private JCheckBox chckbxSimulation;
 	private JCheckBox chckbxAutomaticGame;
+	private JTextField mTextFieldChanceForNoRecognition;
+	private JTextField mTextFieldRightWheelError;
+	private JTextField mTextFieldLeftWheelError;
 
 	/**
 	 * Create the frame.
@@ -152,9 +155,9 @@ public class ScenarioOptionsGUI extends JFrame {
 		tabbedPane.addTab("Simulation", null, panelSimulation, null);
 		GridBagLayout gbl_panelSimulation = new GridBagLayout();
 		gbl_panelSimulation.columnWidths = new int[]{0, 0, 0, 0};
-		gbl_panelSimulation.rowHeights = new int[]{23, 0, 0};
-		gbl_panelSimulation.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
-		gbl_panelSimulation.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gbl_panelSimulation.rowHeights = new int[]{23, 0, 0, 0, 0, 0};
+		gbl_panelSimulation.columnWeights = new double[]{1.0, 1.0, 1.0, Double.MIN_VALUE};
+		gbl_panelSimulation.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panelSimulation.setLayout(gbl_panelSimulation);
 		
 		chckbxSimulation = new JCheckBox("Simulation");
@@ -170,7 +173,7 @@ public class ScenarioOptionsGUI extends JFrame {
 		JLabel lblMaxBotMovement = new JLabel("Max. Bot Movement per Tick in % of PlayField:");
 		GridBagConstraints gbc_lblMaxBotMovement = new GridBagConstraints();
 		gbc_lblMaxBotMovement.fill = GridBagConstraints.HORIZONTAL;
-		gbc_lblMaxBotMovement.insets = new Insets(0, 0, 0, 5);
+		gbc_lblMaxBotMovement.insets = new Insets(0, 0, 5, 5);
 		gbc_lblMaxBotMovement.gridx = 0;
 		gbc_lblMaxBotMovement.gridy = 1;
 		panelSimulation.add(lblMaxBotMovement, gbc_lblMaxBotMovement);
@@ -178,13 +181,67 @@ public class ScenarioOptionsGUI extends JFrame {
 		
 		mTextFieldBotMaxMovement = new JTextField();
 		GridBagConstraints gbc_mTextFieldBotMaxMovement = new GridBagConstraints();
-		gbc_mTextFieldBotMaxMovement.insets = new Insets(0, 0, 0, 5);
-		gbc_mTextFieldBotMaxMovement.fill = GridBagConstraints.HORIZONTAL;
+		gbc_mTextFieldBotMaxMovement.anchor = GridBagConstraints.WEST;
+		gbc_mTextFieldBotMaxMovement.insets = new Insets(0, 0, 5, 5);
 		gbc_mTextFieldBotMaxMovement.gridx = 1;
 		gbc_mTextFieldBotMaxMovement.gridy = 1;
 		panelSimulation.add(mTextFieldBotMaxMovement, gbc_mTextFieldBotMaxMovement);
 		mTextFieldBotMaxMovement.setText( Double.toString( ScenarioInformation.getInstance().getSimulationBotSpeed() ) );
 		mTextFieldBotMaxMovement.setColumns(10);
+		
+		JLabel lblNewLabel_2 = new JLabel("Chance to \"lose\" Bot:");
+		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
+		gbc_lblNewLabel_2.anchor = GridBagConstraints.EAST;
+		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_2.gridx = 0;
+		gbc_lblNewLabel_2.gridy = 2;
+		panelSimulation.add(lblNewLabel_2, gbc_lblNewLabel_2);
+		
+		mTextFieldChanceForNoRecognition = new JTextField();
+		GridBagConstraints gbc_mTextFieldChanceForNoRecognition = new GridBagConstraints();
+		gbc_mTextFieldChanceForNoRecognition.anchor = GridBagConstraints.WEST;
+		gbc_mTextFieldChanceForNoRecognition.insets = new Insets(0, 0, 5, 5);
+		gbc_mTextFieldChanceForNoRecognition.gridx = 1;
+		gbc_mTextFieldChanceForNoRecognition.gridy = 2;
+		panelSimulation.add(mTextFieldChanceForNoRecognition, gbc_mTextFieldChanceForNoRecognition);
+		mTextFieldChanceForNoRecognition.setText( Double.toString( ScenarioInformation.getInstance().getChanceToNoIdentification() ) );
+		mTextFieldChanceForNoRecognition.setColumns(10);
+		
+		JLabel lblRightWheelError = new JLabel("Right wheel error:");
+		GridBagConstraints gbc_lblRightWheelError = new GridBagConstraints();
+		gbc_lblRightWheelError.insets = new Insets(0, 0, 5, 5);
+		gbc_lblRightWheelError.anchor = GridBagConstraints.EAST;
+		gbc_lblRightWheelError.gridx = 0;
+		gbc_lblRightWheelError.gridy = 3;
+		panelSimulation.add(lblRightWheelError, gbc_lblRightWheelError);
+		
+		mTextFieldRightWheelError = new JTextField();
+		GridBagConstraints gbc_mTextFieldRightWheelError = new GridBagConstraints();
+		gbc_mTextFieldRightWheelError.anchor = GridBagConstraints.WEST;
+		gbc_mTextFieldRightWheelError.insets = new Insets(0, 0, 5, 5);
+		gbc_mTextFieldRightWheelError.gridx = 1;
+		gbc_mTextFieldRightWheelError.gridy = 3;
+		panelSimulation.add(mTextFieldRightWheelError, gbc_mTextFieldRightWheelError);
+		mTextFieldRightWheelError.setText( Double.toString( ScenarioInformation.getInstance().getRightWheelError() ) );
+		mTextFieldRightWheelError.setColumns(10);
+		
+		JLabel lblLeftWheelError = new JLabel("Left wheel error:");
+		GridBagConstraints gbc_lblLeftWheelError = new GridBagConstraints();
+		gbc_lblLeftWheelError.anchor = GridBagConstraints.EAST;
+		gbc_lblLeftWheelError.insets = new Insets(0, 0, 0, 5);
+		gbc_lblLeftWheelError.gridx = 0;
+		gbc_lblLeftWheelError.gridy = 4;
+		panelSimulation.add(lblLeftWheelError, gbc_lblLeftWheelError);
+		
+		mTextFieldLeftWheelError = new JTextField();
+		GridBagConstraints gbc_mTextFieldLeftWheelError = new GridBagConstraints();
+		gbc_mTextFieldLeftWheelError.anchor = GridBagConstraints.WEST;
+		gbc_mTextFieldLeftWheelError.insets = new Insets(0, 0, 0, 5);
+		gbc_mTextFieldLeftWheelError.gridx = 1;
+		gbc_mTextFieldLeftWheelError.gridy = 4;
+		panelSimulation.add(mTextFieldLeftWheelError, gbc_mTextFieldLeftWheelError);
+		mTextFieldLeftWheelError.setText( Double.toString( ScenarioInformation.getInstance().getLeftWheelError() ) );
+		mTextFieldLeftWheelError.setColumns(10);
 		
 		JPanel panelPlayModes = new JPanel();
 		tabbedPane.addTab("PlayModes", null, panelPlayModes, null);
@@ -244,6 +301,9 @@ public class ScenarioOptionsGUI extends JFrame {
 			ScenarioInformation.getInstance().setYFactor( Double.parseDouble( mTextFieldFieldHeight.getText() ) );
 			ScenarioInformation.getInstance().setMaxValue( Double.parseDouble( mTextFieldFieldWidth.getText() ) );
 			ScenarioInformation.getInstance().setSimulationBotSpeed( Double.parseDouble( mTextFieldBotMaxMovement.getText() ) );
+			ScenarioInformation.getInstance().setChanceToNoIdentification( Double.parseDouble(  mTextFieldChanceForNoRecognition.getText() ) );
+			ScenarioInformation.getInstance().setRightWheelError( Double.parseDouble(  mTextFieldRightWheelError.getText() ) );
+			ScenarioInformation.getInstance().setLeftWheelError( Double.parseDouble(  mTextFieldLeftWheelError.getText() ) );
 			
 			Core.getInstance().setSimulation( chckbxSimulation.isSelected() );
 			Core.getInstance().setAutomaticGame( chckbxAutomaticGame.isSelected() );

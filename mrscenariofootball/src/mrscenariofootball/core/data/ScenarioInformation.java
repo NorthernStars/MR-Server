@@ -40,7 +40,10 @@ public class ScenarioInformation {
 	private double mXFactor = 1, 
 			mYFactor = 0.75, 
 			mMaxValue = 1000,
-			mGameTickTime = 0.05;
+			mGameTickTime = 0.05,
+			mChanceToNoIdentification = 0,
+			mRightWheelError = 0,
+			mLeftWheelError = 0;
 	
 	
 	private Graphics mGraphics;
@@ -222,6 +225,30 @@ public class ScenarioInformation {
 	public void setSimulationBotSpeed( double aSimulationBotSpeed ) {
 		// TODO Auto-generated method stub
 		mSimulationBotSpeed = aSimulationBotSpeed;
+	}
+
+	public double getChanceToNoIdentification() {
+		return mChanceToNoIdentification;
+	}
+
+	public void setChanceToNoIdentification( double aChanceToNoIdentification ) {
+		mChanceToNoIdentification = aChanceToNoIdentification;
+	}
+
+	public double getRightWheelError() {
+		return mRightWheelError;
+	}
+
+	public void setRightWheelError( double aRightWheelError ) {
+		mRightWheelError = aRightWheelError;
+	}
+
+	public double getLeftWheelError() {
+		return mLeftWheelError;
+	}
+
+	public void setLeftWheelError( double aLeftWheelError ) {
+		mLeftWheelError = aLeftWheelError;
 	}
 	
 }

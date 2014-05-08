@@ -376,12 +376,15 @@ public class Core {
 		
 		if( mSimulation.get() ){
 			
-			double vSpeed, vRotation, vRightDegree, vLeftDegree, vAngleToOtherPlayer;
+			double vSpeed, vRotation, vRightDegree, vLeftDegree, vAngleToOtherPlayer, vRightError, vLeftError;
 			
-			vSpeed = ( aMovement.getLeftWheelVelocity() + aMovement.getRightWheelVelocity() ) / 200.0 * ScenarioInformation.getInstance().getSimulationBotSpeed(); //TODO: remove magic number
+			vLeftError = 1 - Math.random() * ScenarioInformation.getInstance().getLeftWheelError();
+			vRightError = 1 - Math.random() * ScenarioInformation.getInstance().getRightWheelError();
+			
+			vSpeed = ( aMovement.getLeftWheelVelocity() * vLeftError + aMovement.getRightWheelVelocity() * vRightError ) / 200.0 * ScenarioInformation.getInstance().getSimulationBotSpeed(); //TODO: remove magic number
 
-			vRightDegree = Math.toDegrees( Math.atan2( 1.0, aMovement.getRightWheelVelocity() / 100.0 ) );
-			vLeftDegree = Math.toDegrees( Math.atan2( 1.0, aMovement.getLeftWheelVelocity() / 100.0 ) );
+			vRightDegree = Math.toDegrees( Math.atan2( 1.0, aMovement.getRightWheelVelocity() * vRightError / 100.0 ) );
+			vLeftDegree = Math.toDegrees( Math.atan2( 1.0, aMovement.getLeftWheelVelocity() * vLeftError / 100.0 ) );
 			
 			vRotation = (vRightDegree + vLeftDegree ) / 2 - vRightDegree;
 			vRotation /= 1.5;
