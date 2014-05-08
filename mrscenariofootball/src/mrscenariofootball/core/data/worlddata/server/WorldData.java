@@ -34,7 +34,10 @@ public class WorldData {
     @XmlTransient
     Map<ReferencePointName, ReferencePoint> mReferencePoints;
 	
-    public WorldData(){}
+    public WorldData(){
+    	mReferencePoints = new HashMap<ReferencePointName, ReferencePoint>();
+    	mListOfPlayers = new ArrayList<Player>();
+    }
     
 	public WorldData(
 			double aPlayTime, 
