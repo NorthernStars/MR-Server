@@ -153,7 +153,7 @@ public class PlayField extends JPanel implements ComponentListener{
 				g2d.setFont(mFont);
 				g2d.drawString( vPlayerString, 
 						(int)( mWidth * vPlayer.getPosition().getX() - g2d.getFontMetrics(mFont).stringWidth( vPlayerString ) / 2 ), 
-						(int)( -mHeight * vPlayer.getPosition().getY() ) + g2d.getFontMetrics(mFont).getHeight() );
+						(int)( -mHeight * vPlayer.getPosition().getY()  + 0.014 * mWidth ) + g2d.getFontMetrics(mFont).getHeight() );
 				
 				g2d.setStroke(mDashedStroke);
 	            g2d.drawOval( (int)( mWidth * vPlayer.getPosition().getX() - 0.013 * mWidth ), 
