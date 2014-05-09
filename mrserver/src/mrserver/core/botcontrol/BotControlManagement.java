@@ -143,7 +143,25 @@ public class BotControlManagement implements BotControl{
 		if( mToBotControl != null && mToBotControl.isConnected() ){
 			
 			BotControlManagement.getLogger().debug( "Sending command {}|{}|{} to botcontrol", aBot, aLeftWheelSpeed, aRightWheelSpeed );
-			mToBotControl.sendDatagrammString( aBot + "|" + aLeftWheelSpeed + "|" + aRightWheelSpeed );
+			
+			String vMovmentCommand = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"
+					+ "<commandPackage>"
+					+ "<commandProtocolRevision>2</commandProtocolRevision>"
+					+ "<sections>"
+					+ "<botID>" + aBot + "</botID>"
+							+ "<commandList>"
+							+ "<command>MOTOR_LEFT</command>"
+							+ "<value>" + aLeftWheelSpeed + "</value>"
+							+ "</commandList>"
+							+ "<commandList>"
+							+ "<command>MOTOR_RIGHT</command>"
+							+ "<value>" + aRightWheelSpeed + "</value>"
+							+ "</commandList>"
+					+ "</sections>"
+					+ "</commandPackage>";
+			
+			
+			mToBotControl.sendDatagrammString( vMovmentCommand );
 			
 			return true;
 			

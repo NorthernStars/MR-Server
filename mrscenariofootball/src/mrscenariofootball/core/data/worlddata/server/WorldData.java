@@ -204,14 +204,12 @@ public class WorldData {
 		
 	}
 	
-	@XmlTransient
 	public void addPlayer( int aId, Player aPlayer ){
 		
 		mListOfPlayers.put(aId, aPlayer);
 		
 	}
 	
-	@XmlTransient
 	public void clearPlayers(){
 		
 		mListOfPlayers.clear();

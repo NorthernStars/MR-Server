@@ -142,8 +142,8 @@ public class BotControl extends JPanel {
 	
 	void save(){
 
-		Core.getInstance().getServerConfig().setVisionIPAdress( mBotControlIPAddress.getText() );
-		Core.getInstance().getServerConfig().setVisionPort( Integer.parseInt( mBotControlPort.getText() ) );
+		Core.getInstance().getServerConfig().setBotControlIPAdress( mBotControlIPAddress.getText() );
+		Core.getInstance().getServerConfig().setBotControlPort( Integer.parseInt( mBotControlPort.getText() ) );
 				
 	}
 	
