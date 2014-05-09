@@ -385,8 +385,8 @@ public class Core {
 			
 			double vSpeed, vRotation, vRightDegree, vLeftDegree, vAngleToOtherPlayer, vRightError, vLeftError;
 			
-			vLeftError = 1 - (Math.random()<0.5?1:0) * ScenarioInformation.getInstance().getLeftWheelError();
-			vRightError = 1 - (Math.random()<0.5?1:0) * ScenarioInformation.getInstance().getRightWheelError();
+			vLeftError = 1 - ScenarioInformation.getInstance().getLeftWheelError();
+			vRightError = 1 - ScenarioInformation.getInstance().getRightWheelError();
 			
 			vSpeed = ( aMovement.getLeftWheelVelocity() * vLeftError + aMovement.getRightWheelVelocity() * vRightError ) / 200.0 * ScenarioInformation.getInstance().getSimulationBotSpeed(); //TODO: remove magic number
 
