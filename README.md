@@ -42,7 +42,7 @@ git clone [git-repo-url] MR-Server
 cd MR-Server
 cd everythingbuild
 mkdir libraries
-ant 
+ant -f buildserver.xml
 ```
 
 
