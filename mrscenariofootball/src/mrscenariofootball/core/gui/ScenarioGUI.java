@@ -248,9 +248,12 @@ public class ScenarioGUI extends JPanel {
 					@Override
 					public void run() {
 		
-						Core.getInstance().startGame();
-						update();
-						
+						try{
+							Core.getInstance().startGame();
+							update();
+						} catch(Exception vException){
+							vException.printStackTrace();
+						}
 					}
 				} ).start();
 				
