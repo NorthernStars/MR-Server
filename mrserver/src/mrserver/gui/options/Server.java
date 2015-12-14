@@ -30,6 +30,7 @@ public class Server extends JPanel {
 		
 		JButton btnNewButton = new JButton("Save settings to file");
 		btnNewButton.setBounds(10, 56, 286, 23);
+		btnNewButton.setEnabled(false);
 		add(btnNewButton);
 		
 		reload();

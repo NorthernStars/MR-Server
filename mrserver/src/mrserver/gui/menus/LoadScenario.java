@@ -21,6 +21,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
+@SuppressWarnings("serial")
 public class LoadScenario extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();

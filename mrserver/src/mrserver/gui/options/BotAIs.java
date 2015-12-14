@@ -130,6 +130,12 @@ public class BotAIs extends JPanel implements AIListener {
         		
         	}
         });
+        
+        for( Receiver vReceiver: BotAIManagement.getInstance().getBotAIReceiver() ){
+        	
+        	addServerPortPanel( new ServerPortPanel( vReceiver ) );
+        	
+        }
 
 	}
 

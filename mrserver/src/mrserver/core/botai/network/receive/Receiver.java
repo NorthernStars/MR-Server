@@ -36,7 +36,7 @@ public class Receiver extends Thread {
 			
 			super.start();
 			mManageMessagesfromBotAI.set( true);
-			BotAIManagement.getLogger().info( "Started processing packets from botais" );
+			BotAIManagement.getLogger().info( "Started processing packets from botais on port {}(Team {})", mBotAIConnect.getPort(), mBotAIConnect.getTeam() );
             
 		} else {
 		    

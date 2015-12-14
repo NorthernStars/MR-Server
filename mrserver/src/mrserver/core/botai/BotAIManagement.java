@@ -13,6 +13,7 @@ import mrserver.core.botai.network.receive.Creator;
 import mrserver.core.botai.network.receive.Receiver;
 import mrserver.core.scenario.ScenarioManagement;
 import mrserver.gui.options.interfaces.AIListener;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -92,6 +93,16 @@ public class BotAIManagement {
     	
 	}
     
+	public void autostartBotAiPorts(){
+		
+		for( int vBotPort : Core.getInstance().getServerConfig().getBotPorts() ){
+			
+			addBotAIPort( vBotPort );
+			
+		}
+		
+	}
+	
     public Receiver addBotAIPort( int aPort ){
     	
     	BotAiHost aHost = mBotAIsConnections.addBotAIPort( aPort );

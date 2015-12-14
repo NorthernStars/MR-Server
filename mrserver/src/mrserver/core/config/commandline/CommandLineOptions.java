@@ -7,6 +7,7 @@ import java.util.ListIterator;
 import mrserver.core.Core;
 import mrserver.core.config.commandline.options.BotControl;
 import mrserver.core.config.commandline.options.BotPorts;
+import mrserver.core.config.commandline.options.BotPortsAutoOpen;
 import mrserver.core.config.commandline.options.GraphicsPort;
 import mrserver.core.config.commandline.options.Help;
 import mrserver.core.config.commandline.options.ScenarioClass;
@@ -73,6 +74,7 @@ public class CommandLineOptions extends Options{
         addOption( new BotControl() );
         addOption( new Vision() );
         addOption( new BotPorts() );
+        addOption( new BotPortsAutoOpen() );
         addOption( new GraphicsPort() );
         
         addOption( new ScenarioClass() );

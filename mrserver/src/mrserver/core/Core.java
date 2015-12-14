@@ -1,5 +1,6 @@
 package mrserver.core;
 
+import mrserver.core.botai.BotAIManagement;
 import mrserver.core.botcontrol.BotControlManagement;
 import mrserver.core.config.ServerConfig;
 import mrserver.core.config.commandline.CommandLineOptions;
@@ -96,6 +97,9 @@ public class Core {
             
             CommandLineOptions.getInstance().parseCommandLineArguments( aCommandline );
             //TODO: operatormanagement starten
+            if( getServerConfig().autoOpenBotPorts() ){
+            	BotAIManagement.getInstance().autostartBotAiPorts();
+            }
             
             Main.startGUI();
             

@@ -109,6 +109,12 @@ public class ConfigFileReader {
 				 
 			}
     	}
+    	
+    	if( vProperties.getProperty( "auto_open_botports" ) != null ){
+		
+    		Core.getInstance().getServerConfig().setAutoOpenBotPorts( Boolean.parseBoolean( vProperties.getProperty( "auto_open_botports" ) ) );
+    		
+    	}
 		
 	}
 	

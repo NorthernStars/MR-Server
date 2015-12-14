@@ -73,6 +73,7 @@ public class ServerConfig {
 	 */
 	
 	private List<Integer> mBotPorts;
+	private boolean mAutoOpenBotPorts = false;
 	
 	
 	// Getter und Setters
@@ -237,6 +238,15 @@ public class ServerConfig {
 		mBotPorts.add( aBotPort );
 		
 	}
+	
+	public boolean autoOpenBotPorts() {
+		return mAutoOpenBotPorts;
+	}
+
+	public void setAutoOpenBotPorts( boolean aAutoOpenBotPorts ) {
+		CommandLineOptions.getLogger().debug( "Setting aautoopenbotports to {}", aAutoOpenBotPorts );
+		mAutoOpenBotPorts = aAutoOpenBotPorts;
+	}
 
 	@Override
 	public String toString() {
@@ -249,7 +259,7 @@ public class ServerConfig {
 				+ mVisionPort + ", mBotControlIPAddress="
 				+ mBotControlIPAddress + ", mBotControlPort=" + mBotControlPort
 				+ ", mGraphicsPort=" + mGraphicsPort + ", mBotPorts="
-				+ mBotPorts + "]";
+				+ mBotPorts + ", mAutoOpenBotPorts=" + mAutoOpenBotPorts + "]";
 	}
 	
 }

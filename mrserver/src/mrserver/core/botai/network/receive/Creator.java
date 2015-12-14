@@ -49,11 +49,11 @@ private static final BlockingQueue<UnkownBotAI> UNKOWNSENDERDATAGRAMS = new Arra
 			
 			super.start();
 			mManageMessagesfromBotAIs.set( true);
-			BotAIManagement.getLogger().info( "Started processing unkown botais" );
+			BotAIManagement.getLogger().info( "Started processing unknown botais" );
             
 		} else {
 		    
-			BotAIManagement.getLogger().debug( "Unkown botais are already beingprocessed" );
+			BotAIManagement.getLogger().debug( "Unknown botais are already beingprocessed" );
 			
 		}
 		
