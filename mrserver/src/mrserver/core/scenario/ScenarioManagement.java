@@ -3,6 +3,7 @@ package mrserver.core.scenario;
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -14,6 +15,7 @@ import mrserver.core.Core;
 import mrserver.core.botai.data.BotAI;
 import mrserver.core.botcontrol.BotControlManagement;
 import mrserver.core.graphics.GraphicsManagement;
+import mrserver.gui.interfaces.SceanarioManagementChangeListener;
 import mrservermisc.botcontrol.interfaces.BotControl;
 import mrservermisc.bots.interfaces.Bot;
 import mrservermisc.graphics.interfaces.Graphics;
@@ -56,6 +58,7 @@ public class ScenarioManagement {
     }
 
 	private Scenario mScenario;
+	private SceanarioManagementChangeListener mListener = null;
     
     
     public void close(){
@@ -100,6 +103,10 @@ public class ScenarioManagement {
             
             return false;
             
+        }
+        
+        if( mListener != null ){
+        	mListener.newScenarioLoaded();
         }
         
         return true;
@@ -221,6 +228,11 @@ public class ScenarioManagement {
 		}
 			
 		return null;
+	}
+	
+	public void registerListener( SceanarioManagementChangeListener aListener ){
+		ScenarioManagement.getLogger().debug( "Registering Listener {}", aListener );
+		mListener = aListener;
 	}
 
 }

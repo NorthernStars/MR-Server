@@ -35,8 +35,6 @@ public class ServerPortPanel extends JPanel {
 					@Override
 					public void run() {
 				
-						BotAIManagement.getInstance().removeReceiver( mReceiver );
-						
 						EventQueue.invokeLater(new Runnable() {
 							public void run() {
 								
@@ -47,6 +45,8 @@ public class ServerPortPanel extends JPanel {
 								
 							}
 						});
+						
+						BotAIManagement.getInstance().removeReceiver( mReceiver );
 					}
 				} ).start();
 				

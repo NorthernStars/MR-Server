@@ -34,6 +34,7 @@ public class ServerConfig {
 	 */
 	private String mScenarioLibrary = "";
 	private String mScenarioClass = "";
+	private boolean mScenarioAutoLoad = false;
 	
 	/**
 	 * Die Konfigurationen des Szenarios
@@ -244,22 +245,32 @@ public class ServerConfig {
 	}
 
 	public void setAutoOpenBotPorts( boolean aAutoOpenBotPorts ) {
-		CommandLineOptions.getLogger().debug( "Setting aautoopenbotports to {}", aAutoOpenBotPorts );
+		CommandLineOptions.getLogger().debug( "Setting autoopenbotports to {}", aAutoOpenBotPorts );
 		mAutoOpenBotPorts = aAutoOpenBotPorts;
+	}
+	
+	public boolean sceanarioAutoLoad() {
+		return mScenarioAutoLoad;
+	}
+
+	public void setScenarioAutoLoad( boolean aScenarioAutoLoad ) {
+		CommandLineOptions.getLogger().debug( "Setting scenarioautoload to {}", aScenarioAutoLoad );
+		mScenarioAutoLoad = aScenarioAutoLoad;
 	}
 
 	@Override
 	public String toString() {
 		return "ServerConfig [mServerName=" + mServerName
 				+ ", mScenarioLibrary=" + mScenarioLibrary
-				+ ", mScenarioClass=" + mScenarioClass
-				+ ", mScenarioConfigCmdLine=" + mScenarioConfigCmdLine
-				+ ", mScenarioConfigFile=" + mScenarioConfigFile
-				+ ", mVisionIPAddress=" + mVisionIPAddress + ", mVisionPort="
-				+ mVisionPort + ", mBotControlIPAddress="
-				+ mBotControlIPAddress + ", mBotControlPort=" + mBotControlPort
-				+ ", mGraphicsPort=" + mGraphicsPort + ", mBotPorts="
-				+ mBotPorts + ", mAutoOpenBotPorts=" + mAutoOpenBotPorts + "]";
+				+ ", mScenarioClass=" + mScenarioClass + ", mScenarioAutoLoad="
+				+ mScenarioAutoLoad + ", mScenarioConfigCmdLine="
+				+ mScenarioConfigCmdLine + ", mScenarioConfigFile="
+				+ mScenarioConfigFile + ", mVisionIPAddress="
+				+ mVisionIPAddress + ", mVisionPort=" + mVisionPort
+				+ ", mBotControlIPAddress=" + mBotControlIPAddress
+				+ ", mBotControlPort=" + mBotControlPort + ", mGraphicsPort="
+				+ mGraphicsPort + ", mBotPorts=" + mBotPorts
+				+ ", mAutoOpenBotPorts=" + mAutoOpenBotPorts + "]";
 	}
 	
 }

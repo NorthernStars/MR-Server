@@ -9,6 +9,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 
 import mrserver.core.scenario.ScenarioManagement;
+import mrserver.gui.interfaces.SceanarioManagementChangeListener;
 import mrserver.gui.menus.LoadScenario;
 import mrserver.gui.options.Options;
 
@@ -21,8 +22,10 @@ import javax.swing.KeyStroke;
 import java.awt.event.KeyEvent;
 import java.awt.event.InputEvent;
 
-public class Main {
+public class Main implements SceanarioManagementChangeListener{
 
+	private static Main INSTANCE = null;
+	
 	private JFrame frmServercontrol;
 	Options mOptions = new Options();
 
@@ -30,11 +33,14 @@ public class Main {
 	 * Launch the application.
 	 */
 	public static void startGUI() {
+
+		INSTANCE = new Main();
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Main window = new Main();
-					window.frmServercontrol.setVisible(true);
+					INSTANCE.initialize();
+					INSTANCE.frmServercontrol.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -46,7 +52,9 @@ public class Main {
 	 * Create the application.
 	 */
 	public Main() {
-		initialize();
+
+		ScenarioManagement.getInstance().registerListener(this);
+		
 	}
 
 	/**
@@ -238,6 +246,22 @@ public class Main {
 		mntmOptions.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_MASK | InputEvent.SHIFT_MASK));
 		mnScenario.add(mntmOptions);
 		frmServercontrol.getContentPane().setLayout(new BorderLayout(0, 0));
+		
+	}
+
+	@Override
+	public void newScenarioLoaded() {
+		
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				
+				if(ScenarioManagement.getInstance().getScenarioGUI() != null){
+					frmServercontrol.getContentPane().add( ScenarioManagement.getInstance().getScenarioGUI(), BorderLayout.CENTER );
+					frmServercontrol.getContentPane().validate();
+				}
+				
+			}
+		});
 		
 	}
 

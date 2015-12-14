@@ -77,7 +77,7 @@ public class Receiver extends Thread {
             
 	    }
 	    
-	    BotAIManagement.getLogger().info( "Botaireceiver stopped." );
+	    BotAIManagement.getLogger().info( "Botaireceiver on Port {}(Team {}) stopped.", mBotAIConnect.getPort(), mBotAIConnect.getTeam() );
 	    		
 	}
 

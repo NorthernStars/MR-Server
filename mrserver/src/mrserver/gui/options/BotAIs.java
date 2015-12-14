@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.border.LineBorder;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
@@ -18,17 +19,19 @@ import javax.swing.ScrollPaneConstants;
 import mrserver.core.botai.BotAIManagement;
 import mrserver.core.botai.data.BotAI;
 import mrserver.core.botai.network.receive.Receiver;
-import mrserver.gui.options.interfaces.AIListener;
+import mrserver.gui.options.interfaces.BotListener;
+import mrserver.gui.options.interfaces.BotPortListener;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.awt.BorderLayout;
+
 import javax.swing.BoxLayout;
 
 @SuppressWarnings("serial")
-public class BotAIs extends JPanel implements AIListener {
+public class BotAIs extends JPanel implements BotListener, BotPortListener {
 	private JTextField mOwnIP;
 	private JTextField mOwnPortToBots;
 	private JPanel mBotAIPanel;
@@ -61,8 +64,9 @@ public class BotAIs extends JPanel implements AIListener {
 		
         mPanelFiller .setMinimumSize( new Dimension(0,0) );
         mPanelFiller.setPreferredSize( new Dimension(0,0) );
-        
+
         BotAIManagement.getInstance().registerBotAIListener( this );
+        BotAIManagement.getInstance().registerBotPortListener( this );
         
         JPanel panel = new JPanel();
         add(panel, BorderLayout.NORTH);
@@ -112,31 +116,14 @@ public class BotAIs extends JPanel implements AIListener {
         			@Override
         			public void run() {
         
-        				final Receiver vReceiver = BotAIManagement.getInstance().addBotAIPort( Integer.parseInt( mOwnPortToBots.getText() ) );
-        				if( vReceiver != null ){
-        					
-        					EventQueue.invokeLater(new Runnable() {
-        						public void run() {
-        							
-        							addServerPortPanel( new ServerPortPanel( vReceiver ) );
-        							reload();
-        							
-        						}
-        					});
-        					
-        				}
+        				BotAIManagement.getInstance().addBotAIPort( Integer.parseInt( mOwnPortToBots.getText() ) );
+        				
         			}
         		} ).start();
         		
         	}
         });
         
-        for( Receiver vReceiver: BotAIManagement.getInstance().getBotAIReceiver() ){
-        	
-        	addServerPortPanel( new ServerPortPanel( vReceiver ) );
-        	
-        }
-
 	}
 
     public void addServerPortPanel( ServerPortPanel aServerPort ) {
@@ -186,11 +173,40 @@ public class BotAIs extends JPanel implements AIListener {
 
 	@Override
 	public void newAI( final BotAI aAI ) {
-					
+		
+		System.out.println("blub");
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				
 				addBotAIPanel( new BotAIPanel( aAI ) );
+				reload();
+				
+			}
+		});
+		
+	}
+
+	@Override
+	public void newBotPort( final Receiver aReceiver ) {
+
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				
+				addServerPortPanel( new ServerPortPanel( aReceiver ) );
+				reload();
+				
+			}
+		});
+		
+	}
+
+	@Override
+	public void removedBotPort(Receiver aReceiver) {
+		
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				
+				validate();
 				reload();
 				
 			}

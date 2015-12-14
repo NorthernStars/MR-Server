@@ -97,15 +97,7 @@ public class LoadScenario extends JDialog {
 							public void run() {
 				
 								ScenarioManagement.getInstance().loadScenario();
-								EventQueue.invokeLater(new Runnable() {
-									public void run() {
-										
-										aParent.getContentPane().add( ScenarioManagement.getInstance().getScenarioGUI(), BorderLayout.CENTER );
-										aParent.getContentPane().validate();
-										
-									}
-								});
-								
+
 							}
 						} ).start();
 						

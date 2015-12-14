@@ -12,7 +12,8 @@ import mrserver.core.botai.network.BotAiHost;
 import mrserver.core.botai.network.receive.Creator;
 import mrserver.core.botai.network.receive.Receiver;
 import mrserver.core.scenario.ScenarioManagement;
-import mrserver.gui.options.interfaces.AIListener;
+import mrserver.gui.options.interfaces.BotListener;
+import mrserver.gui.options.interfaces.BotPortListener;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -49,7 +50,9 @@ public class BotAIManagement {
     private BotAIConnections mBotAIsConnections = new BotAIConnections();
     private List<Receiver> mBotAIReceiver = new ArrayList<Receiver>();
     private Creator mBotAICreator;
-	private AIListener mAIListener;
+    
+	private BotListener mBotListener = null;
+	private BotPortListener mBotPortListener = null;
     
     public void startBotAIManagement(){
     	
@@ -89,6 +92,10 @@ public class BotAIManagement {
     		vBotAIReceiver.startManagement();
     		BotAIManagement.getLogger().debug( "Started receiver for " + vBotAIReceiver.toString() );
     		
+    		if(mBotListener != null){
+				mBotPortListener.newBotPort( vBotAIReceiver );
+			}
+    		
     	}
     	
 	}
@@ -112,6 +119,10 @@ public class BotAIManagement {
 	    	mBotAIReceiver.add( vReceiver );
 	    	
 	    	startCreator();
+	    	
+	    	if(mBotPortListener != null){
+				mBotPortListener.newBotPort( vReceiver );
+			}
 	    	
 	    	return vReceiver;
     	}
@@ -146,6 +157,10 @@ public class BotAIManagement {
     	mBotAIReceiver.remove( aReceiver );
     	aReceiver.close();
     	
+    	if(mBotPortListener != null){
+			mBotPortListener.removedBotPort(aReceiver);
+		}
+    	
     }
     
     public ConcurrentHashMap<SocketAddress, BotAI> getMapOfBotAIs(){
@@ -166,16 +181,24 @@ public class BotAIManagement {
 		
 	}
 	
-	public void registerBotAIListener( AIListener aListener ){
+	public void registerBotAIListener( BotListener aListener ){
 		
-		mAIListener = aListener;
+		mBotListener = aListener;
 		
 	}
 
 	public void putNewAI( BotAI aBotAI) {
 
 		mMapOfConnectedBotAIs.put( (SocketAddress) aBotAI.getSocketAddress(), aBotAI );
-		mAIListener.newAI( aBotAI );
+		if(mBotListener != null){
+			mBotListener.newAI( aBotAI );
+		}
+		
+	}
+	
+	public void registerBotPortListener( BotPortListener aListener ){
+		
+		mBotPortListener = aListener;
 		
 	}
     

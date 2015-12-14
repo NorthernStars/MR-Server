@@ -96,45 +96,19 @@ public class Core {
             });
             
             CommandLineOptions.getInstance().parseCommandLineArguments( aCommandline );
-            //TODO: operatormanagement starten
+           
+            Main.startGUI();
+            
+            //TODO: operatormanagement starten <- jmd weiss was ich damit meinte?
             if( getServerConfig().autoOpenBotPorts() ){
             	BotAIManagement.getInstance().autostartBotAiPorts();
             }
             if( getServerConfig().getGraphicsPort() != -1){
             	GraphicsManagement.getInstance().startGraphicsManagement();
             }
-            
-            Main.startGUI();
-            
-//            ScenarioManagement.getInstance().loadScenario();
-//            if ( ScenarioManagement.getInstance().needsVision() ) {
-//
-//            	VisionManagement.getInstance().connectToVision();
-//            	VisionManagement.getInstance().startRecievingPackets();
-//            	          	
-//            }
-//            if ( ScenarioManagement.getInstance().needsBotControl() ) {
-//            	
-//            	BotControlManagement.getInstance().startManagement();
-//            	ScenarioManagement.getInstance().registerBotControl( BotControlManagement.getInstance() );
-//            	
-//            }
-//            
-//            GraphicsManagement.getInstance().startGraphicsManagement();
-//            ScenarioManagement.getInstance().registerGraphics( GraphicsManagement.getInstance() );
-//            //TODO: Vision kalibrieren
-//            BotAIManagement.getInstance().startBotAIManagement();
-//
-//            EventQueue.invokeLater(new Runnable() {
-//    			public void run() {
-//    				try {
-//    					Helper window = new Helper();
-//    					window.frame.setVisible(true);
-//    				} catch (Exception e) {
-//    					e.printStackTrace();
-//    				}
-//    			}
-//    		});
+            if( getServerConfig().sceanarioAutoLoad() && !getServerConfig().getScenarioLibrary().isEmpty() && !getServerConfig().getScenarioClass().isEmpty() ){
+            	ScenarioManagement.getInstance().loadScenario();
+            }
             
         } catch ( Exception vException ) {
 

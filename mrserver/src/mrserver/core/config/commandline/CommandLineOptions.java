@@ -10,6 +10,7 @@ import mrserver.core.config.commandline.options.BotPorts;
 import mrserver.core.config.commandline.options.BotPortsAutoOpen;
 import mrserver.core.config.commandline.options.GraphicsPort;
 import mrserver.core.config.commandline.options.Help;
+import mrserver.core.config.commandline.options.ScenarioAutoload;
 import mrserver.core.config.commandline.options.ScenarioClass;
 import mrserver.core.config.commandline.options.ScenarioConfigCmdLine;
 import mrserver.core.config.commandline.options.ScenarioConfigFile;
@@ -79,6 +80,7 @@ public class CommandLineOptions extends Options{
         
         addOption( new ScenarioClass() );
         addOption( new ScenarioLibrary() );
+        addOption( new ScenarioAutoload() );
         addOption( new ScenarioConfigFile() );
         addOption( new ScenarioConfigCmdLine() );
 

@@ -115,6 +115,12 @@ public class ConfigFileReader {
     		Core.getInstance().getServerConfig().setAutoOpenBotPorts( Boolean.parseBoolean( vProperties.getProperty( "auto_open_botports" ) ) );
     		
     	}
+    	
+    	if( vProperties.getProperty( "auto_load_scenario" ) != null ){
+		
+    		Core.getInstance().getServerConfig().setScenarioAutoLoad( Boolean.parseBoolean( vProperties.getProperty( "auto_load_scenario" ) ) );
+    		
+    	}
 		
 	}
 	
