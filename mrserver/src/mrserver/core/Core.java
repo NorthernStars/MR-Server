@@ -100,6 +100,9 @@ public class Core {
             if( getServerConfig().autoOpenBotPorts() ){
             	BotAIManagement.getInstance().autostartBotAiPorts();
             }
+            if( getServerConfig().getGraphicsPort() != -1){
+            	GraphicsManagement.getInstance().startGraphicsManagement();
+            }
             
             Main.startGUI();
             

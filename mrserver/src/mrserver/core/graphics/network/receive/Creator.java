@@ -49,17 +49,17 @@ private static final BlockingQueue<DatagramPacket> UNKOWNSENDERDATAGRAMS = new A
 
 	public boolean startManagement() {
 		
-		GraphicsManagement.getLogger().debug( "Starting to process unkown sender packets from graphics" );
+		GraphicsManagement.getLogger().debug( "Starting to process unknown sender packets from graphics" );
 		
 		if( !isAlive() ) {
 			
 			super.start();
 			mManageMessagesfromGraphics.set( true);
-			GraphicsManagement.getLogger().info( "Started processing unkown sender packets from graphics" );
+			GraphicsManagement.getLogger().info( "Started processing unknown sender packets from graphics" );
             
 		} else {
 		    
-			GraphicsManagement.getLogger().debug( "Unkown sender ackets from graphics are already beingprocessed" );
+			GraphicsManagement.getLogger().debug( "Unknown sender ackets from graphics are already beingprocessed" );
 			
 		}
 		

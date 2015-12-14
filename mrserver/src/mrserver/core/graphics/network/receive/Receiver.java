@@ -36,7 +36,7 @@ public class Receiver extends Thread {
 			
 			super.start();
 			mManageMessagesfromGraphics.set( true);
-			GraphicsManagement.getLogger().info( "Started processing packets from graphics" );
+			GraphicsManagement.getLogger().info( "Started processing packets from graphics on port {}", mGraphicsConnect.getPort() );
             
 		} else {
 		    
