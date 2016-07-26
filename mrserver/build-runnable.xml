@@ -15,9 +15,9 @@
 			<zipfileset excludes="META-INF/*.SF"
 				src="../everythingbuild/librariesexternal/jcip-annotations.jar" />
 			<zipfileset excludes="META-INF/*.SF"
-				src="../everythingbuild/librariesexternal/log4j-api-2.0-beta9.jar" />
+				src="../everythingbuild/librariesexternal/log4j-api-2.0-rc1.jar" />
 			<zipfileset excludes="META-INF/*.SF"
-				src="../everythingbuild/librariesexternal/log4j-core-2.0-beta9.jar" />
+				src="../everythingbuild/librariesexternal/log4j-core-2.0-rc1.jar" />
 			<zipfileset excludes="META-INF/*.SF"
 				src="../everythingbuild/libraries/mrservermisc.jar" />
 		</jar>
