@@ -51,18 +51,18 @@ It creates mrserver-runnable.jar inside everythingbuild directory.
 ## Command-line options
 
     -bc,-botcontrol <ip-address:port>               Sets the botcontrol ip-address and port
-   -bp,-botports <port [:port...]>                 Sets the ports the bots can connect to
-   -bp_ao,-auto_open_botports                      Automatically opens the ports the bots can connect to
-   -cf,-configfile <path/configfile>               The name and path of the serverconfigfile
-   -gp,-graphicsport <port>                        Sets the port the graphics module can connect to
-   -h,-help                                        Displays this help
-   -sc,-scenarioclass <class>                      Sets the scenarioclass to use
-   -sc_al,-auto_load_scenario                      Automatically loads the scenario if possible to
-   -scf,-scenarioconfigfile <filename>             The configfile the scenario should use
-   -scmd,-scenariocmdline <"commandlineoptions">   Commandline options for the scenario
-   -sl,-scenariolibrary <libraryname>              The library with the scenario
-   -sn,-servername <servername>                    Sets the name of the server
-   -v,-vision <ip-address:port>                    Sets the vision ip-address and port
+    -bp,-botports <port [:port...]>                 Sets the ports the bots can connect to
+    -bp_ao,-auto_open_botports                      Automatically opens the ports the bots can connect to
+    -cf,-configfile <path/configfile>               The name and path of the serverconfigfile
+    -gp,-graphicsport <port>                        Sets the port the graphics module can connect to
+    -h,-help                                        Displays this help
+    -sc,-scenarioclass <class>                      Sets the scenarioclass to use
+    -sc_al,-auto_load_scenario                      Automatically loads the scenario if possible to
+    -scf,-scenarioconfigfile <filename>             The configfile the scenario should use
+    -scmd,-scenariocmdline <"commandlineoptions">   Commandline options for the scenario
+    -sl,-scenariolibrary <libraryname>              The library with the scenario
+    -sn,-servername <servername>                    Sets the name of the server
+    -v,-vision <ip-address:port>                    Sets the vision ip-address and port
 
 
 License
