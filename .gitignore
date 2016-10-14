@@ -10,3 +10,4 @@
 !*.xml
 !*/src/**/*.*
 !MR-Server*
+!everythingbuild
