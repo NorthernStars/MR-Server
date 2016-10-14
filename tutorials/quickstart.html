@@ -23,12 +23,6 @@
 		<hr />
 		<p class="header">MR-Server:</p>
         <ul>
-          	<li class="download"><a class="buttons" href="https://github.com/NorthernStars/mrserver/raw/master/MR-Server.zip">Download ZIP</a></li>
-          	<li class="download"><a class="buttons" href="https://github.com/NorthernStars/mrserver/raw/master/MR-Server.tar.gz">Download TAR</a></li>
-        </ul>
-        
-        <hr />
-        <ul>
         	<li><a class="buttons github" href="https://github.https://github.com/NorthernStars/mrserver/releases" target="_blank">View Releases</a></li>
         </ul>
 
@@ -60,7 +54,7 @@
       	
       	<p>
       		Create a shortcut or link (depending on your os) to the file <i>mrserver-runnable.jar</i> and add the following arguments<br />
-      		<code>-cf defaultserver.config</code><br />
+      		<code>-cf defaultserver.config -sl scenarios/mrscenariofootball.jar -sc mrscenariofootball.core.ScenarioCore -sc_al</code><br />
       	</p>
       	
       	<h4>3. Starting MR-Server</h4>
@@ -70,7 +64,7 @@
       	
       	<h4>4. Loading scenario</h4>
       	<p>
-      		First you have to load a scenario. Here we'll use the default soccer scenario.
+      		If the scenario isn't loaded (this is done by arguments -sl, -sc and -sc_al above), you have to load a scenario. Here we'll use the default soccer scenario.
       		So click on <i>Scenario</i> > <i>Load</i> in the top menue of the MR-Server, to load a scenario.<br />
       		<img src="img/screenshot-server-load-szenario-01.png" />
       	</p>
