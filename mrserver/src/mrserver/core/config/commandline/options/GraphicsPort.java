@@ -20,7 +20,7 @@ public class GraphicsPort extends Option implements ParseOption  {
 
 	private final static String mOption = "gp";
 	private final static String mLongOption = "graphicsport";
-	private final static String mDiscription = "Sets the port the graphics module can connect to\n";
+	private final static String mDiscription = "Sets the port the graphics module can connect to and automatically opens the port\n";
 	
 	private final static boolean mHasArgument = true;
 	private final static boolean mArgumentIsOptional = false;
