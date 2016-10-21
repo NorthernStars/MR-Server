@@ -1,0 +1,82 @@
+
+allprojects {
+    
+    apply plugin: 'java'
+    apply plugin: 'eclipse'
+    
+
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven {
+            url "https://maven.repository.redhat.com/ga/"
+        }
+        
+    }
+    
+    dependencies {
+        compile 'org.apache.logging.log4j:log4j-api:2.7'
+        compile 'org.apache.logging.log4j:log4j-core:2.7'
+        compile 'net.jcip:jcip-annotations:1.0.0.redhat-8'
+        
+        testCompile 'junit:junit:4.12'
+    }
+    
+    
+}
+
+project(':mrserver'){
+
+	apply plugin: 'application'
+	mainClassName = "mrserver.Main"
+	//applicationDefaultJvmArgs = ["-Dargs=-cf defaultserver.config"]
+
+    dependencies {
+        compile project(':mrservermisc')
+        compile project(':mrscenariofootball')
+        compile 'commons-cli:commons-cli:1.2+'
+    }
+    
+    sourceSets {
+	    main {
+	        resources {
+	            srcDirs = ["src/main/xml"]
+	            includes = ["**/*.xml"]
+	        }
+	    }
+	}
+
+	task info << {
+		println $distribution.name
+	}
+
+} 
+
+project(':mrservermisc'){
+
+}
+ 
+project(':mrserveroperator'){
+
+    dependencies {
+        compile project(':mrservermisc')
+    }
+
+}
+
+project(':mrscenariofootball'){
+
+    dependencies {
+        compile project(':mrservermisc')
+    }
+    
+    sourceSets {
+	    main {
+	        resources {
+	            srcDirs = ["src/main/img"]
+	            includes = ["**/*.png"]
+	        }
+	    }
+	}
+
+} 

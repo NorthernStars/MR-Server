@@ -1,7 +1,0 @@
-/bin
-/build
-/docs
-
-!/librariesexternal
-!*.sh
-!*.bat
