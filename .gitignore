@@ -4,6 +4,6 @@ build
 gradle
 .gradle
 
-/**/.settings
-/**/.classpath
-/**/.project
+**/.settings
+**/.classpath
+**/.project
