@@ -1,13 +1,9 @@
-*.*
-*
 
-!.gitignore
-!.classpath
-!.project
+build
 
-!*.txt
+gradle
+.gradle
 
-!*.xml
-!*/src/**/*.*
-!MR-Server*
-!everythingbuild
+/**/.settings
+/**/.classpath
+/**/.project
