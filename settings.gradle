@@ -1,4 +1,4 @@
-rootProject.name = 'mrserver'
+rootProject.name = 'mixedrealityserver'
 include "mrserver" 
 include "mrservermisc"
 include "mrserveroperator"
