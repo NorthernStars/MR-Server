@@ -28,7 +28,7 @@ project(':mrserver'){
 
 	apply plugin: 'application'
 	mainClassName = "mrserver.Main"
-	//applicationDefaultJvmArgs = ["-Dargs=-cf defaultserver.config"]
+	applicationDefaultJvmArgs = ["-DMRSERVERCONFIGFILE=defaultserver.config"]
 
     dependencies {
         compile project(':mrservermisc')

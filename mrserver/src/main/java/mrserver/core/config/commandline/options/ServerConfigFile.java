@@ -19,7 +19,7 @@ public class ServerConfigFile extends Option implements ParseOption {
 
 	private final static String mOption = "cf";
 	private final static String mLongOption = "configfile";
-	private final static String mDiscription = "The name and path of the serverconfigfile\n";
+	private final static String mDiscription = "The name and path of the serverconfigfile\nCan also be set through JVM -D argument \"MRSERVERCONFIGFILE\". This is ignored when -cf is set on the commandline.";
 	
 	private final static boolean mHasArgument = true;
 	private final static String mArgumentName = "path/configfile";

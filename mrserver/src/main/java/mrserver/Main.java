@@ -2,7 +2,10 @@ package mrserver;
 
 import java.lang.management.ManagementFactory;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import mrserver.core.Core;
 
@@ -24,6 +27,24 @@ public class Main {
         Core.getLogger().info( "Starting server (" + ManagementFactory.getRuntimeMXBean().getName() + ")" );
         Core.getLogger().trace( "Parameters: " + Arrays.toString( aCommandline ) );
         
+        {
+        	boolean vHasConfigFileArgument = false;
+	        for(String vArgument : aCommandline ){
+	        	if(vArgument.equalsIgnoreCase("-cf")){
+	        		vHasConfigFileArgument = true;
+	        		break;
+	        	}
+	        }
+	        
+	        if( !vHasConfigFileArgument && System.getProperty("MRSERVERCONFIGFILE") != null ){
+	        	List<String> vArguments = new ArrayList<String>(Arrays.asList(aCommandline));
+	        	vArguments.add("-cf");
+	        	vArguments.add(System.getProperty("MRSERVERCONFIGFILE"));
+	        	aCommandline = vArguments.toArray(aCommandline);
+	        }
+        }
+        
+                
         Core vServer;
         
         try {
