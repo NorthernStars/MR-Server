@@ -8,45 +8,23 @@ Including all modules necessary to set up a complete MR enviroment.
 
 ## Dependencies
 
-MR-Server uses a number of libraries that are already included inside the repository.
+MR-Server uses a number of libraries that will be downloaded automaticaly during build process.
+You need gradle installed to run build script. You can use Eclipse and the Eclipse Gradle Plugin to build the project.
 
-* log4j-api-2.0-beta9.jar
-* dyn4j-javadocs-v3.1.7.zip
-* dyn4j-v3.1.7.jar
-* log4j-core-2.0-beta9.jar
-* commons-cli-1.2.jar
-* jcip-annotations.jar
-
-You need ant installed to run build script.
-
-### Linux (Debian / Ubuntu / ...)
-```sh
-sudo apt-get install ant
-```
-
-### Windows
-https://ant.apache.org/
 
 ## Installation
 
-* Import project from github
-* Create libraries directory
-* Run ant build script from everythingbuild directory
-
-```sh
-git clone [git-repo-url] MR-Server
-cd MR-Server
-cd everythingbuild
-mkdir libraries
-ant -f buildserver.xml
-```
+* Clone project from github
+* Import projects into eclipse (if prefered) using gradle import assist
 
 ## Build runnable
-TO build a runnable jar file execute build-runnable.xml from directory mrserver with ant
+* Run gradle buildBinarys task
 
-     ant -f build-runnable.xml
+Run from console
 
-It creates mrserver-runnable.jar inside everythingbuild directory.
+     gradle buildBinarys
+
+it creates a dist directory that includes all need files. Use start scripts mrserver to start default server config.
 
 ## Command-line options
 
