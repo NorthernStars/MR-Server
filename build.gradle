@@ -27,7 +27,7 @@ allprojects {
 project(':mrserver'){
 
 	apply plugin: 'application'
-	mainClassName = "mrserver.Main"
+	mainClassName = "de.fh_kiel.robotics.mr.server.Main"
 	applicationDefaultJvmArgs = ["-DMRSERVERCONFIGFILE=defaultserver.config"]
 
     dependencies {
