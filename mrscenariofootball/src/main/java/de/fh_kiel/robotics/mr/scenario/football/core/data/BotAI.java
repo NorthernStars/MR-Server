@@ -2,7 +2,7 @@ package de.fh_kiel.robotics.mr.scenario.football.core.data;
 
 import de.fh_kiel.robotics.mr.scenario.football.core.data.worlddata.client.ClientWorldData;
 import de.fh_kiel.robotics.mr.scenario.football.core.data.worlddata.server.WorldData;
-import mrservermisc.bots.interfaces.Bot;
+import de.fh_kiel.robotics.mr.server.misc.bots.interfaces.Bot;
 
 public class BotAI {
 	

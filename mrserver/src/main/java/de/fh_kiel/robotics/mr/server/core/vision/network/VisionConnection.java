@@ -6,10 +6,10 @@ import org.apache.logging.log4j.Level;
 
 import de.fh_kiel.robotics.mr.server.core.Core;
 import de.fh_kiel.robotics.mr.server.core.vision.VisionManagement;
-import mrservermisc.network.BasicUDPServerConnection;
-import mrservermisc.network.handshake.server.ConnectionAcknowlege;
-import mrservermisc.network.handshake.server.ConnectionEstablished;
-import mrservermisc.network.handshake.server.ConnectionRequest;
+import de.fh_kiel.robotics.mr.server.misc.network.BasicUDPServerConnection;
+import de.fh_kiel.robotics.mr.server.misc.network.handshake.server.ConnectionAcknowlege;
+import de.fh_kiel.robotics.mr.server.misc.network.handshake.server.ConnectionEstablished;
+import de.fh_kiel.robotics.mr.server.misc.network.handshake.server.ConnectionRequest;
 
 public class VisionConnection extends BasicUDPServerConnection{
 	

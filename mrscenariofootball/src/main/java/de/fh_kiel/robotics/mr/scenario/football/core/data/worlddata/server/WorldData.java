@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import de.fh_kiel.robotics.mr.scenario.football.game.Core;
-import mrservermisc.network.xml.Helpers;
+import de.fh_kiel.robotics.mr.server.misc.network.xml.Helpers;
 
 @XmlRootElement(name="WorldData")
 public class WorldData {

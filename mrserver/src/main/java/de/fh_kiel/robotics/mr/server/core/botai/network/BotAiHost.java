@@ -1,6 +1,6 @@
 package de.fh_kiel.robotics.mr.server.core.botai.network;
 
-import mrservermisc.network.BasicUDPHostConnection;
+import de.fh_kiel.robotics.mr.server.misc.network.BasicUDPHostConnection;
 
 public class BotAiHost extends BasicUDPHostConnection{
 

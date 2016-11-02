@@ -5,8 +5,6 @@ import java.net.SocketAddress;
 import java.util.Collections;
 import java.util.concurrent.ConcurrentHashMap;
 
-import mrservermisc.graphics.interfaces.Graphics;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,6 +13,7 @@ import de.fh_kiel.robotics.mr.server.core.graphics.network.GraphicsConnection;
 import de.fh_kiel.robotics.mr.server.core.graphics.network.receive.Creator;
 import de.fh_kiel.robotics.mr.server.core.graphics.network.receive.Receiver;
 import de.fh_kiel.robotics.mr.server.gui.options.interfaces.GraphicsManagementListener;
+import de.fh_kiel.robotics.mr.server.misc.graphics.interfaces.Graphics;
 
 public class GraphicsManagement implements Graphics{
 	

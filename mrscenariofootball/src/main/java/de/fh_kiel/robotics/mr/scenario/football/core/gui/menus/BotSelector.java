@@ -15,7 +15,7 @@ import de.fh_kiel.robotics.mr.scenario.football.core.data.BotAI;
 import de.fh_kiel.robotics.mr.scenario.football.core.data.ScenarioInformation;
 import de.fh_kiel.robotics.mr.scenario.football.core.data.worlddata.server.Player;
 import de.fh_kiel.robotics.mr.scenario.football.core.gui.PlayField;
-import mrservermisc.bots.interfaces.Bot;
+import de.fh_kiel.robotics.mr.server.misc.bots.interfaces.Bot;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;

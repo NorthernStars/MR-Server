@@ -14,9 +14,9 @@ import de.fh_kiel.robotics.mr.scenario.football.core.data.worlddata.server.Refer
 import de.fh_kiel.robotics.mr.scenario.football.core.data.worlddata.server.Score;
 import de.fh_kiel.robotics.mr.scenario.football.core.data.worlddata.server.ServerPoint;
 import de.fh_kiel.robotics.mr.scenario.football.core.data.worlddata.server.WorldData;
+import de.fh_kiel.robotics.mr.server.misc.botcontrol.interfaces.BotControl;
+import de.fh_kiel.robotics.mr.server.misc.graphics.interfaces.Graphics;
 import net.jcip.annotations.GuardedBy;
-import mrservermisc.botcontrol.interfaces.BotControl;
-import mrservermisc.graphics.interfaces.Graphics;
 
 public class ScenarioInformation {
 	

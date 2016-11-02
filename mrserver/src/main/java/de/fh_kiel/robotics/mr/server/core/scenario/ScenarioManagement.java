@@ -16,11 +16,11 @@ import de.fh_kiel.robotics.mr.server.core.botai.data.BotAI;
 import de.fh_kiel.robotics.mr.server.core.botcontrol.BotControlManagement;
 import de.fh_kiel.robotics.mr.server.core.graphics.GraphicsManagement;
 import de.fh_kiel.robotics.mr.server.gui.interfaces.SceanarioManagementChangeListener;
-import mrservermisc.botcontrol.interfaces.BotControl;
-import mrservermisc.bots.interfaces.Bot;
-import mrservermisc.graphics.interfaces.Graphics;
-import mrservermisc.network.data.position.PositionDataPackage;
-import mrservermisc.scenario.interfaces.Scenario;
+import de.fh_kiel.robotics.mr.server.misc.botcontrol.interfaces.BotControl;
+import de.fh_kiel.robotics.mr.server.misc.bots.interfaces.Bot;
+import de.fh_kiel.robotics.mr.server.misc.graphics.interfaces.Graphics;
+import de.fh_kiel.robotics.mr.server.misc.network.data.position.PositionDataPackage;
+import de.fh_kiel.robotics.mr.server.misc.scenario.interfaces.Scenario;
 
 /**
  * Managed das Szenario des Servers

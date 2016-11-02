@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import de.fh_kiel.robotics.mr.scenario.football.core.data.BotAI;
 import de.fh_kiel.robotics.mr.scenario.football.core.data.ScenarioInformation;
-import mrservermisc.network.data.position.PositionObjectBot;
+import de.fh_kiel.robotics.mr.server.misc.network.data.position.PositionObjectBot;
 
 public class Player extends ReferencePoint {
 

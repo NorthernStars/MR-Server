@@ -7,13 +7,13 @@ import de.fh_kiel.robotics.mr.server.core.botai.BotAIManagement;
 import de.fh_kiel.robotics.mr.server.core.botai.network.BotAiHost;
 import de.fh_kiel.robotics.mr.server.core.botai.network.data.UnkownBotAI;
 import de.fh_kiel.robotics.mr.server.core.scenario.ScenarioManagement;
-import mrservermisc.bots.interfaces.Bot;
-import mrservermisc.network.handshake.client.ClientType;
-import mrservermisc.network.handshake.client.ConnectionRequest;
-import mrservermisc.network.handshake.client.MovementMode;
-import mrservermisc.network.handshake.client.ProtocolVersion;
-import mrservermisc.network.handshake.client.oneo.ConnectionAcknowlege;
-import mrservermisc.network.handshake.client.oneo.ConnectionServerData;
+import de.fh_kiel.robotics.mr.server.misc.bots.interfaces.Bot;
+import de.fh_kiel.robotics.mr.server.misc.network.handshake.client.ClientType;
+import de.fh_kiel.robotics.mr.server.misc.network.handshake.client.ConnectionRequest;
+import de.fh_kiel.robotics.mr.server.misc.network.handshake.client.MovementMode;
+import de.fh_kiel.robotics.mr.server.misc.network.handshake.client.ProtocolVersion;
+import de.fh_kiel.robotics.mr.server.misc.network.handshake.client.oneo.ConnectionAcknowlege;
+import de.fh_kiel.robotics.mr.server.misc.network.handshake.client.oneo.ConnectionServerData;
 
 public class BotAI implements Bot{
 

@@ -3,7 +3,7 @@ package de.fh_kiel.robotics.mr.scenario.football.core.data.action;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import mrservermisc.network.xml.Helpers;
+import de.fh_kiel.robotics.mr.server.misc.network.xml.Helpers;
 
 @XmlRootElement(name="command")
 public class Command {

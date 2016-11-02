@@ -6,10 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import mrservermisc.network.data.position.PositionObjectBot;
-import mrservermisc.network.data.position.PositionObjectType;
-import mrservermisc.scenario.interfaces.Scenario;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -29,6 +25,9 @@ import de.fh_kiel.robotics.mr.scenario.football.core.data.worlddata.server.World
 import de.fh_kiel.robotics.mr.scenario.football.core.managements.FromVision;
 import de.fh_kiel.robotics.mr.scenario.football.core.managements.ToBotAIs;
 import de.fh_kiel.robotics.mr.scenario.football.core.managements.ToGraphics;
+import de.fh_kiel.robotics.mr.server.misc.network.data.position.PositionObjectBot;
+import de.fh_kiel.robotics.mr.server.misc.network.data.position.PositionObjectType;
+import de.fh_kiel.robotics.mr.server.misc.scenario.interfaces.Scenario;
 
 public class Core {
 	 

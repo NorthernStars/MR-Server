@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.fh_kiel.robotics.mr.server.core.botai.BotAIManagement;
-import mrservermisc.network.BasicUDPHostConnection;
+import de.fh_kiel.robotics.mr.server.misc.network.BasicUDPHostConnection;
 
 public class BotAIConnections {
 	

@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Level;
 
 import de.fh_kiel.robotics.mr.server.core.scenario.ScenarioManagement;
 import de.fh_kiel.robotics.mr.server.core.vision.network.VisionConnection;
-import mrservermisc.network.data.position.PositionDataPackage;
+import de.fh_kiel.robotics.mr.server.misc.network.data.position.PositionDataPackage;
 
 public class VisionIncomingPacketsManagement extends Thread{
 

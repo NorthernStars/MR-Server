@@ -4,8 +4,9 @@ import java.io.IOException;
 
 
 
+
 import de.fh_kiel.robotics.mr.server.core.Core;
-import mrservermisc.network.BasicUDPServerConnection;
+import de.fh_kiel.robotics.mr.server.misc.network.BasicUDPServerConnection;
 
 public class BotControlConnection extends BasicUDPServerConnection {
 

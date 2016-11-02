@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 
 import de.fh_kiel.robotics.mr.server.core.botcontrol.network.BotControlConnection;
 import de.fh_kiel.robotics.mr.server.core.vision.VisionManagement;
-import mrservermisc.botcontrol.interfaces.BotControl;
+import de.fh_kiel.robotics.mr.server.misc.botcontrol.interfaces.BotControl;
 
 /**
  * Managed die Verbindung und den Datenaustausch zum Visionmodul

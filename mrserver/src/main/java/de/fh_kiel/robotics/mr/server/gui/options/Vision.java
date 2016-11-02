@@ -16,7 +16,7 @@ import javax.swing.DefaultComboBoxModel;
 
 import de.fh_kiel.robotics.mr.server.core.Core;
 import de.fh_kiel.robotics.mr.server.core.vision.VisionManagement;
-import mrservermisc.network.data.position.VisionMode;
+import de.fh_kiel.robotics.mr.server.misc.network.data.position.VisionMode;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;

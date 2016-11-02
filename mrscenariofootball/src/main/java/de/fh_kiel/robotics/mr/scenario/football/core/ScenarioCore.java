@@ -14,11 +14,11 @@ import de.fh_kiel.robotics.mr.scenario.football.core.managements.FromVision;
 import de.fh_kiel.robotics.mr.scenario.football.core.managements.ToBotAIs;
 import de.fh_kiel.robotics.mr.scenario.football.core.managements.ToGraphics;
 import de.fh_kiel.robotics.mr.scenario.football.game.Core;
-import mrservermisc.botcontrol.interfaces.BotControl;
-import mrservermisc.bots.interfaces.Bot;
-import mrservermisc.graphics.interfaces.Graphics;
-import mrservermisc.network.data.position.PositionDataPackage;
-import mrservermisc.scenario.interfaces.Scenario;
+import de.fh_kiel.robotics.mr.server.misc.botcontrol.interfaces.BotControl;
+import de.fh_kiel.robotics.mr.server.misc.bots.interfaces.Bot;
+import de.fh_kiel.robotics.mr.server.misc.graphics.interfaces.Graphics;
+import de.fh_kiel.robotics.mr.server.misc.network.data.position.PositionDataPackage;
+import de.fh_kiel.robotics.mr.server.misc.scenario.interfaces.Scenario;
 
 /**
  * Bildet das Herzstück des MRFussballszenarios. Hier werden alle Metaprozesse und Threads verwaltet

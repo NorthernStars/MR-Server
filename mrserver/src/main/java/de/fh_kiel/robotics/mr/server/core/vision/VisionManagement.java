@@ -6,8 +6,8 @@ import org.apache.logging.log4j.Logger;
 
 import de.fh_kiel.robotics.mr.server.core.Core;
 import de.fh_kiel.robotics.mr.server.core.vision.network.VisionConnection;
-import mrservermisc.network.data.position.VisionMode;
-import mrservermisc.network.data.visionmode.ChangeVisionMode;
+import de.fh_kiel.robotics.mr.server.misc.network.data.position.VisionMode;
+import de.fh_kiel.robotics.mr.server.misc.network.data.visionmode.ChangeVisionMode;
 
 /**
  * Managed die Verbindung und den Datenaustausch zum Visionmodul

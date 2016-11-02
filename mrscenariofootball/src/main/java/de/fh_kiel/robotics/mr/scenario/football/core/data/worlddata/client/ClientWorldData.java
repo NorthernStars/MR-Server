@@ -13,7 +13,7 @@ import de.fh_kiel.robotics.mr.scenario.football.core.data.worlddata.server.Playe
 import de.fh_kiel.robotics.mr.scenario.football.core.data.worlddata.server.ReferencePoint;
 import de.fh_kiel.robotics.mr.scenario.football.core.data.worlddata.server.Score;
 import de.fh_kiel.robotics.mr.scenario.football.core.data.worlddata.server.WorldData;
-import mrservermisc.network.xml.Helpers;
+import de.fh_kiel.robotics.mr.server.misc.network.xml.Helpers;
 
 @XmlRootElement(name="WorldData")
 public class ClientWorldData {

@@ -8,10 +8,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import de.fh_kiel.robotics.mr.server.core.Core;
 import de.fh_kiel.robotics.mr.server.core.graphics.GraphicsManagement;
 import de.fh_kiel.robotics.mr.server.core.graphics.network.GraphicsConnection;
-import mrservermisc.network.handshake.server.ConnectionAcknowlege;
-import mrservermisc.network.handshake.server.ConnectionEstablished;
-import mrservermisc.network.handshake.server.ConnectionRequest;
-import mrservermisc.network.xml.Helpers;
+import de.fh_kiel.robotics.mr.server.misc.network.handshake.server.ConnectionAcknowlege;
+import de.fh_kiel.robotics.mr.server.misc.network.handshake.server.ConnectionEstablished;
+import de.fh_kiel.robotics.mr.server.misc.network.handshake.server.ConnectionRequest;
+import de.fh_kiel.robotics.mr.server.misc.network.xml.Helpers;
 
 public class GraphicModul {
 
@@ -20,7 +20,7 @@ public class GraphicModul {
 	private String mClientName;
 	
 	@SuppressWarnings("rawtypes")
-	private Class mExpectedPacket = mrservermisc.network.handshake.server.ConnectionEstablished.class;
+	private Class mExpectedPacket = de.fh_kiel.robotics.mr.server.misc.network.handshake.server.ConnectionEstablished.class;
 	
 	private AtomicBoolean mIsActive = new AtomicBoolean( true );
 	private int mValidityCounter = 0;

@@ -5,10 +5,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import mrservermisc.network.data.position.PositionDataPackage;
-import mrservermisc.network.data.position.PositionObject;
-import mrservermisc.network.data.position.PositionObjectBot;
-
 import org.apache.logging.log4j.Level;
 
 import de.fh_kiel.robotics.mr.scenario.football.core.ScenarioCore;
@@ -16,6 +12,9 @@ import de.fh_kiel.robotics.mr.scenario.football.core.data.ScenarioInformation;
 import de.fh_kiel.robotics.mr.scenario.football.core.data.worlddata.server.Player;
 import de.fh_kiel.robotics.mr.scenario.football.core.data.worlddata.server.WorldData;
 import de.fh_kiel.robotics.mr.scenario.football.game.Core;
+import de.fh_kiel.robotics.mr.server.misc.network.data.position.PositionDataPackage;
+import de.fh_kiel.robotics.mr.server.misc.network.data.position.PositionObject;
+import de.fh_kiel.robotics.mr.server.misc.network.data.position.PositionObjectBot;
 
 public class FromVision extends Thread {
 	
