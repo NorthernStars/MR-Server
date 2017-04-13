@@ -1,3 +1,18 @@
+plugins {
+  id "java"
+  id "eclipse"
+  id "jacoco"
+  id "org.sonarqube" version "2.3"
+}
+
+sonarqube {
+    properties {
+        property "sonar.projectName", "MixedReality :: Server"
+        property "sonar.projectKey", "werthersechte-github:mrServer"
+        property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
+    }
+}
+
 allprojects {
     
     apply plugin: 'java'
