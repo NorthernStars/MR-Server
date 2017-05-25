@@ -400,7 +400,7 @@ public class Core {
 				
 				if( vPlayer.getId() == aBotAI.getVtId() ){
 					
-					vPlayer.setOrientationAngle( vPlayer.getOrientationAngle() - vRotation );
+					vPlayer.setOrientationAngle( vPlayer.getOrientationAngle() + vRotation );
 					vPlayer.getPosition().setLocation( 
 							vPlayer.getPosition().getX() + vSpeed * Math.cos( Math.toRadians( vPlayer.getOrientationAngle() ) ),
 							vPlayer.getPosition().getY() + vSpeed * Math.sin( Math.toRadians( vPlayer.getOrientationAngle() ) ) );
