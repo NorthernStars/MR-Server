@@ -28,10 +28,10 @@ public class WorldData {
 	@XmlElement(name="ball")
 	BallPosition mBallPosition;
 
-	@XmlTransient
+	@XmlElement(name="players")
 	Map<Integer, Player> mListOfPlayers;
 
-    @XmlTransient
+	@XmlElement(name="flag")
     Map<ReferencePointName, ReferencePoint> mReferencePoints;
 	
     public WorldData(){
@@ -160,7 +160,7 @@ public class WorldData {
 		mBallPosition = aBallPosition;
 	}
 	
-	@XmlElement(name="players")
+	@XmlTransient
 	public List<Player> getListOfPlayers() {
 		return new ArrayList<Player>( mListOfPlayers.values() );
 	}
@@ -174,7 +174,7 @@ public class WorldData {
 		}
 	}
 	
-	@XmlElement(name="flag")
+	@XmlTransient
 	public List<ReferencePoint> getReferencePoints() {
 		return new ArrayList<ReferencePoint>( mReferencePoints.values() );
 	}
