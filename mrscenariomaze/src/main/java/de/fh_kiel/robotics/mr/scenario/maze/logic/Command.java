@@ -1,4 +1,4 @@
-package de.fh_kiel.robotics.mr.scenario.maze;
+package de.fh_kiel.robotics.mr.scenario.maze.logic;
 
 import de.fh_kiel.robotics.mr.server.misc.network.xml.Helpers;
 
@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Command {
 	
 	@XmlElement(name="wheel_velocities")
-	Movement mMovement;
+    Movement mMovement;
 	
 	public String toXMLString(){
 		

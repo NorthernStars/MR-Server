@@ -1,4 +1,4 @@
-package de.fh_kiel.robotics.mr.scenario.maze;
+package de.fh_kiel.robotics.mr.scenario.maze.logic;
 
 import de.fh_kiel.robotics.mr.server.misc.network.xml.Helpers;
 
