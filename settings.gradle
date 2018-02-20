@@ -3,4 +3,5 @@ include "mrserver"
 include "mrservermisc"
 include "mrserveroperator"
 include "mrscenariofootball"
+include "mrscenariomaze"
 

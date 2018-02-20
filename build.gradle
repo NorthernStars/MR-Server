@@ -49,6 +49,7 @@ project(':mrserver'){
     dependencies {
         compile project(':mrservermisc')
         compile project(':mrscenariofootball')
+        compile project(':mrscenariomaze')
         compile 'commons-cli:commons-cli:1.2+'
     }
     
@@ -84,15 +85,32 @@ project(':mrscenariofootball'){
     dependencies {
         compile project(':mrservermisc')
     }
-    
+
     sourceSets {
-	    main {
-	        resources {
-	            srcDirs = ["src/main/img"]
-	            includes = ["**/*.png"]
-	        }
-	    }
-	}
+        main {
+            resources {
+                srcDirs = ["src/main/img"]
+                includes = ["**/*.png"]
+            }
+        }
+    }
+
+}
+
+project(':mrscenariomaze'){
+
+    dependencies {
+        compile project(':mrservermisc')
+    }
+
+    sourceSets {
+        main {
+            resources {
+                srcDirs = ["src/main/img"]
+                includes = ["**/*.png"]
+            }
+        }
+    }
 
 }
 
