@@ -9,17 +9,23 @@ import de.fh_kiel.robotics.mr.server.misc.network.xml.Helpers;
 @XmlRootElement(name="Position")
 public class Position {
 
-    @XmlElement(name="position")
-	int[][] posi = {{-1, 0,-1},
-							{ 0, 1, 0},
-							{-1, 0,-1}};
-    @XmlElement(name="mXPositionInTile")
-	double mXPositionInTile;
-    @XmlElement(name="mYPositionInTile")
-	double mYPositionInTile;
+	@XmlElement(name="position")
+	public int[][] posi = {{-1, 0,-1},
+			{ 0, 1, 0},
+			{-1, 0,-1}};
+	@XmlElement(name="xpositionintile")
+	public double mXPositionInTile;
+	@XmlElement(name="ypositionintile")
+	public double mYPositionInTile;
 
-	@XmlElement(name="mOrientation")
-	double mOrientation;
+	@XmlElement(name="orientation")
+	public double mOrientation;
+
+
+	@XmlElement(name="tilewidth")
+	public double mTileWidth;
+	@XmlElement(name="tileweight")
+	public double mTileHeight;
 	
 	public Position() {
 	}
@@ -44,10 +50,15 @@ public class Position {
 		if(vYMaze+1 < aMaze[vXMaze].length) {
 			posi[1][2] = aMaze[vXMaze][vYMaze+1];
 		}
-		mXPositionInTile = bot.getPositionX() - 1.0/aMaze.length*vXMaze;
-		mYPositionInTile = bot.getPositionY() - 1.0/aMaze[0].length*vYMaze;
+
+		mTileWidth = 1.0 / aMaze.length;
+		mTileHeight = 1.0 / aMaze[0].length;
+
+		mXPositionInTile = (bot.getPositionX() - mTileWidth*vYMaze)/mTileWidth;
+		mYPositionInTile = (bot.getPositionY() - mTileHeight*vXMaze)/mTileHeight;
 
 		mOrientation = bot.getOrientation();
+
 	}
 	
 	public String toXMLString(){
