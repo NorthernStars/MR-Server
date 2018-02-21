@@ -68,7 +68,7 @@ public class MazeRunner {
 	}
 
 	public void setOrientation(double aOrientation) {
-		this.mOrientation = aOrientation%180;
+		this.mOrientation = aOrientation%360;
 	}
 
 	public List<double[]> getPath() {
