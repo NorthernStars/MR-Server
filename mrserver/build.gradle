@@ -2,6 +2,10 @@ plugins {
     id 'application'
 }
 
+repositories {
+    mavenCentral()
+}
+
 application {
     mainClass = 'de.fh_kiel.robotics.mr.server.Main'
     applicationDefaultJvmArgs = ["-DMRSERVERCONFIGFILE=defaultserver.config"]
@@ -11,6 +15,12 @@ dependencies {
     implementation project(':mrservermisc')
     implementation project(':mrscenariofootball')
     implementation 'commons-cli:commons-cli:1.2+'
+
+    implementation 'org.apache.logging.log4j:log4j-api:2.25.1'
+    implementation 'org.apache.logging.log4j:log4j-core:2.25.1'
+    implementation 'net.jcip:jcip-annotations:1.0'
+
+    testImplementation 'junit:junit:4.12'
 }
 
 sourceSets {

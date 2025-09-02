@@ -2,8 +2,8 @@ package de.fh_kiel.robotics.mr.server.misc.network.handshake.client.oneo;
 
 import java.io.StringReader;
 
-import javax.xml.bind.JAXB;
-import javax.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.JAXB;
+import jakarta.xml.bind.annotation.XmlElement;
 
 public class ConnectionAcknowlege {
 

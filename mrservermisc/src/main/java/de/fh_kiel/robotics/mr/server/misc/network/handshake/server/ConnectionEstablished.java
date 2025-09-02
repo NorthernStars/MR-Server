@@ -1,6 +1,6 @@
 package de.fh_kiel.robotics.mr.server.misc.network.handshake.server;
 
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 import de.fh_kiel.robotics.mr.server.misc.network.xml.Helpers;
 

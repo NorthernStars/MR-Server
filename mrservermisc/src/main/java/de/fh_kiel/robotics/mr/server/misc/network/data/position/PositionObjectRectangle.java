@@ -2,8 +2,8 @@ package de.fh_kiel.robotics.mr.server.misc.network.data.position;
 
 import java.util.Arrays;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name="positionobjectrectangle")
 public class PositionObjectRectangle extends PositionObject{

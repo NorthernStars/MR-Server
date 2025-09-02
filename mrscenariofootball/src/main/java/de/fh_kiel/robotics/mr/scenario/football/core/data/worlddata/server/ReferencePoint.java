@@ -3,7 +3,7 @@ package de.fh_kiel.robotics.mr.scenario.football.core.data.worlddata.server;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElement;
 
 public class ReferencePoint {
 	

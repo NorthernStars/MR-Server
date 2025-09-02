@@ -1,8 +1,8 @@
 package de.fh_kiel.robotics.mr.server.misc.network.handshake.client;
 
-import javax.xml.bind.annotation.XmlEnum;
-import javax.xml.bind.annotation.XmlEnumValue;
-import javax.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.XmlEnum;
+import jakarta.xml.bind.annotation.XmlEnumValue;
+import jakarta.xml.bind.annotation.XmlType;
 
 @XmlType(name = "protocol_version")
 @XmlEnum
