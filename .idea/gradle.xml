@@ -5,7 +5,15 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleJvm" value="corretto-1.8" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/mrscenariofootball" />
+            <option value="$PROJECT_DIR$/mrserver" />
+            <option value="$PROJECT_DIR$/mrservermisc" />
+            <option value="$PROJECT_DIR$/mrserveroperator" />
+          </set>
+        </option>
       </GradleProjectSettings>
     </option>
   </component>

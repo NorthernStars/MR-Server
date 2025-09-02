@@ -1,39 +1,24 @@
 plugins {
   id "java"
-  id "eclipse"
   id "jacoco"
-  id "org.sonarqube" version "6.3.1.5724"
 }
 
-sonarqube {
-    properties {
-        property "sonar.projectName", "MixedReality :: Server"
-        property "sonar.projectKey", "werthersechte-github:mrServer"
-        property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
-    }
-}
 
 allprojects {
     
     apply plugin: 'java'
-    apply plugin: 'eclipse'
 	apply plugin: 'jacoco'
     
 
     repositories {
-        jcenter()
         mavenCentral()
-        maven {
-            url "https://maven.repository.redhat.com/ga/"
-        }
-        
     }
     
     dependencies {
-        compile 'org.apache.logging.log4j:log4j-api:2.7'
-        compile 'org.apache.logging.log4j:log4j-core:2.7'
-        compile 'net.jcip:jcip-annotations:1.0.0.redhat-8'
-        
+        compile 'org.apache.logging.log4j:log4j-api:2.25.1'
+        compile 'org.apache.logging.log4j:log4j-core:2.25.1'
+        compile 'net.jcip:jcip-annotations:1.0'
+
         testCompile 'junit:junit:4.12'
     }
     
@@ -53,16 +38,18 @@ project(':mrserver'){
     }
     
     sourceSets {
-	    main(({
+	    main{
             resources {
                 srcDirs = ["src/main/xml"]
                 includes = ["**/*.xml"]
             }
-        } as String))
+        }
     }
 
-	task info << {
-		println $distribution.name
+	task info {
+        doLast {
+            println project.name
+        }
 	}
 
 } 
@@ -86,19 +73,19 @@ project(':mrscenariofootball'){
     }
     
     sourceSets {
-	    main(({
+	    main{
             resources {
                 srcDirs = ["src/main/img"]
                 includes = ["**/*.png"]
             }
-        } as String))
+        }
     }
 
 }
 
 task buildBinarys(type: Copy) {
 	dependsOn clean
-	dependsOn project('mrserver').assembleDist 
+	dependsOn ':mrserver:assembleDist'
 	from 'mrserver/build/distributions'
     into 'dist'
 }
