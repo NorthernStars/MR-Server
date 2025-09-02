@@ -1,113 +1,34 @@
-plugins {
-  id "java"
-  id "eclipse"
-  id "jacoco"
-  id "org.sonarqube" version "2.3"
-}
-
-sonarqube {
-    properties {
-        property "sonar.projectName", "MixedReality :: Server"
-        property "sonar.projectKey", "werthersechte-github:mrServer"
-        property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
-    }
-}
-
-allprojects {
-    
+subprojects {
     apply plugin: 'java'
-    apply plugin: 'eclipse'
-	apply plugin: 'jacoco'
-    
+    apply plugin: 'jacoco'
 
     repositories {
-        jcenter()
         mavenCentral()
-        maven {
-            url "https://maven.repository.redhat.com/ga/"
-        }
-        
     }
-    
-    dependencies {
-        compile 'org.apache.logging.log4j:log4j-api:2.7'
-        compile 'org.apache.logging.log4j:log4j-core:2.7'
-        compile 'net.jcip:jcip-annotations:1.0.0.redhat-8'
-        
-        testCompile 'junit:junit:4.12'
-    }
-    
-    
-}
-
-project(':mrserver'){
-
-	apply plugin: 'application'
-	mainClassName = "de.fh_kiel.robotics.mr.server.Main"
-	applicationDefaultJvmArgs = ["-DMRSERVERCONFIGFILE=defaultserver.config"]
 
     dependencies {
-        compile project(':mrservermisc')
-        compile project(':mrscenariofootball')
-        compile 'commons-cli:commons-cli:1.2+'
+        implementation 'org.apache.logging.log4j:log4j-api:2.25.1'
+        implementation 'org.apache.logging.log4j:log4j-core:2.25.1'
+        implementation 'net.jcip:jcip-annotations:1.0'
     }
-    
-    sourceSets {
-	    main {
-	        resources {
-	            srcDirs = ["src/main/xml"]
-	            includes = ["**/*.xml"]
-	        }
-	    }
-	}
-
-	task info << {
-		println $distribution.name
-	}
-
-} 
-
-project(':mrservermisc'){
-
-}
- 
-project(':mrserveroperator'){
-
-    dependencies {
-        compile project(':mrservermisc')
-    }
-
 }
 
-project(':mrscenariofootball'){
-
-    dependencies {
-        compile project(':mrservermisc')
-    }
-    
-    sourceSets {
-	    main {
-	        resources {
-	            srcDirs = ["src/main/img"]
-	            includes = ["**/*.png"]
-	        }
-	    }
-	}
-
-}
-
-task buildBinarys(type: Copy) {
-	dependsOn clean
-	dependsOn project('mrserver').assembleDist 
-	from 'mrserver/build/distributions'
-    into 'dist'
-}
-
-configure(buildBinarys) {   
+tasks.register("buildBinarys", Copy) {
     group = 'build'
-    description = 'Builds the binarys and deposits them in ./dist'
+    description = 'Builds the binaries and posits them in ./dist\''
+
+	dependsOn(tasks.named('clean'))
+	dependsOn(':mrserver:assembleDist')
+
+    from(project(':mrserver').layout.buildDirectory.dir('distributions'))
+
+    into(layout.projectDirectory.dir('dist'))
 }
 
-clean {
-	delete 'dist/'
+tasks.named("buildBinarys"){
+
+}
+
+tasks.register("clean", Delete) {
+    delete layout.projectDirectory.dir('dist')
 }

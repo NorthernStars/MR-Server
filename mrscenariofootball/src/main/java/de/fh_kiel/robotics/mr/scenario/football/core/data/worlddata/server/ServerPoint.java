@@ -2,7 +2,7 @@ package de.fh_kiel.robotics.mr.scenario.football.core.data.worlddata.server;
 
 import java.awt.geom.Point2D;
 
-import javax.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElement;
 
 import de.fh_kiel.robotics.mr.scenario.football.core.data.ScenarioInformation;
 

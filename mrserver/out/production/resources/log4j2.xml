@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration packages="core," monitorInterval="5">
+  <appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{HH:mm:ss.SSS}(%r) [%t] %-5level %logger{36} - %msg%n"/>
+      <filters>
+        <MarkerFilter marker="EXCEPTION" onMatch="DENY" onMismatch="ACCEPT"/>
+      </filters>
+    </Console>
+    <RandomAccessFile name="ERROR" fileName="logs/error_${sys:Server}.log" >
+      <PatternLayout pattern="%d{HH:mm:ss.SSS}(%r) [%t] %-5level %logger{36} %C{1}.%M %m %ex%n"/>
+      <filters>
+        <MarkerFilter marker="EXCEPTION" onMatch="ACCEPT" onMismatch="DENY"/>
+      </filters>
+    </RandomAccessFile>
+  </appenders>
+  <loggers>
+    <logger name="SERVERCORE" level="info" additivity="false">
+      <appender-ref ref="Console"/>
+      <appender-ref ref="ERROR" />
+    </logger>
+    <logger name="SERVERCONFIG" level="info" additivity="false">
+      <appender-ref ref="Console"/>
+      <appender-ref ref="ERROR" />
+    </logger>
+    <logger name="SCENARIOMANAGEMENT" level="info" additivity="false">
+      <appender-ref ref="Console"/>
+      <appender-ref ref="ERROR" />
+    </logger>
+    <logger name="VISIONMANAGEMENT" level="info" additivity="false">
+      <appender-ref ref="Console"/>
+      <appender-ref ref="ERROR" />
+    </logger>
+    <logger name="BOTCONTROLMANAGEMENT" level="info" additivity="false">
+      <appender-ref ref="Console"/>
+      <appender-ref ref="ERROR" />
+    </logger>
+    <logger name="GRAPHICSMANAGEMENT" level="info" additivity="false">
+      <appender-ref ref="Console"/>
+      <appender-ref ref="ERROR" />
+    </logger>
+    <logger name="BOTAIMANAGEMENT" level="info" additivity="false">
+      <appender-ref ref="Console"/>
+      <appender-ref ref="ERROR" />
+    </logger>
+    <logger name="DATA" level="info" additivity="false">
+      <appender-ref ref="Console"/>
+      <appender-ref ref="ERROR" />
+    </logger>
+    <logger name="NETWORK" level="info" additivity="false">
+      <appender-ref ref="Console"/>
+      <appender-ref ref="ERROR" />
+    </logger>
+    <logger name="XML" level="off" additivity="false">
+      <appender-ref ref="Console"/>
+      <appender-ref ref="ERROR" />
+    </logger>
+    <logger name="SCENARIO" level="debug" additivity="false">
+      <appender-ref ref="Console"/>
+      <appender-ref ref="ERROR" />
+    </logger>
+    <logger name="GAME" level="debug" additivity="false">
+      <appender-ref ref="Console"/>
+      <appender-ref ref="ERROR" />
+    </logger>
+    <root level="error">
+    </root>
+  </loggers>
+</Configuration>

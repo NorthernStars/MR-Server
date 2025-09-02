@@ -1,6 +1,6 @@
 package de.fh_kiel.robotics.mr.scenario.football.core.data.worlddata.client;
 
-import javax.xml.bind.annotation.adapters.XmlAdapter;
+import jakarta.xml.bind.annotation.adapters.XmlAdapter;
 
 public class StatusStringToBooleanAdapter extends XmlAdapter<String, Boolean> {
     

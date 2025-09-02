@@ -3,9 +3,9 @@ package de.fh_kiel.robotics.mr.scenario.football.core.data.worlddata.client;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import de.fh_kiel.robotics.mr.scenario.football.core.data.BotAI;
 import de.fh_kiel.robotics.mr.scenario.football.core.data.worlddata.server.PlayMode;

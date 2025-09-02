@@ -1,7 +1,7 @@
 package de.fh_kiel.robotics.mr.scenario.football.core.data.worlddata.server;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlTransient;
 
 public class Score {
 

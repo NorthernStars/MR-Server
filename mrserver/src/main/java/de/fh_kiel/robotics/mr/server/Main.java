@@ -55,7 +55,7 @@ public class Main {
             
         } catch ( Exception vException ) {
 
-            Core.getLogger().fatal( "Fatal error! Server terminates " + vException.getLocalizedMessage() );
+            Core.getLogger().fatal("Fatal error! Server terminates {}", vException.getLocalizedMessage());
             Core.getLogger().catching( Level.ERROR, vException );
             
         }

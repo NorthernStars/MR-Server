@@ -63,7 +63,7 @@ public class Main implements SceanarioManagementChangeListener{
 	private void initialize() {
 		frmServercontrol = new JFrame();
 		frmServercontrol.setTitle("ServerControl");
-		frmServercontrol.setBounds(100, 100, 647, 387);
+		frmServercontrol.setBounds(100, 100, 800, 600);
 		frmServercontrol.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JMenuBar menuBar = new JMenuBar();

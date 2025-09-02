@@ -1,7 +1,7 @@
 package de.fh_kiel.robotics.mr.scenario.football.core.data.worlddata.client;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import de.fh_kiel.robotics.mr.scenario.football.core.data.worlddata.server.Player;
 
