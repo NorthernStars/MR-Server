@@ -1,0 +1,29 @@
+plugins {
+    id 'application'
+}
+
+application {
+    mainClass = 'de.fh_kiel.robotics.mr.server.Main'
+    applicationDefaultJvmArgs = ["-DMRSERVERCONFIGFILE=defaultserver.config"]
+}
+
+dependencies {
+    implementation project(':mrservermisc')
+    implementation project(':mrscenariofootball')
+    implementation 'commons-cli:commons-cli:1.2+'
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDirs = ["src/main/xml"]
+            includes = ["**/*.xml"]
+        }
+    }
+}
+
+tasks.register("info") {
+    doLast {
+        println project.name
+    }
+}

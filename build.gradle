@@ -1,19 +1,11 @@
-plugins {
-  id "java"
-  id "jacoco"
-}
-
-
-allprojects {
-    
+subprojects {
     apply plugin: 'java'
-	apply plugin: 'jacoco'
-    
+    apply plugin: 'jacoco'
 
     repositories {
         mavenCentral()
     }
-    
+
     dependencies {
         implementation 'org.apache.logging.log4j:log4j-api:2.25.1'
         implementation 'org.apache.logging.log4j:log4j-core:2.25.1'
@@ -21,69 +13,6 @@ allprojects {
 
         testImplementation 'junit:junit:4.12'
     }
-    
-    
-}
-
-project(':mrserver'){
-
-	apply plugin: 'application'
-
-    application {
-        mainClassName = "de.fh_kiel.robotics.mr.server.Main"
-        applicationDefaultJvmArgs = ["-DMRSERVERCONFIGFILE=defaultserver.config"]
-    }
-
-    dependencies {
-        implementation project(':mrservermisc')
-        implementation project(':mrscenariofootball')
-        implementation 'commons-cli:commons-cli:1.2+'
-    }
-    
-    sourceSets {
-	    main{
-            resources {
-                srcDirs = ["src/main/xml"]
-                includes = ["**/*.xml"]
-            }
-        }
-    }
-
-	tasks.register("info") {
-        doLast {
-            println project.name
-        }
-	}
-
-} 
-
-project(':mrservermisc'){
-
-}
- 
-project(':mrserveroperator'){
-
-    dependencies {
-        implementation project(':mrservermisc')
-    }
-
-}
-
-project(':mrscenariofootball'){
-
-    dependencies {
-        implementation project(':mrservermisc')
-    }
-    
-    sourceSets {
-	    main{
-            resources {
-                srcDirs = ["src/main/img"]
-                includes = ["**/*.png"]
-            }
-        }
-    }
-
 }
 
 tasks.register("buildBinarys", Copy) {
@@ -92,15 +21,16 @@ tasks.register("buildBinarys", Copy) {
 
 	dependsOn(tasks.named('clean'))
 	dependsOn(':mrserver:assembleDist')
+
     from(project(':mrserver').layout.buildDirectory.dir('distributions'))
+
     into(layout.projectDirectory.dir('dist'))
 }
 
-configure(buildBinarys) {   
-    group = 'build'
-    description = 'Builds the binarys and deposits them in ./dist'
+tasks.named("buildBinarys"){
+
 }
 
-tasks.named("clean", Delete) {
+tasks.register("clean", Delete) {
     delete layout.projectDirectory.dir('dist')
 }

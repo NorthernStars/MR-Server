@@ -1,0 +1,12 @@
+dependencies {
+    implementation project(':mrservermisc')
+}
+
+sourceSets {
+    main{
+        resources {
+            srcDirs = ["src/main/img"]
+            includes = ["**/*.png"]
+        }
+    }
+}
