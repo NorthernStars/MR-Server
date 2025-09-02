@@ -34,7 +34,7 @@ public class LoadScenario extends JDialog {
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setTitle("Load Scenario");
 		setResizable(false);
-		setBounds(100, 100, 555, 151);
+		setBounds(100, 100, 555, 180);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
