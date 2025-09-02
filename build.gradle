@@ -15,11 +15,11 @@ allprojects {
     }
     
     dependencies {
-        compile 'org.apache.logging.log4j:log4j-api:2.25.1'
-        compile 'org.apache.logging.log4j:log4j-core:2.25.1'
-        compile 'net.jcip:jcip-annotations:1.0'
+        implementation 'org.apache.logging.log4j:log4j-api:2.25.1'
+        implementation 'org.apache.logging.log4j:log4j-core:2.25.1'
+        implementation 'net.jcip:jcip-annotations:1.0'
 
-        testCompile 'junit:junit:4.12'
+        testImplementation 'junit:junit:4.12'
     }
     
     
@@ -28,13 +28,16 @@ allprojects {
 project(':mrserver'){
 
 	apply plugin: 'application'
-	mainClassName = "de.fh_kiel.robotics.mr.server.Main"
-	applicationDefaultJvmArgs = ["-DMRSERVERCONFIGFILE=defaultserver.config"]
+
+    application {
+        mainClassName = "de.fh_kiel.robotics.mr.server.Main"
+        applicationDefaultJvmArgs = ["-DMRSERVERCONFIGFILE=defaultserver.config"]
+    }
 
     dependencies {
-        compile project(':mrservermisc')
-        compile project(':mrscenariofootball')
-        compile 'commons-cli:commons-cli:1.2+'
+        implementation project(':mrservermisc')
+        implementation project(':mrscenariofootball')
+        implementation 'commons-cli:commons-cli:1.2+'
     }
     
     sourceSets {
@@ -46,7 +49,7 @@ project(':mrserver'){
         }
     }
 
-	task info {
+	tasks.register("info") {
         doLast {
             println project.name
         }
@@ -61,7 +64,7 @@ project(':mrservermisc'){
 project(':mrserveroperator'){
 
     dependencies {
-        compile project(':mrservermisc')
+        implementation project(':mrservermisc')
     }
 
 }
@@ -69,7 +72,7 @@ project(':mrserveroperator'){
 project(':mrscenariofootball'){
 
     dependencies {
-        compile project(':mrservermisc')
+        implementation project(':mrservermisc')
     }
     
     sourceSets {
@@ -83,11 +86,14 @@ project(':mrscenariofootball'){
 
 }
 
-task buildBinarys(type: Copy) {
-	dependsOn clean
-	dependsOn ':mrserver:assembleDist'
-	from 'mrserver/build/distributions'
-    into 'dist'
+tasks.register("buildBinarys", Copy) {
+    group = 'build'
+    description = 'Builds the binaries and posits them in ./dist\''
+
+	dependsOn(tasks.named('clean'))
+	dependsOn(':mrserver:assembleDist')
+    from(project(':mrserver').layout.buildDirectory.dir('distributions'))
+    into(layout.projectDirectory.dir('dist'))
 }
 
 configure(buildBinarys) {   
@@ -95,6 +101,6 @@ configure(buildBinarys) {
     description = 'Builds the binarys and deposits them in ./dist'
 }
 
-clean {
-	delete 'dist/'
+tasks.named("clean", Delete) {
+    delete layout.projectDirectory.dir('dist')
 }
