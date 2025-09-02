@@ -53,13 +53,13 @@ project(':mrserver'){
     }
     
     sourceSets {
-	    main {
-	        resources {
-	            srcDirs = ["src/main/xml"]
-	            includes = ["**/*.xml"]
-	        }
-	    }
-	}
+	    main(({
+            resources {
+                srcDirs = ["src/main/xml"]
+                includes = ["**/*.xml"]
+            }
+        } as String))
+    }
 
 	task info << {
 		println $distribution.name
@@ -86,13 +86,13 @@ project(':mrscenariofootball'){
     }
     
     sourceSets {
-	    main {
-	        resources {
-	            srcDirs = ["src/main/img"]
-	            includes = ["**/*.png"]
-	        }
-	    }
-	}
+	    main(({
+            resources {
+                srcDirs = ["src/main/img"]
+                includes = ["**/*.png"]
+            }
+        } as String))
+    }
 
 }
 
